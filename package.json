@@ -1,26 +1,11 @@
 {
-  "name": "chicago-crime-api",
-  "version": "0.1.0",
-  "description": "API for Chicago Tribune crime data",
+  "name": "apartment-hunter",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/collinjackson93/NodeChicagoCrime.git"
-  },
-  "keywords": [
-    "Chicago",
-    "crime"
-  ],
-  "author": "Collin Jackson <collinjackson93@gmail.com>",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/collinjackson93/NodeChicagoCrime/issues"
-  },
-  "homepage": "https://github.com/collinjackson93/NodeChicagoCrime#readme",
   "dependencies": {
     "request": "^2.67.0"
   }
