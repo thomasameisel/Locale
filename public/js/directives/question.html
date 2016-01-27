@@ -1,0 +1,17 @@
+<div class="container-fluid">
+    <div class="col-md-12">
+        <div class="well questionText"> <h2>{{question.text}}</h2> </div>
+        <div
+            class="answerDiv">
+            <div
+                class="well well-lg answerText"
+                ng-class="{hoverAnswer : hover, selectedAnswer : selected}"
+                ng-mouseenter="hover = true"
+                ng-mouseleave="hover = false"
+                ng-repeat="option in question.options"
+                ng-click="select()">
+                <h5>{{option}}</h5>
+            </div>
+        </div>
+    </div>
+</div>

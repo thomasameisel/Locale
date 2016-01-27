@@ -1,0 +1,22 @@
+.questionText{
+    text-align:center
+}
+
+.answerDiv{
+    margin-right: -15px;
+}
+
+.answerText{
+    text-align:center;
+    float:left;
+    width: 32%;
+    margin-right: 15px;
+}
+
+.hoverAnswer {
+    background-color: #5bc0de;
+}
+
+.selectedAnswer {
+    background-color: #337ab7;
+}
