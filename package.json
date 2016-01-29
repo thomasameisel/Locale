@@ -10,6 +10,7 @@
     "async": "^1.5.2",
     "express": "^4.13.4",
     "foursquare-venues": "0.0.3",
+    "node-zillow": "0.0.5",
     "request": "^2.67.0",
     "sqlite3": "^3.1.1"
   }
