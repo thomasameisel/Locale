@@ -4,9 +4,10 @@ var should = chai.should();
 describe('TribuneData', function() {
   var tribune = require('../lib/tribuneData');
 
-  describe('getYearCrimeCount', function() {
+  describe('getCrimeCount', function() {
     it('should return a number', function(done) {
-      tribune.getYearCrimeCount(1, 2016, function(err, num) {
+      var dummyCommunity = { communityID: 1 };
+      tribune.getCrimeCount(dummyCommunity, function(err, num) {
         if(err) {
           done(err);
         } else {
@@ -15,7 +16,6 @@ describe('TribuneData', function() {
         }
       });
     });
-
 
   });
 });
