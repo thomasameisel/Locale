@@ -18,4 +18,20 @@ describe('TribuneData', function() {
     });
 
   });
+
+  describe('getCrowdedPct', function() {
+    it('should return a number', function(done) {
+      tribune.getCrowdedPct({ communityID: 1 }, function(err, num) {
+        if(err) {
+          done(err);
+        } else {
+          // num should be a number, but it is returned as a string,
+          // so we just check to make sure that it evaluates to a
+          // truthy value
+          num.should.ok;
+          done();
+        }
+      });
+    });
+  });
 });
