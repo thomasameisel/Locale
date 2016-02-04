@@ -25,10 +25,7 @@ describe('TribuneData', function() {
         if(err) {
           done(err);
         } else {
-          // num should be a number, but it is returned as a string,
-          // so we just check to make sure that it evaluates to a
-          // truthy value
-          num.should.be.ok;
+          num.should.be.a('number');
           done();
         }
       });
