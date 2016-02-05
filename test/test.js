@@ -6,8 +6,7 @@ describe('TribuneData', function() {
 
   describe('getCrimeCount', function() {
     it('should return a number', function(done) {
-      var dummyCommunity = { communityID: 1 };
-      tribune.getCrimeCount(dummyCommunity, function(err, num) {
+      tribune.getCrimeCount({ communityID: 1 }, function(err, num) {
         if(err) {
           done(err);
         } else {
