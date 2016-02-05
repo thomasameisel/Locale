@@ -6,8 +6,7 @@ describe('TribuneData', function() {
 
   describe('getCrimeCount', function() {
     it('should return a number', function(done) {
-      var dummyCommunity = { communityID: 1 };
-      tribune.getCrimeCount(dummyCommunity, function(err, num) {
+      tribune.getCrimeCount({ communityID: 1 }, function(err, num) {
         if(err) {
           done(err);
         } else {
@@ -25,10 +24,7 @@ describe('TribuneData', function() {
         if(err) {
           done(err);
         } else {
-          // num should be a number, but it is returned as a string,
-          // so we just check to make sure that it evaluates to a
-          // truthy value
-          num.should.be.ok;
+          num.should.be.a('number');
           done();
         }
       });
