@@ -1,5 +1,8 @@
 {
   "preset": "node-style-guide",
+  "requireCamelCaseOrUpperCaseIdentifiers": null,
+  "validateLineBreaks": null,
+  "requireTrailingComma": null,
 
   "excludeFiles": ["node_modules"]
 }
