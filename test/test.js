@@ -6,6 +6,7 @@ describe('TribuneData', function() {
 
   describe('getCrimeCount', function() {
     it('should return a number', function(done) {
+      this.timeout(3000);
       tribune.getCrimeCount({ communityID: 1, landArea: 1800 },
           function(err, num) {
         if (err) {
@@ -17,7 +18,6 @@ describe('TribuneData', function() {
         }
       });
     });
-
   });
 
   describe('getCrowdedPct', function() {
