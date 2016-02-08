@@ -1,5 +1,5 @@
 {
-  "name": "apartment-hunter",
+  "name": "locale",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
