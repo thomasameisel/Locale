@@ -1,0 +1,9 @@
+{
+  "preset": "node-style-guide",
+  "requireCamelCaseOrUpperCaseIdentifiers": null,
+  "validateLineBreaks": null,
+  "requireTrailingComma": null,
+  "requireEarlyReturn": null,
+
+  "excludeFiles": ["node_modules"]
+}

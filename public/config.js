@@ -1,6 +1,4 @@
-/**
- * Created by chrissu on 2/3/16.
- */
+
 app.config(function($routeProvider, $locationProvider){
    $routeProvider
        .when('/', {
@@ -11,5 +9,4 @@ app.config(function($routeProvider, $locationProvider){
            templateUrl: 'views/map/map.html',
            controller: 'views/map/mapController.js'
        })
-
 });
