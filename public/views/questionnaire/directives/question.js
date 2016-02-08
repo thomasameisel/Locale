@@ -9,11 +9,12 @@ app.directive('question', function() {
             selected:'='
         },
         link: function($scope, element, attrs){
-            $scope.selected = attrs.selected;
+
         },
         controller: function ($scope) {
+            $scope.selected = -1;
             $scope.select = function(index){
-                $scope.selected = true;
+                $scope.selected = index;
             }
         },
         templateUrl: './views/questionnaire/directives/question.html'
