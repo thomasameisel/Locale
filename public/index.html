@@ -2,7 +2,7 @@
 <html lang="en" ng-app="Apartment">
 <head>
     <meta charset="UTF-8">
-    <title></title>
+    <title>Apartment</title>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.js"></script>
@@ -13,21 +13,22 @@
     <script src="app.js"></script>
     <script src="views/questionnaire/directives/question.js"></script>
     <script src="views/questionnaire/questionnaireController.js"></script>
+    <script src="views/map/mapController.js"></script>
     <link rel="stylesheet" type="text/css" href="css/index.css">
     <script src="config.js"></script>
 
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpZLby9zOg-frd_lpmgxzl6qOG1jWdhU0"></script>
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 </head>
 
 <body>
-    <nav class="navbar navbar-default">
+    <nav class="navbar navbar-default" id="navbar">
             <div class="container-fluid">
                 <div class="navbar-header">
                     <a class="navbar-brand" href="#/">Apartments Я Us</a>
                 </div>
         </div>
     </nav>
-    <div id="buffer"></div>
 
     <div ng-view></div>
 

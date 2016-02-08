@@ -1,8 +1,5 @@
-.navbar {
+#navbar {
     height: 40px;
-    box-shadow: 0 6px 6px 0px #999;
+    margin-bottom: 1px;
 }
 
-#buffer{
-    margin-bottom: 83px;
-}

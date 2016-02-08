@@ -5,8 +5,9 @@ app.config(function($routeProvider, $locationProvider){
             templateUrl: 'views/questionnaire/questionnaire.html',
             controller: 'questionnaireController'
         })
-       .when('map', {
+       .when('/map', {
            templateUrl: 'views/map/map.html',
            controller: 'mapController'
        })
+
 });

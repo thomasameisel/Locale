@@ -32,6 +32,7 @@ app.controller('questionnaireController', function($scope, $http, $location) {
   ];
 
   $scope.submitAnswers = function() {
-    $location.path('/map');
+    $location.path('map');
   };
+
 });
