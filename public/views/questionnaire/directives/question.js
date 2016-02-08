@@ -15,8 +15,8 @@ app.directive('question', function() {
             $scope.selected = -1;
             $scope.select = function(index){
                 $scope.selected = index;
-            }
+            };
         },
         templateUrl: './views/questionnaire/directives/question.html'
-    }
+    };
 });

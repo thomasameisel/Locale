@@ -8,6 +8,6 @@ app.config(function($routeProvider, $locationProvider){
        .when('/map', {
            templateUrl: 'views/map/map.html',
            controller: 'mapController'
-       })
+       });
 
 });
