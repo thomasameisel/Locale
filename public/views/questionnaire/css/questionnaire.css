@@ -1,3 +1,8 @@
+#submitBtn{
+    float: right;
+    margin-right: 30px;
+}
+
 .questionContainer{
     height : 75vh;
 }
