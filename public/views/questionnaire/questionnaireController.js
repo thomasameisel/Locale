@@ -1,7 +1,7 @@
 /**
  * Created by chrissu on 12/12/15.
  */
-app.controller('questionsController', function($scope, $http, $location) {
+app.controller('questionnaireController', function($scope, $http, $location) {
     angular.element(document).ready(function() {
         $scope.loading = false;
     });

@@ -5,39 +5,27 @@
     <title></title>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.js"></script>
     <!-- Latest compiled and minified CSS -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 
     <script src="app.js"></script>
-    <script src="questionnaire/directives/question.js"></script>
-    <script src="questionnaire/questionsController.js"></script>
+    <script src="config.js"></script>
+
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="questionnaire/css/question.css">
-    <link rel="stylesheet" type="text/css" href="questionnaire/title.css">
-    <link rel="stylesheet" type="text/css" href="questionnaire/css/index.css">
-    <link rel="stylesheet" type="text/css" href="css/loading.css">
 </head>
 
-<body ng-controller="questionsController">
+<body>
     <nav class="navbar navbar-default" id="title-bar">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a class="navbar-brand" id="title" href="#">Apartments Я Us</a>
-            </div>
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" id="title" href="#">Apartments Я Us</a>
+                </div>
         </div>
     </nav>
 
-    <div ng-repeat="question in questions">
-        <div class="container-fluid">
-            <question question = question></question>
-        </div>
-    </div>
+    <ng-view></ng-view>
 
-
-    <button id="submitBtn" type="submit" class="btn btn-default" ng-click="submitAnswers()">Submit</button>
-
-    <div class="loader">Loading...</div>
 </body>
 </html>

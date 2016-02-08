@@ -4,12 +4,12 @@
 app.config(function($routeProvider, $locationProvider){
    $routeProvider
        .when('/', {
-            templateUrl: 'questionnaire/questionnaire.html',
-            controller: 'questionnaire/questionnaireController.js'
+            templateUrl: './views/questionnaire/questionnaire.html',
+            controller: './views/questionnaire/questionnaireController.js'
         })
        .when('map', {
-           templateUrl: 'map/map.html',
-           controller: 'map/mapController.js'
+           templateUrl: 'views/map/map.html',
+           controller: 'views/map/mapController.js'
        })
 
 });

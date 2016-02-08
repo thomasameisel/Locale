@@ -16,6 +16,6 @@ app.directive('question', function() {
                 $scope.selected = true;
             }
         },
-        templateUrl: './js/directives/question.html'
+        templateUrl: 'question.html'
     }
 });
