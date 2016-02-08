@@ -1,3 +1,3 @@
-/**
- * Created by chrissu on 2/4/16.
- */
+app.controller('mapController', function($scope, $location) {
+
+});
