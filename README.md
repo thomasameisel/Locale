@@ -1,5 +1,5 @@
-# ApartmentHunter
-### Finds the perfect location for your next apartment?
+# Locale
+### Finds your perfect neighborhood.
 
 Uses the [Chicago Tribune crime data API](https://github.com/newsapps/chicagocrime), along with Foursquare and Zillow.
 
