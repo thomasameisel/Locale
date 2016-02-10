@@ -1,0 +1,7 @@
+- [ ] Add more communities to database
+- Collin
+  - [ ] Add noise complaint data
+  - [ ] Write more tests
+  - [ ] Move to Docker
+  - [ ] Host application in cloud
+  - [ ] Set up DNS routing for website
