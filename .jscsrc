@@ -4,6 +4,7 @@
   "validateLineBreaks": null,
   "requireTrailingComma": null,
   "requireEarlyReturn": null,
+  "requireCapitalizedComments": null,
 
   "excludeFiles": ["node_modules", "public"]
 }
