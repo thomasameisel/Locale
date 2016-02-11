@@ -1,13 +1,13 @@
-<div class="container-fluid col-md-12">
-    <div>
-        <div class="questionText"> {{question.text}}</div>
+<div class="container-fluid col-md-12 questionContainer">
+    <div class="questionText"> {{question.text}}</div>
+    <div class="answersDiv">
         <div
-            class="well well-lg col-md-4 answerDiv container-fluid"
-            ng-class="{hoverAnswer : hover, selectedAnswer : selected}"
+            class="well well-lg col-md-3 answers container"
+            ng-class="{hoverAnswer : hover, selectedAnswer : $index == selected}"
             ng-mouseenter="hover = true"
             ng-mouseleave="hover = false"
-            ng-repeat="option in question.options"
-            ng-click="select()">
+            ng-repeat="option in question.options track by $index"
+            ng-click="select($index)">
                 {{option}}
         </div>
     </div>

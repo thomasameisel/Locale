@@ -1,23 +1,29 @@
 #submitBtn{
     float: right;
-    margin-right: 30px;
+    margin: 30px;
 }
 
 .questionContainer{
-    height : 75vh;
+    height : 70vh;
+    margin-top: 20px;
 }
 
 .questionText{
     text-align:center;
-    margin-bottom:50px;
     font-size : 40px;
+    margin-bottom: 20px;
 }
 
-.answerDiv{
+.answersDiv{
+    margin-left:90px;
+}
+
+.answers{
     font-size: 20px;
     text-align:center;
     box-shadow: 0 3px 3px -3px #999;
     height: 100px;
+    margin: 25px;
 }
 
 .hoverAnswer {
@@ -28,12 +34,9 @@
     background-color: #00d39e;
 }
 
-#title-bar{
-    /*margin-bottom: 15px;*/
+#bufferDiv{
+    margin-bottom: 83px;
 }
 
-.navbar {
-    height: 30px;
-    box-shadow: 0 6px 6px 0px #999;
-}
+
 

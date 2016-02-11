@@ -5,5 +5,5 @@
   "requireTrailingComma": null,
   "requireEarlyReturn": null,
 
-  "excludeFiles": ["node_modules"]
+  "excludeFiles": ["node_modules", "public"]
 }

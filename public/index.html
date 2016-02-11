@@ -2,30 +2,35 @@
 <html lang="en" ng-app="Apartment">
 <head>
     <meta charset="UTF-8">
-    <title></title>
+    <title>Locale</title>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.js"></script>
     <!-- Latest compiled and minified CSS -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 
     <script src="app.js"></script>
+    <script src="views/questionnaire/directives/question.js"></script>
+    <script src="views/questionnaire/questionnaireController.js"></script>
+    <script src="views/map/mapController.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/index.css">
     <script src="config.js"></script>
 
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpZLby9zOg-frd_lpmgxzl6qOG1jWdhU0"></script>
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 </head>
 
 <body>
-    <nav class="navbar navbar-default" id="title-bar">
+    <nav class="navbar navbar-default" id="navbar">
             <div class="container-fluid">
                 <div class="navbar-header">
-                    <a class="navbar-brand" id="title" href="#">Apartments Я Us</a>
+                    <a class="navbar-brand" href="#/">Locale</a>
                 </div>
         </div>
     </nav>
 
-    <ng-view></ng-view>
+    <div ng-view></div>
 
 </body>
 </html>
