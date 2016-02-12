@@ -1,7 +1,8 @@
 - [ ] Add more communities to database
 - Collin
   - [ ] Add noise complaint data
+  - [ ] Separate violent and non-violent crime
   - [ ] Write more tests
   - [ ] Move to Docker
-  - [ ] Host application in cloud
+  - [ ] Set up CI to test and deploy to Elastic Beanstalk upon push
   - [ ] Set up DNS routing for website
