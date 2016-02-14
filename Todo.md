@@ -1,8 +1,9 @@
 - [ ] Add more communities to database
 - Collin
-  - [ ] Add noise complaint data
   - [x] Separate violent and non-violent crime
+  - [ ] Add noise complaint data
   - [ ] Write more tests
+  - [ ] Rewrite code to use async.waterfall and pass error without checking it
   - [ ] Move to Docker
   - [ ] Set up CI to test and deploy to Elastic Beanstalk upon push
   - [ ] Set up DNS routing for website
