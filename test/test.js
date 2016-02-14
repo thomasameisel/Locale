@@ -3,6 +3,8 @@
 var rewire = require('rewire');
 var chai = require('chai');
 var should = chai.should();
+var sinon = require('sinon');
+chai.use(require('sinon-chai'));
 
 describe('TribuneData', function() {
   var tribune = rewire('../lib/tribuneData');
@@ -60,7 +62,7 @@ describe('TribuneData', function() {
     });
   });
 
-  describe('getCrimeCount', function() {
+  describe.skip('getCrimeCount', function() {
     var getCrimeCount = tribune.__get__('getCrimeCount');
     it('should return an object with violent and non-violent crime',
         function(done) {
@@ -130,6 +132,77 @@ describe('TribuneData', function() {
           done();
         }
       });
+    });
+  });
+});
+
+describe('CommunitiesPctOfAvg', function() {
+  var pctOfAvg = rewire('../lib/communitiesPctOfAvg');
+
+  describe('getAllData', function() {
+    var fakeCommInfo = [{ communityID: 1 }, { communityID: 2 },
+                        { communityID: 3 }];
+    var stub;
+    beforeEach(function() {
+      stub = sinon.stub();
+      // Make stub call the second parameter with null and a number. Used to
+      // pass a fake result to the callback
+      stub.callsArgWith(1, null, 2);
+    });
+
+    it('should call the given function on each community', function(done) {
+      pctOfAvg.getAllData(fakeCommInfo, stub, function(err, ignore) {
+        if (err) {
+          done(err);
+        } else {
+          stub.should.have.callCount(fakeCommInfo.length);
+          done();
+        }
+      });
+    });
+
+    it('should finish and log if an error occurs', function(done) {
+      var errorStub = sinon.stub(console, 'error');
+      stub.onCall(1).callsArgWith(1, 'Error occurred');
+      pctOfAvg.getAllData(fakeCommInfo, stub, function(err, result) {
+        errorStub.restore();
+        stub.should.have.callCount(fakeCommInfo.length);
+        errorStub.should.have.been.calledWith('Error on communityID ' +
+            fakeCommInfo[1].communityID + ': Error occurred');
+        done();
+      });
+    });
+
+    it('should finish and log if one function fails to return', function(done) {
+      var errorStub = sinon.stub(console, 'error');
+      stub.onCall(1).callsArgWith(1, null, null);
+      pctOfAvg.getAllData(fakeCommInfo, stub, function(err, result) {
+        errorStub.restore();
+        stub.should.have.callCount(fakeCommInfo.length);
+        errorStub.should.have.been.calledWith('No result returned for ' +
+            'communityID ' + fakeCommInfo[1].communityID);
+        done();
+      });
+    });
+  });
+
+  describe('getAvgData', function() {
+    var fakeCommData = [{ data: 5 }, { data: 3 }];
+
+    it('should return the average of a list', function() {
+      var retVal = pctOfAvg.getAvgData(fakeCommData);
+      retVal.should.equal(4);
+    });
+  });
+
+  describe('getPctOfAvg', function() {
+    it('should return the percent of average of each list item', function() {
+      var fakeCommData = [{ communityID: 1, data: 5 },
+                          { communityID: 2, data: 3 }];
+
+      var retVal = pctOfAvg.getPctOfAvg(fakeCommData, 4);
+      retVal[1].should.equal(1.25);
+      retVal[2].should.equal(0.75);
     });
   });
 });
