@@ -33,7 +33,9 @@ function validParams(opsAndNums) {
       validNums(opsAndNums.nums);
 }
 
+// jscs:disable
 // http://localhost:8080/preferences?ops[violentCrime]=%3C&ops[nonViolentCrime]=%3C&ops[nightlife]=%3E&ops[price]=%3C&ops[crowded]=%3C&nums[violentCrime]=4&nums[nonViolentCrime]=3&nums[nightlife]=4&nums[price]=4&nums[crowded]=2
+// jscs:enable
 app.get('/preferences', function(req, res) {
   if (validParams(req.query)) {
     var params = {
@@ -58,7 +60,9 @@ app.get('/preferences', function(req, res) {
   }
 });
 
+// jscs:disable
 // http://localhost:8080/directions?destination=201%20S%20Wacker%20Dr,%20Chicago,%20IL&mode=driving
+// jscs:enable
 app.get('/directions', function(req, res) {
   if (req.query.destination && req.query.mode &&
       (req.query.mode === 'driving' || req.query.mode === 'transit')) {
@@ -82,4 +86,3 @@ app.get('/directions', function(req, res) {
 app.listen(8080, function() {
   console.log('listening to port localhost:8080');
 });
-

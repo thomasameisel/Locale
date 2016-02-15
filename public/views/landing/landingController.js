@@ -15,5 +15,5 @@ app.controller('landingController', function($scope, $state) {
                 $scope.error = status;
             }
         });
-    }
+    };
 });
