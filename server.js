@@ -18,27 +18,23 @@ function validNum(num) {
   return validator.isInt(num) && num > 0 && num < 6;
 }
 
-function validParam(param) {
-  var valid = {
+function validParam(allPreferences, param) {
+  return typeof allPreferences[param] !== 'undefined';
+}
+
+function validParams(opsAndNums) {
+  var allPreferences = {
     violentCrime: true,
     nonViolentCrime: true,
     nightlife: true,
     price: true,
     crowded: true
   };
-  if (valid[param]) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
-function validParams(opsAndNums) {
-  for (var preference in opsAndNums) {
-    if (opsAndNums.hasOwnProperty(preference) &&
-          (!validOp(opsAndNums[preference].op) ||
-          !validNum(opsAndNums[preference].num) ||
-          !validParam(preference))) {
+  for (var opAndNum in opsAndNums) {
+    if (opsAndNums.hasOwnProperty(opAndNum) &&
+          (!validParam(allPreferences, opAndNum) ||
+          !validOp(opsAndNums[opAndNum].op) ||
+          !validNum(opsAndNums[opAndNum].num))) {
       return false;
     }
   }
@@ -52,13 +48,16 @@ app.get('/preferences', function(req, res) {
   console.log(req.query);
   if (validParams(req.query)) {
     var params = {
-      violentCrimePctOfAvg: [req.query.violentCrime.op,
-                              req.query.violentCrime.num],
-      nonViolentCrimePctOfAvg: [req.query.nonViolentCrime.op,
-                                req.query.nonViolentCrime.num],
-      nightlifePctOfAvg: [req.query.nightlife.op, req.query.nightlife.num],
-      pricePctOfAvg: [req.query.price.op, req.query.price.num],
-      crowdedPctOfAvg: [req.query.crowded.op, req.query.crowded.num]
+      violentCrimePctOfAvg: {op: req.query.violentCrime.op,
+                              num: parseInt(req.query.violentCrime.num)},
+      nonViolentCrimePctOfAvg: {op: req.query.nonViolentCrime.op,
+                                num: parseInt(req.query.nonViolentCrime.num)},
+      nightlifePctOfAvg: {op: req.query.nightlife.op,
+                          num: parseInt(req.query.nightlife.num)},
+      pricePctOfAvg: {op: req.query.price.op,
+                      num: parseInt(req.query.price.num)},
+      crowdedPctOfAvg: {op: req.query.crowded.op,
+                        num: parseInt(req.query.crowded.num)}
     };
     preferencesCommunities.communitiesByPreferences(params,
                                                     function(err, result) {
