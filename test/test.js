@@ -137,7 +137,7 @@ describe('TribuneData', function() {
 });
 
 describe('CommunitiesPctOfAvg', function() {
-  var pctOfAvg = rewire('../lib/communitiesPctOfAvg');
+  var pctOfAvg = require('../lib/communitiesPctOfAvg');
 
   describe('getAllData', function() {
     var fakeCommInfo = [{ communityID: 1 }, { communityID: 2 },
@@ -204,5 +204,69 @@ describe('CommunitiesPctOfAvg', function() {
       retVal[1].should.equal(1.25);
       retVal[2].should.equal(0.75);
     });
+  });
+});
+
+describe('DB', function() {
+  var sqlite3 = require('sqlite3');
+  var database = rewire('../lib/db');
+
+  // Swap to an in-memory database and create the schema
+  var testDB = new sqlite3.Database(':memory:');
+  before(function() {
+    database.__set__('db', testDB);
+
+    // Turn off jscs so it doesn't complain about mixing commas in SQL strings
+    // jscs:disable
+    var commAreaStr = "CREATE TABLE 'CommunityArea' (" +
+        "`communityID` INTEGER UNIQUE,`name` TEXT NOT NULL," +
+        "`landArea` INTEGER NOT NULL,`latLng` TEXT NOT NULL," +
+        "`sw` TEXT NOT NULL,`ne` TEXT NOT NULL," +
+        "`truliaID` INTEGER NOT NULL UNIQUE,`radius` INTEGER," +
+        "PRIMARY KEY(communityID))";
+    var commDataStr = "CREATE TABLE 'CommunityData' (" +
+        "`communityID` INTEGER UNIQUE,`violentCrimePctOfAvg` REAL," +
+        "`nonViolentCrimePctOfAvg` REAL,`nightlifePctOfAvg` REAL," +
+        "`crowdedPctOfAvg` REAL,`pricePctOfAvg` REAL," +
+        "PRIMARY KEY(communityID)," +
+        "FOREIGN KEY(`communityID`) REFERENCES `CommunityArea`(`communityID`))";
+    testDB.exec(commAreaStr).exec(commDataStr);
+    testDB.exec("INSERT INTO CommunityArea VALUES (1, 'Loop', 5000, '81,56'," +
+                "'80,55', '82,57', 1, 50)");
+    // jscs:enable
+  });
+
+  it('should use the test database', function(done) {
+    database.getAllCommunitiesInfo(function(err, result) {
+      if (err) {
+        done(err);
+      } else {
+        result.should.have.length(1);
+        done();
+      }
+    });
+  });
+
+  it('should insert community data', function(done) {
+    var data = { violentCrimePctOfAvg: 0.6, nonViolentCrimePctOfAvg: 0.5,
+        nightlifePctOfAvg: 0.4, crowdedPctOfAvg: 0.2, pricePctOfAvg: 0.7 };
+    database.insertCommunityData(1, data);
+    testDB.get('SELECT * from CommunityData where communityID=1', [],
+      function(err, row) {
+        if (err) {
+          done(err);
+        } else {
+          row.should.have.all.keys('communityID', 'violentCrimePctOfAvg',
+                                   'nonViolentCrimePctOfAvg', 'pricePctOfAvg',
+                                   'nightlifePctOfAvg', 'crowdedPctOfAvg');
+          row.communityID.should.equal(1);
+          row.violentCrimePctOfAvg.should.equal(0.6);
+          row.nonViolentCrimePctOfAvg.should.equal(0.5);
+          row.nightlifePctOfAvg.should.equal(0.4);
+          row.crowdedPctOfAvg.should.equal(0.2);
+          row.pricePctOfAvg.should.equal(0.7);
+          done();
+        }
+      });
   });
 });

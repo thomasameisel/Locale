@@ -14,6 +14,7 @@
     "node-googleplaces": "^0.1.2",
     "request": "^2.67.0",
     "sqlite3": "^3.1.1",
+    "validator": "^4.8.0",
     "xml2js": "^0.4.16"
   },
   "repository": "https://github.com/collinjackson93/ApartmentHunter",
