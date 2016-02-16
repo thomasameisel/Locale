@@ -7,6 +7,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "address-validator": "^0.2.2",
     "async": "^1.5.2",
     "express": "^4.13.4",
     "googlemaps": "^1.2.0",

@@ -5,6 +5,7 @@ var preferencesCommunities = require('./lib/preferencesCommunities');
 var directionsCommunities = require('./lib/directionsCommunities');
 var validator = require('validator');
 var express = require('express');
+var addressValidator = require('address-validator');
 
 var app = express();
 
@@ -22,7 +23,7 @@ function validParam(allPreferences, param) {
   return typeof allPreferences[param] !== 'undefined';
 }
 
-function validParams(opsAndNums) {
+function validatePreferencesParams(opsAndNums) {
   var allPreferences = {
     violentCrime: true,
     nonViolentCrime: true,
@@ -41,12 +42,33 @@ function validParams(opsAndNums) {
   return true;
 }
 
+function validateAddress(address, callback) {
+  if (!address) {
+    callback(false);
+  }
+  addressValidator.validate(address, addressValidator.match.streetAddress,
+                            function(err, exact, inexact) {
+    if (err) {
+      callback(false);
+    } else {
+      callback(exact.length > 0 || inexact.length > 0);
+    }
+  });
+}
+
+function validateDirectionsParams(req, callback) {
+  validateAddress(req.query.destination, function(res) {
+    callback(res && req.query.mode &&
+      (req.query.mode === 'driving' || req.query.mode === 'transit'));
+  });
+}
+
 // jscs:disable
 // http://localhost:8080/preferences?violentCrime[op]=%3C&nonViolentCrime[op]=%3C&nightlife[op]=%3E&price[op]=%3C&crowded[op]=%3C&violentCrime[num]=4&nonViolentCrime[num]=3&nightlife[num]=4&price[num]=4&crowded[num]=2
 // jscs:enable
 app.get('/preferences', function(req, res) {
   console.log(req.query);
-  if (validParams(req.query)) {
+  if (validatePreferencesParams(req.query)) {
     var params = {
       violentCrimePctOfAvg: {op: req.query.violentCrime.op,
                               num: parseInt(req.query.violentCrime.num)},
@@ -77,24 +99,24 @@ app.get('/preferences', function(req, res) {
 // jscs:enable
 app.get('/directions', function(req, res) {
   console.log(req.query);
-  if (req.query.destination && req.query.mode &&
-      (req.query.mode === 'driving' || req.query.mode === 'transit')) {
-    var params = {
-      destination: req.query.destination,
-      mode: req.query.mode
-    };
-    directionsCommunities.getTimeToCommunities(params, function(err, result) {
-      if (err) {
-        res.send('<p>Error with request</p>');
-      } else {
-        res.send(result);
-      }
-    });
-  } else {
-    res.send('<p>Error with request</p>');
-  }
+  validateDirectionsParams(req, function(valid) {
+    if (valid) {
+      var params = {
+        destination: req.query.destination,
+        mode: req.query.mode
+      };
+      directionsCommunities.getTimeToCommunities(params, function(err, result) {
+        if (err) {
+          res.send('<p>Error with request</p>');
+        } else {
+          res.send(result);
+        }
+      });
+    } else {
+      res.send('<p>Error with request</p>');
+    }
+  });
 });
-
 
 app.listen(8080, function() {
   console.log('listening to port localhost:8080');
