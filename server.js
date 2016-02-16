@@ -67,7 +67,8 @@ function validateDirectionsParams(req, callback) {
 // http://localhost:8080/preferences?violentCrime[op]=%3C&nonViolentCrime[op]=%3C&nightlife[op]=%3E&price[op]=%3C&crowded[op]=%3C&violentCrime[num]=4&nonViolentCrime[num]=3&nightlife[num]=4&price[num]=4&crowded[num]=2
 // jscs:enable
 app.get('/preferences', function(req, res) {
-  console.log(req.query);
+  // console.log(req.query);
+  console.log('GET /preferences');
   if (validatePreferencesParams(req.query)) {
     var params = {
       violentCrimePctOfAvg: {op: req.query.violentCrime.op,
@@ -98,7 +99,8 @@ app.get('/preferences', function(req, res) {
 // http://localhost:8080/directions?destination=201%20S%20Wacker%20Dr,%20Chicago,%20IL&mode=driving
 // jscs:enable
 app.get('/directions', function(req, res) {
-  console.log(req.query);
+  // console.log(req.query);
+  console.log('GET /directions');
   validateDirectionsParams(req, function(valid) {
     if (valid) {
       var params = {
