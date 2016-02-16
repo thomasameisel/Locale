@@ -250,24 +250,23 @@ describe('DB', function() {
   it('should insert community data', function(done) {
     var data = { violentCrimePctOfAvg: 0.6, nonViolentCrimePctOfAvg: 0.5,
         nightlifePctOfAvg: 0.4, crowdedPctOfAvg: 0.2, pricePctOfAvg: 0.7 };
-    database.insertCommunityData(1, data, function() {
-      testDB.get('SELECT * from CommunityData where communityID=1', [],
-                  function(err, row) {
-        if (err) {
-          done(err);
-        } else {
-          row.should.have.all.keys('communityID', 'violentCrimePctOfAvg',
-            'nonViolentCrimePctOfAvg', 'pricePctOfAvg',
-            'nightlifePctOfAvg', 'crowdedPctOfAvg');
-          row.communityID.should.equal(1);
-          row.violentCrimePctOfAvg.should.equal(0.6);
-          row.nonViolentCrimePctOfAvg.should.equal(0.5);
-          row.nightlifePctOfAvg.should.equal(0.4);
-          row.crowdedPctOfAvg.should.equal(0.2);
-          row.pricePctOfAvg.should.equal(0.7);
-          done();
-        }
-      });
+    database.insertCommunityData(1, data);
+    testDB.get('SELECT * from CommunityData where communityID=1', [],
+                function(err, row) {
+      if (err) {
+        done(err);
+      } else {
+        row.should.have.all.keys('communityID', 'violentCrimePctOfAvg',
+          'nonViolentCrimePctOfAvg', 'pricePctOfAvg',
+          'nightlifePctOfAvg', 'crowdedPctOfAvg');
+        row.communityID.should.equal(1);
+        row.violentCrimePctOfAvg.should.equal(0.6);
+        row.nonViolentCrimePctOfAvg.should.equal(0.5);
+        row.nightlifePctOfAvg.should.equal(0.4);
+        row.crowdedPctOfAvg.should.equal(0.2);
+        row.pricePctOfAvg.should.equal(0.7);
+        done();
+      }
     });
   });
 });

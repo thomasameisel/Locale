@@ -58,8 +58,7 @@ function validateAddress(address, callback) {
 
 function validateDirectionsParams(req, callback) {
   validateAddress(req.query.destination, function(res) {
-    callback(res && req.query.mode &&
-      (req.query.mode === 'driving' || req.query.mode === 'transit'));
+    callback(res);
   });
 }
 
@@ -96,16 +95,16 @@ app.get('/preferences', function(req, res) {
 });
 
 // jscs:disable
-// http://localhost:8080/directions?destination=201%20S%20Wacker%20Dr,%20Chicago,%20IL&mode=driving
+// http://localhost:8080/directions?destination=201%20S%20Wacker%20Dr,%20Chicago,%20IL
 // jscs:enable
-app.get('/directions', function(req, res) {
+/*app.get('/directions', function(req, res) {
   // console.log(req.query);
   console.log('GET /directions');
   validateDirectionsParams(req, function(valid) {
     if (valid) {
       var params = {
         destination: req.query.destination,
-        mode: req.query.mode
+        mode: 'driving'
       };
       directionsCommunities.getTimeToCommunities(params, function(err, result) {
         if (err) {
@@ -118,7 +117,7 @@ app.get('/directions', function(req, res) {
       res.send('<p>Error with request</p>');
     }
   });
-});
+});*/
 
 app.listen(8080, function() {
   console.log('listening to port localhost:8080');
