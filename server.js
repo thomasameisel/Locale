@@ -51,14 +51,19 @@ function validateAddress(address, callback) {
     if (err) {
       callback(false);
     } else {
-      callback(exact.length > 0 || inexact.length > 0);
+      var addressType = (exact.length > 0) ? exact : inexact;
+      var location;
+      if (addressType.length > 0) {
+        location = addressType[0].location;
+      }
+      callback(addressType.length > 0, location);
     }
   });
 }
 
 function validateDirectionsParams(req, callback) {
-  validateAddress(req.query.destination, function(res) {
-    callback(res);
+  validateAddress(req.query.destination, function(valid, address) {
+    callback(valid, address);
   });
 }
 
@@ -90,34 +95,34 @@ app.get('/preferences', function(req, res) {
       }
     });
   } else {
-    res.send('<p>Error with request</p>');
+    res.send('<p>Preferences are not valid</p>');
   }
 });
 
 // jscs:disable
 // http://localhost:8080/directions?destination=201%20S%20Wacker%20Dr,%20Chicago,%20IL
 // jscs:enable
-/*app.get('/directions', function(req, res) {
+app.get('/directions', function(req, res) {
   // console.log(req.query);
   console.log('GET /directions');
-  validateDirectionsParams(req, function(valid) {
+  validateDirectionsParams(req, function(valid, coordinates) {
     if (valid) {
-      var params = {
-        destination: req.query.destination,
-        mode: 'driving'
+      var latLng = {
+        lat: coordinates.lat,
+        lng: coordinates.lon
       };
-      directionsCommunities.getTimeToCommunities(params, function(err, result) {
+      directionsCommunities.getClosestLatLng(latLng, function(err, result) {
         if (err) {
-          res.send('<p>Error with request</p>');
+          res.send(err);
         } else {
           res.send(result);
         }
       });
     } else {
-      res.send('<p>Error with request</p>');
+      res.send('<p>Address is not valid</p>');
     }
   });
-});*/
+});
 
 app.listen(8080, function() {
   console.log('listening to port localhost:8080');
