@@ -73,6 +73,7 @@ function validateDirectionsParams(req, callback) {
 app.get('/preferences', function(req, res) {
   // console.log(req.query);
   console.log('GET /preferences');
+  var start = new Date();
   if (validatePreferencesParams(req.query)) {
     var params = {
       violentCrimePctOfAvg: {op: req.query.violentCrime.op,
@@ -91,6 +92,8 @@ app.get('/preferences', function(req, res) {
       if (err) {
         res.send('<p>Error with request</p>');
       } else {
+        var end = new Date();
+        console.log('Time elapsed:', (end - start) / 1000, 's');
         res.send(result);
       }
     });
@@ -105,6 +108,7 @@ app.get('/preferences', function(req, res) {
 app.get('/directions', function(req, res) {
   // console.log(req.query);
   console.log('GET /directions');
+  var start = new Date();
   validateDirectionsParams(req, function(valid, coordinates) {
     if (valid) {
       var latLng = {
@@ -115,6 +119,8 @@ app.get('/directions', function(req, res) {
         if (err) {
           res.send(err);
         } else {
+          var end = new Date();
+          console.log('Time elapsed:', (end - start) / 1000, 's');
           res.send(result);
         }
       });
