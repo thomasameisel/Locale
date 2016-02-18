@@ -9,7 +9,7 @@ chai.use(require('sinon-chai'));
 describe('TribuneData', function() {
   var tribune = rewire('../lib/tribuneData');
 
-  describe('getAllCommunityData', function() {
+  describe.skip('getAllCommunityData', function() {
     it('should return an object with all expected keys', function(done) {
       tribune.getAllCommunityData(1, function(err, obj) {
         if (err) {
@@ -62,9 +62,27 @@ describe('TribuneData', function() {
     });
   });
 
-  describe.skip('getCrimeCount', function() {
+  describe('getCrimeCount', function() {
     var getCrimeCount = tribune.__get__('getCrimeCount');
-    it('should return an object with violent and non-violent crime',
+
+    it('should pass the correct parameters to makeRequest', function(done) {
+      // NOTE: month is 0-based for the Date constructor
+      var clock = sinon.useFakeTimers(new Date(1993, 9, 30).getTime());
+      var revert = tribune.__set__('makeRequest', function(url, params, cb) {
+        params.should.contain.all.keys('community_area', 'limit',
+          'crime_date__gte', 'format');
+        params.community_area.should.equal(1);
+        params.limit.should.equal(0);
+        params.crime_date__gte.should.equal('1993-04-30');
+        params.format.should.equal('json');
+        clock.restore();
+        revert();
+        done();
+      });
+      getCrimeCount({ communityID: 1 }, function() {});
+    });
+
+    it.skip('should return an object with violent and non-violent crime',
         function(done) {
       this.timeout(3000);
       getCrimeCount({ communityID: 1, landArea: 1800 },
@@ -213,7 +231,7 @@ describe('DB', function() {
 
   // Swap to an in-memory database and create the schema
   var testDB = new sqlite3.Database(':memory:');
-  before(function() {
+  before(function(done) {
     database.__set__('db', testDB);
 
     // Turn off jscs so it doesn't complain about mixing commas in SQL strings
@@ -232,7 +250,13 @@ describe('DB', function() {
         "FOREIGN KEY(`communityID`) REFERENCES `CommunityArea`(`communityID`))";
     testDB.exec(commAreaStr).exec(commDataStr);
     testDB.exec("INSERT INTO CommunityArea VALUES (1, 'Loop', 5000, '81,56'," +
-                "'80,55', '82,57', 1, 50)");
+                "'80,55', '82,57', 1, 50)", function(err) {
+                  if (err) {
+                    done(err);
+                  } else {
+                    done();
+                  }
+                });
     // jscs:enable
   });
 
@@ -267,6 +291,30 @@ describe('DB', function() {
         row.pricePctOfAvg.should.equal(0.7);
         done();
       }
+    });
+  });
+});
+
+describe('TruliaData', function() {
+  var trulia = rewire('../lib/truliaData');
+
+  describe('generateParams', function() {
+    var generateParams = trulia.__get__('generateParams');
+
+    var clock;
+    before(function() {
+      // Mock all date/time functions so we can easily test output
+      // NOTE: month is 0-based for the Date constructor
+      clock = sinon.useFakeTimers(new Date(1993, 9, 30).getTime());
+    });
+    after(function() {
+      clock.restore();
+    });
+
+    it('should calculate/format dates for today and 6 months ago', function() {
+      var retObj = generateParams({ truliaID: 6 });
+      retObj.startDate.should.equal('1993-04-30');
+      retObj.endDate.should.equal('1993-10-30');
     });
   });
 });
