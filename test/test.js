@@ -62,9 +62,27 @@ describe('TribuneData', function() {
     });
   });
 
-  describe.skip('getCrimeCount', function() {
+  describe('getCrimeCount', function() {
     var getCrimeCount = tribune.__get__('getCrimeCount');
-    it('should return an object with violent and non-violent crime',
+
+    it('should pass the correct parameters to makeRequest', function(done) {
+      // NOTE: month is 0-based for the Date constructor
+      var clock = sinon.useFakeTimers(new Date(1993, 9, 30).getTime());
+      var revert = tribune.__set__('makeRequest', function(url, params, cb) {
+        params.should.contain.all.keys('community_area', 'limit',
+          'crime_date__gte', 'format');
+        params.community_area.should.equal(1);
+        params.limit.should.equal(0);
+        params.crime_date__gte.should.equal('1993-04-30');
+        params.format.should.equal('json');
+        clock.restore();
+        revert();
+        done();
+      });
+      getCrimeCount({ communityID: 1 }, function() {});
+    });
+
+    it.skip('should return an object with violent and non-violent crime',
         function(done) {
       this.timeout(3000);
       getCrimeCount({ communityID: 1, landArea: 1800 },
@@ -273,6 +291,30 @@ describe('DB', function() {
         row.pricePctOfAvg.should.equal(0.7);
         done();
       }
+    });
+  });
+});
+
+describe('TruliaData', function() {
+  var trulia = rewire('../lib/truliaData');
+
+  describe('generateParams', function() {
+    var generateParams = trulia.__get__('generateParams');
+
+    var clock;
+    before(function() {
+      // Mock all date/time functions so we can easily test output
+      // NOTE: month is 0-based for the Date constructor
+      clock = sinon.useFakeTimers(new Date(1993, 9, 30).getTime());
+    });
+    after(function() {
+      clock.restore();
+    });
+
+    it('should calculate/format dates for today and 6 months ago', function() {
+      var retObj = generateParams({ truliaID: 6 });
+      retObj.startDate.should.equal('1993-04-30');
+      retObj.endDate.should.equal('1993-10-30');
     });
   });
 });
