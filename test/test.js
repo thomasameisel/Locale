@@ -9,7 +9,7 @@ chai.use(require('sinon-chai'));
 describe('TribuneData', function() {
   var tribune = rewire('../lib/tribuneData');
 
-  describe('getAllCommunityData', function() {
+  describe.skip('getAllCommunityData', function() {
     it('should return an object with all expected keys', function(done) {
       tribune.getAllCommunityData(1, function(err, obj) {
         if (err) {
@@ -213,7 +213,7 @@ describe('DB', function() {
 
   // Swap to an in-memory database and create the schema
   var testDB = new sqlite3.Database(':memory:');
-  before(function() {
+  before(function(done) {
     database.__set__('db', testDB);
 
     // Turn off jscs so it doesn't complain about mixing commas in SQL strings
@@ -232,7 +232,13 @@ describe('DB', function() {
         "FOREIGN KEY(`communityID`) REFERENCES `CommunityArea`(`communityID`))";
     testDB.exec(commAreaStr).exec(commDataStr);
     testDB.exec("INSERT INTO CommunityArea VALUES (1, 'Loop', 5000, '81,56'," +
-                "'80,55', '82,57', 1, 50)");
+                "'80,55', '82,57', 1, 50)", function(err) {
+                  if (err) {
+                    done(err);
+                  } else {
+                    done();
+                  }
+                });
     // jscs:enable
   });
 

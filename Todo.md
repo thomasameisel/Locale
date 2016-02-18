@@ -5,6 +5,6 @@
   - [ ] change how getAllData fails
   - [ ] Add noise complaint data
   - [ ] Rewrite code to use async.waterfall and pass error without checking it
-  - [ ] Move to Docker
-  - [ ] Set up CI to test and deploy to Elastic Beanstalk upon push
+  - [x] Move to Docker
+  - [ ] Set up CD to test and deploy to Elastic Beanstalk upon push
   - [ ] Set up DNS routing for website
