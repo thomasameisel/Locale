@@ -3,10 +3,6 @@
  */
 app.factory('communityDataService', function($resource, $http) {
 
-    /*var preferences  = $resource('/preferences', {
-     params:
-     });*/
-
     var params = {
         violentCrime: {op: '<', num: '4'},
         nonViolentCrime: {op: '<', num: '3'},
@@ -16,6 +12,10 @@ app.factory('communityDataService', function($resource, $http) {
     };
 
 
+    var setFilters = function(questionKey, selectedVal) {
+        params[questionKey]['num'] = selectedVal.toString();
+    };
+
     var preferences = function (result) {
         return $.get('/preferences', params, function (data) {
             return result;
@@ -23,6 +23,7 @@ app.factory('communityDataService', function($resource, $http) {
     };
 
     return {
-        preferences : preferences
+        preferences : preferences,
+        setFilters : setFilters
     };
 });

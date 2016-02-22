@@ -5,9 +5,11 @@ app.controller('questionnaireController', function($scope, $stateParams, $state)
     angular.element(document).ready(function() {
         $scope.loading = false;
     });
+
   $scope.questions = [
     {
-      text: 'Crime',
+      key: 'violentCrime',
+      text: 'violentCrime',
       options: [
         '1',
         '2',
@@ -19,7 +21,8 @@ app.controller('questionnaireController', function($scope, $stateParams, $state)
     },
 
     {
-      text: 'Nightlife',
+      key: 'nonViolentCrime',
+      text: 'nonviolentCrime',
       options: [
         '1',
         '2',
@@ -31,7 +34,8 @@ app.controller('questionnaireController', function($scope, $stateParams, $state)
     },
 
     {
-      text: 'Late at night, I feel comfortable',
+      key: 'nightlife',
+      text: 'nightlife',
       options: [
         '1',
         '2',
@@ -43,7 +47,21 @@ app.controller('questionnaireController', function($scope, $stateParams, $state)
     },
 
     {
-      text: 'Late at night, I feel comfortable',
+      key: 'price',
+      text: 'price',
+      options: [
+        '1',
+        '2',
+        '3',
+        '4',
+        '5',
+        '6'
+      ]
+    },
+
+    {
+      key: 'crowded',
+      text: 'crowded',
       options: [
         '1',
         '2',

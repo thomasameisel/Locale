@@ -2,20 +2,20 @@
 app.config(function($stateProvider, $urlRouterProvider){
     $stateProvider
        .state('landing', {
-            name            :   'landing',
+            name            :   '',
             url             :   '/',
             templateUrl     :   'views/landing/landing.html',
             controller      :   'landingController'
        })
        .state('questionnaire', {
-            name            :   'questionnaire',
-            url             :   '/questionnaire?lat&lng',
+            name            :   '',
+            url             :   '/',
             templateUrl     :   'views/questionnaire/questionnaire.html',
             controller      :   'questionnaireController'
         })
        .state('map', {
-            name            :   'map',
-            url             :   '/map?lat&lng',
+            name            :   '',
+            url             :   '/',
             templateUrl     :   'views/map/map.html',
             controller      :   'mapController'
        });

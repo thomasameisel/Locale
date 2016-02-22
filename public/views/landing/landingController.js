@@ -1,4 +1,4 @@
-app.controller('landingController', function($scope, $state) {
+app.controller('landingController', function($scope, $state, $stateParams) {
     var input = document.getElementById('searchBox');
     var searchBox = new google.maps.places.SearchBox(input);
 
