@@ -7,26 +7,50 @@ app.controller('questionnaireController', function($scope, $stateParams, $state)
     });
   $scope.questions = [
     {
-      text: 'On a typical weekend, I can be found',
+      text: 'Crime',
       options: [
-        'Drinking at a bar',
-        'Reading at home',
-        'Playing an outdoor sport',
-        'Working out at the gym',
-        'Watching a movie at home',
-        'Hosting a party at home'
+        '1',
+        '2',
+        '3',
+        '4',
+        '5',
+        '6'
+      ]
+    },
+
+    {
+      text: 'Nightlife',
+      options: [
+        '1',
+        '2',
+        '3',
+        '4',
+        '5',
+        '6'
       ]
     },
 
     {
       text: 'Late at night, I feel comfortable',
       options: [
-        'Walking home alone',
-        'Staying at home',
-        'Playing an outdoor sport',
-        'Working out at the gym',
-        'Watching a movie at home',
-        'Hosting a party at home'
+        '1',
+        '2',
+        '3',
+        '4',
+        '5',
+        '6'
+      ]
+    },
+
+    {
+      text: 'Late at night, I feel comfortable',
+      options: [
+        '1',
+        '2',
+        '3',
+        '4',
+        '5',
+        '6'
       ]
     }
   ];

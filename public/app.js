@@ -1,4 +1,4 @@
 /**
  * Created by chrissu on 11/24/15.
  */
-var app = angular.module('Apartment', ['ngRoute', 'ui.router']);
+var app = angular.module('Apartment', ['ngRoute', 'ngResource', 'ui.router']);
