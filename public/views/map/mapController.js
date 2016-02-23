@@ -41,11 +41,11 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
             center = { lat: parseFloat(center[0]), lng: parseFloat(center[1])};
 
             var circle = new google.maps.Circle({
-                strokeColor: '#FF0000',
+                strokeColor: '#ffffff',
                 strokeOpacity: 0.8,
                 strokeWeight: 2,
-                fillColor: '#FF0000',
-                fillOpacity: 0.35,
+                fillColor: '#428BCA',
+                fillOpacity: 0.2 + (0.1 * i),
                 map: map,
                 center: center,
                 radius: preferences[i].radius,

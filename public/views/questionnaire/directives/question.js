@@ -13,7 +13,7 @@ app.directive('question', function() {
         controller: function ($scope, communityDataService) {
             $scope.select = function(index){
                 $scope.selected = index;
-                communityDataService.setFilters($scope.question.key, $scope.selected);
+                communityDataService.setFilters($scope.question.key, $scope.selected+1);
             };
         },
         templateUrl: './views/questionnaire/directives/question.html'
