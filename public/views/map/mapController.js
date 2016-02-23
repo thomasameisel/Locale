@@ -19,43 +19,42 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
 
     map.fitBounds(bounds);
 
-
+    $scope.preferences = [];
     //Populate map with preferences from database
-    var preferences = [];
     communityDataService.preferences()
         .done(function(result){
-            preferences = result;
-            mapPreferences(preferences);
+            for (var i = 0; i < 5; i++){
+                $scope.preferences.push(result[i]);
+                $scope.preferences[i].isCollapsed = true;
+            }
+            mapPreferences();
+            $scope.$apply();
         })
         .fail(function(){
             console.log("Unable to retrieve preferences");
         });
 
-    var mapPreferences = function(preferences){
+    var mapPreferences = function(){
 
         var infoWindow = new google.maps.InfoWindow();
 
-        for (var i = 0; i < 5 && i < preferences.length; i++) {
+        for (var i = 0; i < $scope.preferences.length; i++) {
 
-            var center = preferences[i].latLng.split(",");
+            var center = $scope.preferences[i].latLng.split(",");
             center = { lat: parseFloat(center[0]), lng: parseFloat(center[1])};
 
             var circle = new google.maps.Circle({
-                strokeColor: '#ffffff',
-                strokeOpacity: 0.8,
-                strokeWeight: 2,
+                strokeOpacity: 0,
                 fillColor: '#428BCA',
                 fillOpacity: 0.2 + (0.1 * i),
                 map: map,
                 center: center,
-                radius: preferences[i].radius,
-                name: preferences[i].name
+                radius: $scope.preferences[i].radius,
+                name: $scope.preferences[i].name
             });
 
-            //attachName(circle, center, preferences[i].name);
-
             google.maps.event.addListener(circle, 'click', function(event) {
-                infoWindow.setContent(this.name);
+                infoWindow.setContent("<b>" + this.name + "</b>");
                 infoWindow.setPosition(this.center);
                 infoWindow.open(map);
             });

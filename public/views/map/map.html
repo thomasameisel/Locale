@@ -1,3 +1,28 @@
 <link rel="stylesheet" type="text/css" href="views/map/css/map.css">
+<link rel="stylesheet" type="text/css" href="views/map/css/snap.css">
+<link rel="stylesheet" type="text/css" href="views/map/css/angular-snap.css">
 
-<div class="col-md-12" id="map"></div>
+<div class="row">
+    <div snap-drawer>
+        <div class="container">
+            <div ng-repeat="preference in preferences">
+                <h3 ng-click="preference.isCollapsed = !preference.isCollapsed">
+                    {{preference.name}}
+                </h3>
+                <div collapse="preference.isCollapsed">
+                    <div ng-show="!preference.isCollapsed" class="panel-body" ng-repeat="(key, val) in preference.satisfyingPreferences">
+                        <span class="label label-success">{{key}} : {{val*100 | number:0}}%</span>
+                    </div>
+
+                    <div ng-show="!preference.isCollapsed" class="panel-body" ng-repeat="(key, val) in preference.badPreferences">
+                        <span class="label label-danger">{{key}} : {{val*100 | number:0}}%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-md-9 col-md-offset-3" id="map"></div>
+</div>
+
