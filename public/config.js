@@ -15,7 +15,7 @@ app.config(function($stateProvider, $urlRouterProvider){
         })
        .state('map', {
             name            :   '',
-            url             :   '/r',
+            url             :   '/',
             templateUrl     :   'views/map/map.html',
             controller      :   'mapController'
        });

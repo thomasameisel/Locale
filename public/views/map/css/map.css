@@ -13,3 +13,12 @@
     width: 120%;
     overflow: auto;
 }
+
+.name{
+    cursor: pointer;
+}
+
+.btnLabel{
+    float : right;
+    margin-top : 7px;
+}

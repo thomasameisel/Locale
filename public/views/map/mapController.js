@@ -1,4 +1,5 @@
 app.controller('mapController', function($scope, $stateParams, communityDataService) {
+
     //Obtain lat and lng for searched city
     var lat = parseFloat($stateParams.lat),
         lng = parseFloat($stateParams.lng);
@@ -10,55 +11,84 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
     var bounds = new google.maps.LatLngBounds(NW, SE);
     var center = bounds.getCenter();
 
-    var map = new google.maps.Map(document.getElementById('map'), {
-        disableDefaultUI: true,
-        center : {lat: center.lat(), lng: center.lng()},
-        zoom: 8,
-        scaleControl: false
-    });
-
-    map.fitBounds(bounds);
+    var selectedColors = ['#1A3750', '#fbb450', '#0000FF', '#ee5f5b', '#61304B'];
 
     $scope.preferences = [];
+
     //Populate map with preferences from database
-    communityDataService.preferences()
-        .done(function(result){
-            for (var i = 0; i < 5; i++){
-                $scope.preferences.push(result[i]);
-                $scope.preferences[i].isCollapsed = true;
-            }
-            $scope.$apply();
-            mapPreferences();
-        })
-        .fail(function(){
-            console.log("Unable to retrieve preferences");
-        });
+    $scope.setPreferences = function() {
+        communityDataService.preferences()
+            .done(function (result) {
+                for (var i = 0; i < 5; i++) {
+                    $scope.preferences.push(result[i]);
+                    $scope.preferences[i].isCollapsed = true;
+                    $scope.preferences[i].selectedColor = selectedColors[i];
+                }
+                $scope.$apply();
 
-    var mapPreferences = function(){
+                $scope.mapPreferences();
+            })
+            .fail(function () {
+                console.log("Unable to retrieve preferences");
+            });
 
-        var infoWindow = new google.maps.InfoWindow();
+    };
+
+
+    //Map the preferred neighborhoods
+    $scope.mapPreferences = function() {
+        $scope.circles = [];
 
         for (var i = 0; i < $scope.preferences.length; i++) {
 
             var center = $scope.preferences[i].latLng.split(",");
-            center = { lat: parseFloat(center[0]), lng: parseFloat(center[1])};
+            center = {lat: parseFloat(center[0]), lng: parseFloat(center[1])};
 
             var circle = new google.maps.Circle({
                 strokeOpacity: 0,
-                fillColor: '#428BCA',
-                fillOpacity: 0.2 + (0.1 * i),
-                map: map,
+                //fillColor: '#428BCA',
+                fillColor: $scope.preferences[i].selectedColor,
+                //fillOpacity: 0.8 - (0.1 * i),
+                fillOpacity: .9,
+                map: $scope.map,
                 center: center,
                 radius: $scope.preferences[i].radius,
-                name: $scope.preferences[i].name
+                name: $scope.preferences[i].name,
+                prefIndex: i
+                //selectedColor:$scope.preferences[i].selectedColor
+            });
+            $scope.circles.push(circle);
+
+            google.maps.event.addListener(circle, 'click', function (event) {
+                $scope.preferences[this.prefIndex].isCollapsed = !$scope.preferences[this.prefIndex].isCollapsed;
+                $scope.$apply();
+                /*if ($scope.preferences[this.prefIndex].isCollapsed){
+                 this.setOptions({fillColor : this.fillColor});
+                 } else {
+                 this.setOptions({fillColor : this.selectedColor});
+                 }*/
+                //$scope.$apply();
+
             });
 
-            google.maps.event.addListener(circle, 'click', function(event) {
-                this.setOptions({fillColor: '#00d39e'});
-                infoWindow.setContent("<b>" + this.name + "</b>");
-                infoWindow.setPosition(this.center);
-                infoWindow.open(map);
-            });
         }
+    };
+
+    angular.element(document).ready(function () {
+        $scope.map = new google.maps.Map(document.getElementById('map'), {
+            disableDefaultUI: true,
+            center: {lat: center.lat(), lng: center.lng()},
+            zoom: 8,
+            scaleControl: false
+        });
+
+        $scope.map.fitBounds(bounds);
+        google.maps.event.trigger($scope.map, 'resize');
+        $scope.setPreferences();
+    });
+
+    $scope.details = function (index) {
+        google.maps.event.trigger($scope.circles[index], 'click', function (event) {
+        });
     };
 });

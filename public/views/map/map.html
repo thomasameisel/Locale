@@ -2,13 +2,20 @@
 <link rel="stylesheet" type="text/css" href="views/map/css/snap.css">
 <link rel="stylesheet" type="text/css" href="views/map/css/angular-snap.css">
 
-<div class="row">
-    <div snap-drawer class="col-md-3" id="snapContainer">
+<div class="row" id="snapContainer">
+    <div snap-drawer class="col-md-3" >
         <div class="container" id="content">
-            <div ng-repeat="preference in preferences">
-                <h3 ng-click="preference.isCollapsed = !preference.isCollapsed">
+            <div ng-repeat="preference in preferences track by $index">
+                <h3 class="name" ng-click="details($index)">
                     {{preference.name}}
+                    <button type="button" class="btn btn-default"
+                            ng-style="{'background-color': preference.selectedColor}">
+                    </button>
                 </h3>
+
+                    <!--(preference.isCollapsed? preference.fillColor : preference.selectedColor)} !-->
+
+
                 <div collapse="preference.isCollapsed">
                     <div ng-show="!preference.isCollapsed" class="panel-body" ng-repeat="(key, val) in preference.satisfyingPreferences">
                         <span class="label label-success">{{key}} : {{val*100 | number:0}}%</span>
