@@ -23,7 +23,7 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
     //Populate map with preferences from database
     communityDataService.preferences()
         .done(function(result){
-            for (var i = 0; i < 5; i++){
+            for (var i = 0; i < 10; i++){
                 $scope.preferences.push(result[i]);
                 $scope.preferences[i].isCollapsed = true;
             }
@@ -43,10 +43,13 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
             var center = $scope.preferences[i].latLng.split(",");
             center = { lat: parseFloat(center[0]), lng: parseFloat(center[1])};
 
+            // border color for when user hovers over sidebar community
+            var strokeColor = '#D50000';
+
             var circle = new google.maps.Circle({
                 strokeOpacity: 0,
-                fillColor: '#428BCA',
-                fillOpacity: 0.2 + (0.1 * i),
+                fillColor: '#0D47A1',
+                fillOpacity: 0.7 - (0.05 * i),
                 map: map,
                 center: center,
                 radius: $scope.preferences[i].radius,
