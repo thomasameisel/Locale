@@ -1,3 +1,15 @@
 #map {
     height:92vh;
 }
+
+#snapContainer {
+    height: 100%;
+    width: auto;
+    overflow: hidden;
+}
+
+#content {
+    height: 100%;
+    width: 120%;
+    overflow: auto;
+}

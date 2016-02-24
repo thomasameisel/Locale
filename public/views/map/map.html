@@ -3,8 +3,8 @@
 <link rel="stylesheet" type="text/css" href="views/map/css/angular-snap.css">
 
 <div class="row">
-    <div snap-drawer>
-        <div class="container">
+    <div snap-drawer class="col-md-3" id="snapContainer">
+        <div class="container" id="content">
             <div ng-repeat="preference in preferences">
                 <h3 ng-click="preference.isCollapsed = !preference.isCollapsed">
                     {{preference.name}}
@@ -23,6 +23,7 @@
 
     </div>
 
-    <div class="col-md-9 col-md-offset-3" id="map"></div>
+    <div class="col-md-9 col-md-offset-3" id="map">
+    </div>
 </div>
 

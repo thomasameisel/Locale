@@ -27,8 +27,8 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
                 $scope.preferences.push(result[i]);
                 $scope.preferences[i].isCollapsed = true;
             }
-            mapPreferences();
             $scope.$apply();
+            mapPreferences();
         })
         .fail(function(){
             console.log("Unable to retrieve preferences");
@@ -54,11 +54,11 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
             });
 
             google.maps.event.addListener(circle, 'click', function(event) {
+                this.setOptions({fillColor: '#00d39e'});
                 infoWindow.setContent("<b>" + this.name + "</b>");
                 infoWindow.setPosition(this.center);
                 infoWindow.open(map);
             });
         }
     };
-
 });
