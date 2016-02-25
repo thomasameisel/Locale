@@ -6,5 +6,5 @@
   "requireEarlyReturn": null,
   "requireCapitalizedComments": null,
 
-  "excludeFiles": ["node_modules", "public"]
+  "excludeFiles": ["node_modules", "public", "MapsTransformer.js"]
 }
