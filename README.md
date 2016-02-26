@@ -5,7 +5,8 @@ Uses the [Chicago Tribune crime data API](https://github.com/newsapps/chicagocri
 
 Users answer a series of fun questions, similar to a Buzzfeed quiz. Based on their responses, the application determines their preferences for several metrics, including crime, nightlife, price, and more. It then ranks the 77 community areas of Chicago by how well they fit the user's preferences and displays them on a map of the city, with information about each.
 
-If time permits, we will also add apartment listings to the application, so users can easily see currently available apartments in their ideal community.
+## Docker
+Run `docker build -t locale .` whenever there is a code change. To start the application, run `docker run --rm -p 8080:8080 locale`. To run tests, run `docker run --rm locale npm test`.
 
 ## Tests
 Run `npm test` to run all unit tests, including JSHint and JSCS.
