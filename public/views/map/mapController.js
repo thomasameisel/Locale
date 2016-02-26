@@ -43,9 +43,6 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
             var center = $scope.preferences[i].latLng.split(",");
             center = { lat: parseFloat(center[0]), lng: parseFloat(center[1])};
 
-            // border color for when user hovers over sidebar community
-            var strokeColor = '#D50000';
-
             var circle = new google.maps.Circle({
                 strokeOpacity: 0,
                 fillColor: '#0D47A1',
