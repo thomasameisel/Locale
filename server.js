@@ -23,7 +23,7 @@ function validParam(allPreferences, param) {
   return typeof allPreferences[param] !== 'undefined';
 }
 
-function validatePreferencesParams(opsAndNums) {
+function validatePreferencesParams(preferences) {
   var allPreferences = {
     violentCrime: true,
     nonViolentCrime: true,
@@ -31,11 +31,10 @@ function validatePreferencesParams(opsAndNums) {
     price: true,
     crowded: true
   };
-  for (var opAndNum in opsAndNums) {
-    if (opsAndNums.hasOwnProperty(opAndNum) &&
-          (!validParam(allPreferences, opAndNum) ||
-          !validOp(opsAndNums[opAndNum].op) ||
-          !validNum(opsAndNums[opAndNum].num))) {
+  for (var preference in preferences) {
+    if (preferences.hasOwnProperty(preference) &&
+          (!validParam(allPreferences, preference) ||
+          !validNum(preferences[preference]))) {
       return false;
     }
   }
@@ -68,7 +67,7 @@ function validateDirectionsParams(req, callback) {
 }
 
 // jscs:disable
-// http://localhost:8080/preferences?violentCrime[op]=%3C&nonViolentCrime[op]=%3C&nightlife[op]=%3E&price[op]=%3C&crowded[op]=%3C&violentCrime[num]=4&nonViolentCrime[num]=3&nightlife[num]=4&price[num]=4&crowded[num]=2
+// http://localhost:8080/preferences?violentCrime=4&nonViolentCrime=3&nightlife=4&price=4&crowded=2
 // jscs:enable
 app.get('/preferences', function(req, res) {
   // console.log(req.query);
@@ -76,16 +75,16 @@ app.get('/preferences', function(req, res) {
   var start = new Date();
   if (validatePreferencesParams(req.query)) {
     var params = {
-      violentCrimePctOfAvg: {op: req.query.violentCrime.op,
-                              num: parseInt(req.query.violentCrime.num)},
-      nonViolentCrimePctOfAvg: {op: req.query.nonViolentCrime.op,
-                                num: parseInt(req.query.nonViolentCrime.num)},
-      nightlifePctOfAvg: {op: req.query.nightlife.op,
-                          num: parseInt(req.query.nightlife.num)},
-      pricePctOfAvg: {op: req.query.price.op,
-                      num: parseInt(req.query.price.num)},
-      crowdedPctOfAvg: {op: req.query.crowded.op,
-                        num: parseInt(req.query.crowded.num)}
+      violentCrimePctOfAvg: {op: '<',
+                              num: parseInt(req.query.violentCrime)},
+      nonViolentCrimePctOfAvg: {op: '<',
+                                num: parseInt(req.query.nonViolentCrime)},
+      nightlifePctOfAvg: {op: (req.query.nightlife > 3) ? '>' : '<',
+                          num: parseInt(req.query.nightlife)},
+      pricePctOfAvg: {op: '<',
+                      num: parseInt(req.query.price)},
+      crowdedPctOfAvg: {op: '<',
+                        num: parseInt(req.query.crowded)}
     };
     preferencesCommunities.communitiesByPreferences(params,
                                                     function(err, result) {

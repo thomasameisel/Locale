@@ -41,7 +41,7 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
         for (var i = 0; i < $scope.preferences.length; i++) {
 
             var center = $scope.preferences[i].latLng.split(",");
-            center = {lat: parseFloat(center[0]), lng: parseFloat(center[1])};
+            center = { lat: parseFloat(center[0]), lng: parseFloat(center[1])};
 
             var circle = new google.maps.Circle({
                 strokeOpacity : 0,

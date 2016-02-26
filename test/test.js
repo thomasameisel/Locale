@@ -274,7 +274,7 @@ describe('DB', function() {
   it('should insert community data', function(done) {
     var data = { violentCrimePctOfAvg: 0.6, nonViolentCrimePctOfAvg: 0.5,
         nightlifePctOfAvg: 0.4, crowdedPctOfAvg: 0.2, pricePctOfAvg: 0.7 };
-    database.insertCommunityData(1, data);
+    database.insertCommunityData(1, data, 'CommunityData');
     testDB.get('SELECT * from CommunityData where communityID=1', [],
                 function(err, row) {
       if (err) {
@@ -315,6 +315,69 @@ describe('TruliaData', function() {
       var retObj = generateParams({ truliaID: 6 });
       retObj.startDate.should.equal('1993-04-30');
       retObj.endDate.should.equal('1993-10-30');
+    });
+  });
+
+  describe('getAveragePriceFromArr', function() {
+    var getAveragePriceFromArr = trulia.__get__('getAveragePriceFromArr');
+    var fakeXML = `<TruliaWebServices>
+                    <response>
+                      <TruliaStats>
+                        <listingStats>
+                          <listingStat>
+                            <listingPrice>
+                              <subcategory>
+                                <type>All Properties</type>
+                                <medianListingPrice>192088</medianListingPrice>
+                              </subcategory>
+                              <subcategory>
+                                <type>1 Bedroom Properties</type>
+                                <medianListingPrice>153057</medianListingPrice>
+                              </subcategory>
+                            </listingPrice>
+                          </listingStat>
+                          <listingStat>
+                            <listingPrice>
+                              <subcategory>
+                                <type>All Properties</type>
+                                <medianListingPrice>199300</medianListingPrice>
+                              </subcategory>
+                              <subcategory>
+                                <type>1 Bedroom Properties</type>
+                                <medianListingPrice>153057</medianListingPrice>
+                              </subcategory>
+                            </listingPrice>
+                          </listingStat>
+                          <listingStat>
+                            <listingPrice>
+                              <subcategory>
+                                <type>All Properties</type>
+                                <medianListingPrice>239900</medianListingPrice>
+                              </subcategory>
+                              <subcategory>
+                                <type>1 Bedroom Properties</type>
+                                <medianListingPrice>163450</medianListingPrice>
+                              </subcategory>
+                              <subcategory>
+                                <type>1 Bedroom Properties</type>
+                                <medianListingPrice>159000</medianListingPrice>
+                              </subcategory>
+                            </listingPrice>
+                          </listingStat>
+                        </listingStats>
+                      </TruliaStats>
+                    </response>
+                    </TruliaWebServices>`;
+    it('should parse XML and return the correct average', function(done) {
+      getAveragePriceFromArr(fakeXML, function(err, result) {
+        if (err) {
+          done(err);
+        } else {
+          var properAvg = (153057 + 153057 + 163450) / 3;
+          result.should.equal(properAvg);
+          done();
+        }
+      });
     });
   });
 });

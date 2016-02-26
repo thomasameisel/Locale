@@ -5,11 +5,15 @@
     "start": "node server.js",
     "test": "mocha"
   },
+  "engines": {
+    "node": ">=4.0"
+  },
   "license": "MIT",
   "dependencies": {
     "address-validator": "^0.2.2",
     "async": "^1.5.2",
     "express": "^4.13.4",
+    "fast-stats": "0.0.3",
     "googlemaps": "^1.2.0",
     "limiter": "^1.1.0",
     "node-googleplaces": "^0.1.2",
