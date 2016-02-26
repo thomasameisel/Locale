@@ -4,16 +4,16 @@
 app.factory('communityDataService', function($resource, $http) {
 
     var params = {
-        violentCrime: {op: '<', num: '4'},
-        nonViolentCrime: {op: '<', num: '3'},
-        nightlife: {op: '>', num: '4'},
-        price: {op: '<', num: '4'},
-        crowded: {op: '<', num: '2'}
+        violentCrime: '4',
+        nonViolentCrime: '3',
+        nightlife: '4',
+        price: '4',
+        crowded: '2'
     };
 
 
     var setFilters = function(questionKey, selectedVal) {
-        params[questionKey]['num'] = selectedVal.toString();
+        params[questionKey] = selectedVal.toString();
     };
 
     var preferences = function (result) {
