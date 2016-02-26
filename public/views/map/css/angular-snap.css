@@ -24,7 +24,7 @@ snap-drawers,
 .snap-content {
   position: absolute;
   height: auto;
-  top: 40px;
+  top: 0px;
   bottom: 0;
   width: auto;
   left: 0;
@@ -56,7 +56,7 @@ snap-drawer,
   -moz-overflow-scrolling: touch;
   -o-overflow-scrolling: touch;
   overflow-scrolling: auto;
-  width: 265px;
+  /* width: 265px; */
   overflow-x: hidden;
 }
 .snap-content {

@@ -4,16 +4,34 @@
 
 #snapContainer {
     height: 100%;
-    width: auto;
     overflow: hidden;
 }
 
 #content {
     height: 100%;
-    width: 120%;
+    width: 105%;
     overflow: auto;
+    padding-bottom: 20px;
+}
+
+.labelDiv{
+    margin-left: 10px;
+    margin-right: 20px;
 }
 
 .name{
     cursor: pointer;
+    margin-bottom: 0px;
+    display: inline-block;
+}
+
+.expandButton{
+    margin-top: 30px;
+    float:right;
+    cursor: pointer;
+}
+
+
+.rating{
+    margin-left: 10px;
 }

@@ -11,8 +11,6 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
     var bounds = new google.maps.LatLngBounds(NW, SE);
     var center = bounds.getCenter();
 
-    var selectedColors = ['#1A3750', '#fbb450', '#0000FF', '#ee5f5b', '#61304B', '#428BCA'];
-
     $scope.preferences = [];
 
     //Populate map with preferences from database
@@ -22,7 +20,6 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
                 for (var i = 0; i < 10; i++) {
                     $scope.preferences.push(result[i]);
                     $scope.preferences[i].isCollapsed = true;
-                    $scope.preferences[i].selectedColor = selectedColors[i];
                 }
                 $scope.$apply();
 
@@ -45,8 +42,8 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
 
             var circle = new google.maps.Circle({
                 strokeOpacity : 0,
-                fillColor: $scope.preferences[i].selectedColor,
-                fillOpacity: .9,
+                fillColor: '#428BCA',
+                fillOpacity: .9 - (.1 * i),
                 map: $scope.map,
                 center: center,
                 radius: $scope.preferences[i].radius,
@@ -80,4 +77,9 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
         google.maps.event.trigger($scope.circles[index], 'click', function (event) {
         });
     };
+
+
+    $scope.getStars = function(n) {
+        return new Array(n);
+    }
 });

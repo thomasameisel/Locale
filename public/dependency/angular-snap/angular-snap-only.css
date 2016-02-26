@@ -16,7 +16,7 @@ snap-drawers,
   height: auto;
   top: 0;
   bottom: 0;
-  width: auto;
+  width: 100%;
   left: 0;
   right: 0;
 }
@@ -44,5 +44,4 @@ snap-drawer,
   -moz-overflow-scrolling: touch;
   -o-overflow-scrolling: touch;
   overflow-scrolling: touch;
-  width: 256px;
 }
