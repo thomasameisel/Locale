@@ -1,17 +1,20 @@
 <link rel="stylesheet" type="text/css" href="views/map/css/map.css">
 <link rel="stylesheet" type="text/css" href="views/map/css/snap.css">
 <link rel="stylesheet" type="text/css" href="views/map/css/angular-snap.css">
-
+<!--  glyphicon glyphicon-star
+                    glyphicon glyphicon-chevron-up
+                    glyphicon glyphicon-chevron-down
+                    glyphicon glyphicon-menu-down !-->
 <div class="row" id="snapContainer">
     <div snap-drawer class="col-md-3" >
         <div class="container" id="content">
             <div ng-repeat="preference in preferences track by $index">
-                <h3 class="name" ng-click="details($index)">
-                    {{preference.name}}
-                    <button type="button" class="btn btn-default"
-                            ng-style="{'background-color': preference.selectedColor}">
-                    </button>
+                <h3 class="name" ng-click="details($index)" ng-style="{'color' : preference.selectedColor}">
+                    {{preference.name}} <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
                 </h3>
+                <div class="rating">
+                    <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+                </div>
 
                     <!--(preference.isCollapsed? preference.fillColor : preference.selectedColor)} !-->
 

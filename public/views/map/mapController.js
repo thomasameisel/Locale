@@ -11,7 +11,7 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
     var bounds = new google.maps.LatLngBounds(NW, SE);
     var center = bounds.getCenter();
 
-    var selectedColors = ['#1A3750', '#fbb450', '#0000FF', '#ee5f5b', '#61304B'];
+    var selectedColors = ['#1A3750', '#fbb450', '#0000FF', '#ee5f5b', '#61304B', '#428BCA'];
 
     $scope.preferences = [];
 
@@ -19,7 +19,7 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
     $scope.setPreferences = function() {
         communityDataService.preferences()
             .done(function (result) {
-                for (var i = 0; i < 5; i++) {
+                for (var i = 0; i < 10; i++) {
                     $scope.preferences.push(result[i]);
                     $scope.preferences[i].isCollapsed = true;
                     $scope.preferences[i].selectedColor = selectedColors[i];
@@ -34,7 +34,6 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
 
     };
 
-
     //Map the preferred neighborhoods
     $scope.mapPreferences = function() {
         $scope.circles = [];
@@ -45,30 +44,20 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
             center = {lat: parseFloat(center[0]), lng: parseFloat(center[1])};
 
             var circle = new google.maps.Circle({
-                strokeOpacity: 0,
-                //fillColor: '#428BCA',
+                strokeOpacity : 0,
                 fillColor: $scope.preferences[i].selectedColor,
-                //fillOpacity: 0.8 - (0.1 * i),
                 fillOpacity: .9,
                 map: $scope.map,
                 center: center,
                 radius: $scope.preferences[i].radius,
                 name: $scope.preferences[i].name,
                 prefIndex: i
-                //selectedColor:$scope.preferences[i].selectedColor
             });
             $scope.circles.push(circle);
 
             google.maps.event.addListener(circle, 'click', function (event) {
                 $scope.preferences[this.prefIndex].isCollapsed = !$scope.preferences[this.prefIndex].isCollapsed;
                 $scope.$apply();
-                /*if ($scope.preferences[this.prefIndex].isCollapsed){
-                 this.setOptions({fillColor : this.fillColor});
-                 } else {
-                 this.setOptions({fillColor : this.selectedColor});
-                 }*/
-                //$scope.$apply();
-
             });
 
         }
