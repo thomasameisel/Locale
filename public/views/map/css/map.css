@@ -11,12 +11,17 @@
     height: 100%;
     width: 105%;
     overflow: auto;
-    padding-bottom: 20px;
 }
 
 .labelDiv{
     margin-left: 10px;
     margin-right: 20px;
+}
+
+.detailLabelDiv{
+    margin-left: 10px;
+    margin-right: 20px;
+    margin-bottom: 15px;
 }
 
 .name{
@@ -43,4 +48,21 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+}
+
+.charts{
+    text-align: center;
+    margin-left: -15px;
+    margin-bottom :-20px;
+    height:100%;
+}
+
+.categoryLabel {
+    font-size: 13pt;
+    margin-bottom: 9px;
+    display: block;
+}
+
+.neightborhoodDivider{
+    margin-bottom:-6px;
 }

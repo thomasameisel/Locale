@@ -1,10 +1,7 @@
 <link rel="stylesheet" type="text/css" href="views/map/css/map.css">
 <link rel="stylesheet" type="text/css" href="views/map/css/snap.css">
 <link rel="stylesheet" type="text/css" href="views/map/css/angular-snap.css">
-<!--  glyphicon glyphicon-star
-                    glyphicon glyphicon-chevron-up
-                    glyphicon glyphicon-chevron-down
-                    glyphicon glyphicon-menu-down !-->
+
 <div class="col-md-12" id="snapContainer">
     <div snap-drawer class="col-md-3">
         <div class="container col-md-3" id="content">
@@ -23,11 +20,12 @@
                                      class="glyphicon glyphicon-star-empty" aria-hidden="true">
                         </span>
                     </div>
+                    <hr class="neightborhoodDivider">
                 </div>
             </div>
 
             <detail-panel ng-show="showDetail"
-                          preference=selectedPreference></detail-panel>
+                          preference=selectedPreference categories=categories></detail-panel>
         </div>
     </div>
 

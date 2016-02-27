@@ -1,0 +1,26 @@
+
+.ext {
+    width: 125px;
+    padding: 6px 0;
+}
+.ext.neg {
+    border-right: 1px solid black;
+}
+.ext.pos {
+    margin-left: 125px;
+    border-left: 1px solid dimgray;
+}
+
+.ext.neg .bar {
+    float: right;
+    margin-bottom: 5px;
+    background-color: red;
+}
+
+.ext.pos .bar {
+    background-color: green;
+}
+
+.bar {
+    height: 7px;
+}

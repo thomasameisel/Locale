@@ -4,6 +4,14 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
     var lat = parseFloat($stateParams.lat),
         lng = parseFloat($stateParams.lng);
 
+    $scope.categories = {
+        violentCrimePctOfAvg    :   'Violent Crime',
+        nonViolentCrimePctOfAvg :   'Nonviolent Crime',
+        nightlifePctOfAvg       :   'Nightlife',
+        pricePctOfAvg           :   'Price',
+        crowdedPctOfAvg         :   'Crowded'
+    };
+
     $scope.preferences = [];
     $scope.showDetail = false;
 

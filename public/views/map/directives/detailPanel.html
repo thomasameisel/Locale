@@ -1,25 +1,31 @@
-<div class="labelDiv">
+<link rel="stylesheet" type="text/css" href="views/map/directives/css/bar.css">
+<div class="detailPanel">
     <div class="name" ng-click="returnToResults()"><span class="glyphicon glyphicon-arrow-left"></span> Return to all results </div>
-    <h3 class="name unselectable">
-        {{preference.name}}</span>
-    </h3>
+    <div class="detailLabelDiv">
 
-    <div class="rating">
-        <span ng-repeat="good in getStars(preference.numSatisfying) track by $index"
-              class="glyphicon glyphicon-star" aria-hidden="true">
-        </span><span ng-repeat="bad in getStars(5 - preference.numSatisfying) track by $index"
-                     class="glyphicon glyphicon-star-empty" aria-hidden="true">
-        </span>
+        <h3 class="name unselectable">
+            {{preference.name}}</span>
+        </h3>
+        <div class="rating">
+            <span ng-repeat="good in getStars(preference.numSatisfying) track by $index"
+                  class="glyphicon glyphicon-star" aria-hidden="true">
+            </span><span ng-repeat="bad in getStars(5 - preference.numSatisfying) track by $index"
+                         class="glyphicon glyphicon-star-empty" aria-hidden="true">
+            </span>
+        </div>
+    </div>
+
+
+    <div class="charts container-fluid well">
+        <div class="panel-body col-md-12" ng-repeat="(key, val) in preference.satisfyingPreferences">
+            <div class="categoryLabel"> {{categories[key]}} </div>
+            <div class="ext pos col-md-6"><div ng-style="{width: val*100}" class="bar"></div></div>
+        </div>
+
+        <div class="panel-body" ng-repeat="(key, val) in preference.badPreferences">
+            <div class="categoryLabel">{{categories[key]}}</div>
+            <div class="ext neg"><div ng-style="{width: val*100}" class="bar"></div></div>
+        </div>
     </div>
 </div>
 
-
-<div>
-    <div class="panel-body" ng-repeat="(key, val) in preference.satisfyingPreferences">
-        <span class="label label-success">{{key}} : {{val*100 | number:0}}%</span>
-    </div>
-
-    <div class="panel-body" ng-repeat="(key, val) in preference.badPreferences">
-        <span class="label label-danger">{{key}} : {{val*100 | number:0}}%</span>
-    </div>
-</div>
