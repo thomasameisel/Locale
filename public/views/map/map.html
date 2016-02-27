@@ -8,9 +8,10 @@
 <div class="col-md-12" id="snapContainer">
     <div snap-drawer class="col-md-3">
         <div class="container col-md-3" id="content">
-            <div ng-repeat="preference in preferences track by $index">
+            <div ng-show="!showDetail"
+                ng-repeat="preference in preferences track by $index">
                 <div class="labelDiv">
-                    <h3 class="name" ng-click="details($index)">
+                    <h3 class="name unselectable" ng-click="choose($index)">
                         {{preference.name}}</span>
                     </h3>
                     <span class="glyphicon glyphicon-menu-right expandButton" aria-hidden="true"
@@ -23,18 +24,10 @@
                         </span>
                     </div>
                 </div>
-
-
-                <div collapse="preference.isCollapsed">
-                    <div ng-show="!preference.isCollapsed" class="panel-body" ng-repeat="(key, val) in preference.satisfyingPreferences">
-                        <span class="label label-success">{{key}} : {{val*100 | number:0}}%</span>
-                    </div>
-
-                    <div ng-show="!preference.isCollapsed" class="panel-body" ng-repeat="(key, val) in preference.badPreferences">
-                        <span class="label label-danger">{{key}} : {{val*100 | number:0}}%</span>
-                    </div>
-                </div>
             </div>
+
+            <detail-panel ng-show="showDetail"
+                          preference=selectedPreference></detail-panel>
         </div>
     </div>
 
