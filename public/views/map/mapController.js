@@ -44,7 +44,7 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
             var circle = new google.maps.Circle({
                 strokeOpacity : 0,
                 fillColor: '#428BCA',
-                fillOpacity: .9 - (.1 * i),
+                fillOpacity: .85 - (.05 * i),
                 map: $scope.map,
                 center: center,
                 radius: $scope.preferences[i].radius,
@@ -65,7 +65,6 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
 
         }
     };
-
 
     //Hard code bound for Chicago
     var NW = {lat: 41.9786, lng: -87.9047},

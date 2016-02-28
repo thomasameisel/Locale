@@ -1,26 +1,34 @@
-
 .ext {
-    width: 125px;
+    width: 50%;
     padding: 6px 0;
 }
-.ext.neg {
-    border-right: 1px solid black;
+
+.ext.left {
+    border-right: 1px solid dimgray;
 }
-.ext.pos {
-    margin-left: 125px;
+
+.ext.right {
+    float: right;
     border-left: 1px solid dimgray;
 }
 
-.ext.neg .bar {
-    float: right;
-    margin-bottom: 5px;
+.bar.red {
     background-color: red;
 }
 
-.ext.pos .bar {
+.bar.green {
     background-color: green;
 }
 
+.bar.red.left {
+    float: right;
+}
+
+.bar.green.left {
+    float: right;
+}
+
 .bar {
+    width: 10%;
     height: 7px;
 }

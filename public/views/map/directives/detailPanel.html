@@ -17,14 +17,14 @@
 
 
     <div class="charts container-fluid well">
-        <div class="panel-body col-md-12" ng-repeat="(key, val) in preference.satisfyingPreferences">
+        <div class="panel-body col-md-12" ng-repeat="(key, val) in preference.goodCriteria">
             <div class="categoryLabel"> {{categories[key]}} </div>
-            <div class="ext pos col-md-6"><div ng-style="{width: val*100}" class="bar"></div></div>
+            <div ng-class="{'ext col-md-6': true, 'right': val > 0, 'left': val <= 0}"><div ng-style="{'width': (((val<0)?val*-1:val)>1?100:((val<0)?val*-100:val*100))+'%'}" ng-class="{'bar green': true, 'left': val <= 0}"></div></div>
         </div>
 
-        <div class="panel-body" ng-repeat="(key, val) in preference.badPreferences">
+        <div class="panel-body col-md-12" ng-repeat="(key, val) in preference.badCriteria">
             <div class="categoryLabel">{{categories[key]}}</div>
-            <div class="ext neg"><div ng-style="{width: val*100}" class="bar"></div></div>
+            <div ng-class="{'ext col-md-6': true, 'right': val > 0, 'left': val <= 0}"><div ng-style="{'width': (((val<0)?val*-1:val)>1?100:((val<0)?val*-100:val*100))+'%'}" ng-class="{'bar red': true, 'left': val <= 0}"></div></div>
         </div>
     </div>
 </div>
