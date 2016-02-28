@@ -6,9 +6,10 @@
     <div snap-drawer class="col-md-3">
         <div class="container col-md-3" id="content">
             <div ng-show="!showDetail"
-                ng-repeat="preference in preferences track by $index">
-                <div class="labelDiv">
-                    <h3 class="name unselectable" ng-click="choose($index)">
+                 class="labelDiv" ng-click="choose($index)"
+                 ng-repeat="preference in preferences track by $index">
+                <div>
+                    <h3 class="name unselectable">
                         {{preference.name}}</span>
                     </h3>
                     <span class="glyphicon glyphicon-menu-right expandButton" aria-hidden="true"
