@@ -66,7 +66,6 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
         }
     };
 
-
     //Hard code bound for Chicago
     var NW = {lat: 41.9786, lng: -87.9047},
         SE = {lat: 41.6600, lng: -87.5500};

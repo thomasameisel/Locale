@@ -91,9 +91,9 @@ app.get('/preferences', function(req, res) {
       if (err) {
         res.send('<p>Error with request</p>');
       } else {
+        res.send(result);
         var end = new Date();
         console.log('Time elapsed:', (end - start) / 1000, 's');
-        res.send(result);
       }
     });
   } else {
@@ -118,9 +118,9 @@ app.get('/directions', function(req, res) {
         if (err) {
           res.send(err);
         } else {
+          res.send(result);
           var end = new Date();
           console.log('Time elapsed:', (end - start) / 1000, 's');
-          res.send(result);
         }
       });
     } else {
