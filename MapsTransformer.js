@@ -14,7 +14,7 @@ parseString(xml, function(err, result) {
       var completed = [];
       for (var j = 0; j < coords.length; ++j) {
         var coordArray = coords[j].split(',');
-        var obj = '{lng: '+coordArray[0]+', lat: '+coordArray[1]+'}';
+        var obj = '{"lng": '+coordArray[0]+', "lat": '+coordArray[1]+'}';
         completed.push(obj);
       }
       var output = name + ': [' + completed + ']\n';
