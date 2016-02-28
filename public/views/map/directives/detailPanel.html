@@ -18,13 +18,13 @@
 
     <div class="charts container-fluid well">
         <div class="panel-body col-md-12" ng-repeat="(key, val) in preference.goodCriteria">
-            <div class="categoryLabel"> {{categories[key]}} </div>
-            <div ng-class="{'ext col-md-6': true, 'right': val > 0, 'left': val <= 0}"><div ng-style="{'width': (((val<0)?val*-1:val)>1?100:((val<0)?val*-100:val*100))+'%'}" ng-class="{'bar green': true, 'left': val <= 0}"></div></div>
+            <div ng-if="val" class="categoryLabel"> {{categories[key]}} </div>
+            <div ng-if="val" ng-class="{'ext col-md-6': true}"><div ng-style="{'width': (val>2?100:val*50)+'%'}" ng-class="{'bar green': true}"></div></div>
         </div>
 
         <div class="panel-body col-md-12" ng-repeat="(key, val) in preference.badCriteria">
-            <div class="categoryLabel">{{categories[key]}}</div>
-            <div ng-class="{'ext col-md-6': true, 'right': val > 0, 'left': val <= 0}"><div ng-style="{'width': (((val<0)?val*-1:val)>1?100:((val<0)?val*-100:val*100))+'%'}" ng-class="{'bar red': true, 'left': val <= 0}"></div></div>
+            <div ng-if="val" class="categoryLabel">{{categories[key]}}</div>
+            <div ng-if="val" ng-class="{'ext col-md-6': true}"><div ng-style="{'width': (val>2?100:val*50)+'%'}" ng-class="{'bar red': true}"></div></div>
         </div>
     </div>
 </div>

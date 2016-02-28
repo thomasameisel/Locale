@@ -1,16 +1,26 @@
 .ext {
-    width: 50%;
+    width: 100%;
     padding: 6px 0;
 }
 
-.ext.left {
-    border-right: 1px solid dimgray;
+.ext:after {
+    content:"";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    border-left: 1px solid #000000;
 }
 
-.ext.right {
-    float: right;
-    border-left: 1px solid dimgray;
-}
+/*.ext:after {
+    position: absolute;
+    left: 0;
+    width: 50%;
+    height: 1px;
+    background: #fff;
+    content: "";
+    display: block;
+}*/
 
 .bar.red {
     background-color: red;
@@ -18,14 +28,6 @@
 
 .bar.green {
     background-color: green;
-}
-
-.bar.red.left {
-    float: right;
-}
-
-.bar.green.left {
-    float: right;
 }
 
 .bar {
