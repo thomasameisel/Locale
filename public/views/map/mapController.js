@@ -5,11 +5,11 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
         lng = parseFloat($stateParams.lng);
 
     $scope.categories = {
-        violentCrimePctOfAvg    :   'Violent Crime',
-        nonViolentCrimePctOfAvg :   'Nonviolent Crime',
+        violentCrimePctOfAvg    :   'Safety',
+        nonViolentCrimePctOfAvg :   'Quality of Life',
         nightlifePctOfAvg       :   'Nightlife',
-        pricePctOfAvg           :   'Price',
-        crowdedPctOfAvg         :   'Crowded'
+        pricePctOfAvg           :   'Affordability',
+        crowdedPctOfAvg         :   'Breathing Room'
     };
 
     $scope.preferences = [];

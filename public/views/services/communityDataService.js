@@ -4,11 +4,11 @@
 app.factory('communityDataService', function($resource, $http) {
 
     var params = {
-        violentCrime: '4',
-        nonViolentCrime: '3',
+        safety: '4',
+        qualityOfLife: '3',
         nightlife: '4',
-        price: '4',
-        crowded: '2'
+        affordability: '4',
+        breathingRoom: '2'
     };
 
 

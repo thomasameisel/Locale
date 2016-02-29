@@ -8,67 +8,62 @@ app.controller('questionnaireController', function($scope, $stateParams, $state)
 
   $scope.questions = [
     {
-      key: 'violentCrime',
-      text: 'violentCrime',
+      key: 'safety',
+      text: 'Safety',
       options: [
         '1',
         '2',
         '3',
         '4',
-        '5',
-        '6'
+        '5'
       ]
     },
 
     {
-      key: 'nonViolentCrime',
-      text: 'nonviolentCrime',
+      key: 'qualityOfLife',
+      text: 'Quality of Life',
       options: [
         '1',
         '2',
         '3',
         '4',
-        '5',
-        '6'
+        '5'
       ]
     },
 
     {
       key: 'nightlife',
-      text: 'nightlife',
+      text: 'Nightlife',
       options: [
         '1',
         '2',
         '3',
         '4',
-        '5',
-        '6'
+        '5'
       ]
     },
 
     {
-      key: 'price',
-      text: 'price',
+      key: 'affordability',
+      text: 'Affordability',
       options: [
         '1',
         '2',
         '3',
         '4',
-        '5',
-        '6'
+        '5'
       ]
     },
 
     {
-      key: 'crowded',
-      text: 'crowded',
+      key: 'breathingRoom',
+      text: 'Breathing Room',
       options: [
         '1',
         '2',
         '3',
         '4',
-        '5',
-        '6'
+        '5'
       ]
     }
   ];
