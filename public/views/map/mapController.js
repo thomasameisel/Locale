@@ -34,32 +34,38 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
 
     //Map the preferred neighborhoods
     $scope.mapPreferences = function() {
-        $scope.circles = [];
+        $scope.neighborhoods = [];
 
         for (var i = 0; i < $scope.preferences.length; i++) {
 
-            var center = $scope.preferences[i].latLng.split(",");
-            center = { lat: parseFloat(center[0]), lng: parseFloat(center[1])};
+            var preference = $scope.preferences[i];
+            var bounds = new google.maps.LatLngBounds();
 
-            var circle = new google.maps.Circle({
-                strokeOpacity : 0,
-                fillColor: '#428BCA',
-                fillOpacity: .85 - (.05 * i),
-                map: $scope.map,
-                center: center,
-                radius: $scope.preferences[i].radius,
-                name: $scope.preferences[i].name,
-                prefIndex: i
+            for (var j =0; j < preference.outline.length; j++) {
+                var xy = preference.outline[j];
+                var point = new google.maps.LatLng({lat:xy.lat,lng:xy.lng});
+                bounds.extend(point);
+            }
+
+            var neighborhood = new google.maps.Polygon({
+                map             : $scope.map,
+                paths           : preference.outline,
+                fillColor       : '#2e618d',
+                strokeOpacity   : 1,
+                fillOpacity     : 0.9 - (0.05 * i),
+                name            : preference.name,
+                bounds          : bounds,
+                prefIndex       : i
             });
-            $scope.circles.push(circle);
 
-            google.maps.event.addListener(circle, 'click', function (event) {
+            $scope.neighborhoods.push(neighborhood);
+
+            google.maps.event.addListener(neighborhood, 'click', function (event) {
                 $scope.selectedPreference = $scope.preferences[this.prefIndex];
                 $scope.showDetail = true;
 
-                $scope.map.fitBounds(this.getBounds());
+                $scope.map.fitBounds(this.bounds);
                 google.maps.event.trigger($scope.map, 'resize');
-
                 $scope.safeApply();
             });
 
@@ -87,7 +93,7 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
     });
 
     $scope.choose = function (index) {
-        google.maps.event.trigger($scope.circles[index], 'click', function (event) {
+        google.maps.event.trigger($scope.neighborhoods[index], 'click', function (event) {
         });
     };
 

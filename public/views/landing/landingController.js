@@ -1,6 +1,7 @@
 app.controller('landingController', function($scope, $state, $stateParams) {
     var input = document.getElementById('searchBox');
-    var searchBox = new google.maps.places.SearchBox(input);
+    //var searchBox = new google.maps.places.SearchBox(input);
+    var autocomplete = new google.maps.places.Autocomplete(input, { types: ['(cities)']});
 
     var geocoder = new google.maps.Geocoder();
 
