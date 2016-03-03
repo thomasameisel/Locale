@@ -26,6 +26,7 @@
   "repository": "https://github.com/collinjackson93/ApartmentHunter",
   "devDependencies": {
     "chai": "^3.5.0",
+    "jade": "^1.11.0",
     "mocha": "^2.4.5",
     "mocha-jscs": "^4.2.0",
     "mocha-jshint": "^2.3.1",

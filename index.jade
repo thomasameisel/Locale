@@ -1,0 +1,36 @@
+doctype html
+html
+  head
+    style(type='text/css').
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        height: 100%;
+      }
+    script(src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpZLby9zOg-frd_lpmgxzl6qOG1jWdhU0&callback=initMap", async, defer)
+    script(type='text/javascript').
+      points = !{points}
+    script(type='text/javascript').
+      function initMap() {
+        //Hard code bound for Chicago
+        var NW = {lat: 41.9786, lng: -87.9047};
+        var SE = {lat: 41.6600, lng: -87.5500};
+    
+        var defaultBounds = new google.maps.LatLngBounds(NW, SE);
+        var map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: 41.875377, lng: -87.630102},
+          zoom: 8
+        });
+        map.fitBounds(defaultBounds);
+        for(var i = 0; i < points.length; ++i) {
+          var marker = new google.maps.Marker({
+            position: points[i],
+            map: map
+          });
+        }
+      }
+  body
+    #map
