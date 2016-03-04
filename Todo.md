@@ -1,9 +1,9 @@
 - [ ] Write more tests
 - [ ] Change how getAllData fails (send an email if failed)
 - [ ] Figure out how to correctly invert the crime, crowded, etc. (divide by half of max?)
-- [ ] Add the rest of the directions for the 600 coordinates (put on AWS to do automatically over break)
+- [x] Add the rest of the directions for the 600 coordinates - in process
 - [ ] Migrate to AWS and possibly setup a chron job to automatically update the community data periodically
-- [ ] Write code to automatically add community areas based on KML
+- [x] Write code to automatically add community areas based on KML
 - Collin
   - [ ] Set up CD to test and deploy to Elastic Beanstalk upon push
   - [ ] Set up DNS routing for website
