@@ -75,16 +75,16 @@ app.get('/preferences', function(req, res) {
   var start = new Date();
   if (validatePreferencesParams(req.query)) {
     var params = {
-      violentCrimePctOfAvg: {op: '>',
-                              num: parseInt(req.query.safety)},
-      nonViolentCrimePctOfAvg: {op: '>',
-                                num: parseInt(req.query.qualityOfLife)},
+      violentCrimePctOfAvg: {op: '<',
+                              num: 6 - parseInt(req.query.safety)},
+      nonViolentCrimePctOfAvg: {op: '<',
+                                num: 6 - parseInt(req.query.qualityOfLife)},
       nightlifePctOfAvg: {op: (req.query.nightlife > 3) ? '>' : '<',
                           num: parseInt(req.query.nightlife)},
-      pricePctOfAvg: {op: '>',
-                      num: parseInt(req.query.affordability)},
-      crowdedPctOfAvg: {op: '>',
-                        num: parseInt(req.query.breathingRoom)}
+      pricePctOfAvg: {op: '<',
+                      num: 6 - parseInt(req.query.affordability)},
+      crowdedPctOfAvg: {op: '<',
+                        num: 6 - parseInt(req.query.breathingRoom)}
     };
     preferencesCommunities.communitiesByPreferences(params,
                                                     function(err, result) {

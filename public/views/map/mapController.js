@@ -20,6 +20,22 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
         communityDataService.preferences()
             .done(function (result) {
                 for (var i = 0; i < 10; i++) {
+                    for (var criteria in result[i].goodCriteria) {
+                        if (result[i].goodCriteria.hasOwnProperty(criteria) &&
+                            criteria !== 'nightlifePctOfAvg') {
+                            var inverse = 2 - result[i].goodCriteria[criteria];
+                            result[i].goodCriteria[criteria] = (inverse < 0) ?
+                                                                0.05 : inverse;
+                        }
+                    }
+                    for (var criteria in result[i].badCriteria) {
+                        if (result[i].badCriteria.hasOwnProperty(criteria) &&
+                            criteria !== 'nightlifePctOfAvg') {
+                            var inverse = 2 - result[i].badCriteria[criteria];
+                            result[i].badCriteria[criteria] = (inverse < 0) ?
+                                                                0.05 : inverse;
+                        }
+                    }
                     $scope.preferences.push(result[i]);
                 }
                 $scope.safeApply();
