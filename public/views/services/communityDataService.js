@@ -1,7 +1,7 @@
 /**
  * Created by chrissu on 2/15/16.
  */
-app.factory('communityDataService', function($resource, $http) {
+app.service('communityDataService', function($resource, $http) {
 
     var params = {
         violentCrime: '4',

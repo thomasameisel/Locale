@@ -4,8 +4,7 @@
 }
 
 .questionContainer{
-    height : 70vh;
-    margin-top: 20px;
+    margin-bottom: 70px;
 }
 
 .questionText{
@@ -38,5 +37,8 @@
     margin-bottom: 83px;
 }
 
+#workplace{
+    margin-bottom: 80px;
+}
 
 

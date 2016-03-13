@@ -1,7 +1,7 @@
 /**
  * Created by chrissu on 12/12/15.
  */
-app.controller('questionnaireController', function($scope, $stateParams, $state) {
+app.controller('questionnaireController', function($scope, $stateParams, $state, directionsDataService) {
     angular.element(document).ready(function() {
         $scope.loading = false;
     });
@@ -72,6 +72,27 @@ app.controller('questionnaireController', function($scope, $stateParams, $state)
       ]
     }
   ];
+
+
+  var input = document.getElementById('workplaceBox');
+  var autocomplete = new google.maps.places.Autocomplete(input);
+
+  var geocoder = new google.maps.Geocoder();
+
+  $scope.setAddress = function() {
+    var address = document.getElementById('workplaceBox').value;
+
+    geocoder.geocode({'address': address}, function(results, status) {
+      if (status === google.maps.GeocoderStatus.OK) {
+        directionsDataService.directions({destination : results[0].formatted_address})
+        .done(function (result) {
+            $scope.coodinates = result;
+        })
+      } else {
+        $scope.error = status;
+      }
+    });
+  };
 
   $scope.submitAnswers = function() {
     $state.go('map', {lng : $stateParams.lng , lat : $stateParams.lat});
