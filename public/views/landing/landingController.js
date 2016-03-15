@@ -17,4 +17,10 @@ app.controller('landingController', function($scope, $state, $stateParams) {
             }
         });
     };
+
+    $scope.press = function (event) {
+        if(event.which === 13) {
+            $scope.search();
+        }
+    };
 });

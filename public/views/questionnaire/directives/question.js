@@ -14,6 +14,7 @@ app.directive('question', function() {
             $scope.select = function(index){
                 $scope.selected = index;
                 communityDataService.setFilters($scope.question.key, $scope.selected+1);
+                $scope.question.answered = true;
             };
         },
         templateUrl: './views/questionnaire/directives/question.html'

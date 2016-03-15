@@ -1,10 +1,15 @@
 /**
  * Created by chrissu on 12/12/15.
  */
-app.controller('questionnaireController', function($scope, $stateParams, $state) {
-    angular.element(document).ready(function() {
-        $scope.loading = false;
-    });
+app.controller('questionnaireController', function($scope, $stateParams, $state, directionsDataService) {
+  $scope.isValidQuestionnaire = function () {
+    for (var i = 0; i < $scope.questions.length; i++) {
+      if (!$scope.questions[i].answered) {
+        return false;
+      }
+    }
+    return true;
+  };
 
   $scope.questions = [
     {
@@ -17,7 +22,8 @@ app.controller('questionnaireController', function($scope, $stateParams, $state)
         '4',
         '5',
         '6'
-      ]
+      ],
+      answered : false
     },
 
     {
@@ -30,7 +36,8 @@ app.controller('questionnaireController', function($scope, $stateParams, $state)
         '4',
         '5',
         '6'
-      ]
+      ],
+      answered : false
     },
 
     {
@@ -43,7 +50,8 @@ app.controller('questionnaireController', function($scope, $stateParams, $state)
         '4',
         '5',
         '6'
-      ]
+      ],
+      answered : false
     },
 
     {
@@ -56,7 +64,8 @@ app.controller('questionnaireController', function($scope, $stateParams, $state)
         '4',
         '5',
         '6'
-      ]
+      ],
+      answered : false
     },
 
     {
@@ -69,12 +78,61 @@ app.controller('questionnaireController', function($scope, $stateParams, $state)
         '4',
         '5',
         '6'
-      ]
+      ],
+      answered : false
     }
   ];
 
+  $scope.slider = $('#questionnaireSlider').slider()
+    .on('slide', function(ev){
+      updateSliderVal($scope.slider);
+  })
+      .data('slider');
+
+  $scope.slider.showTooltip();
+  $scope.minutes = $scope.slider.getValue();
+  function updateSliderVal(slider){
+    $scope.minutes = slider.getValue();
+    $scope.$apply();
+  }
+    /*formatter: function(value) {
+      return value + 'Minutes';
+    }*/
+
+
+  //$scope.minutes = slider.get();
+  $scope.searched = false;
+  $scope.isValidWorkplace = false;
+  var input = document.getElementById('workplaceBox');
+  var autocomplete = new google.maps.places.Autocomplete(input, ['street_address']);
+
+
+  $scope.setAddress = function() {
+    var address = document.getElementById('workplaceBox').value;
+    var geocoder = new google.maps.Geocoder();
+
+    geocoder.geocode({'address': address}, function(results, status) {
+      $scope.loading = true;
+      if (status === google.maps.GeocoderStatus.OK) {
+        $scope.loading = false;
+        directionsDataService.setWorkplace({destination : results[0].formatted_address})
+        .done(function () {
+            $scope.isValidWorkplace = true;
+            $scope.$apply();
+        })
+      } else {
+        $scope.searched = true;
+        $scope.loading = false;
+        $scope.isValidWorkplace = false;
+        $scope.$apply();
+      }
+    });
+  };
+
   $scope.submitAnswers = function() {
-    $state.go('map', {lng : $stateParams.lng , lat : $stateParams.lat});
+    if ($scope.isValidWorkplace && $scope.isValidQuestionnaire()){
+      $state.go('map', {lng : $stateParams.lng , lat : $stateParams.lat});
+    }
   };
 
 });

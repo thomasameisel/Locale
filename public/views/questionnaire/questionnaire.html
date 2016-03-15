@@ -1,6 +1,27 @@
 <link rel="stylesheet" type="text/css" href="views/questionnaire/css/questionnaire.css">
 <div id="bufferDiv"></div>
 <div>
+    <div class="col-md-offset-3 col-md-6" id="workplaceDiv">
+        <div class="col-md-12" id="minuteDiv">
+            <h4>I want my commute to work to be less than <b>{{minutes}}</b> minutes</h4>
+            <input id="questionnaireSlider" class="slider col-md-10" type="text" data-slider-min="0" data-slider-max="60" data-slider-step="5" data-slider-value="10" data-slider-orientation="horizontal" data-slider-selection="after"data-slider-tooltip="show">
+        </div>
+
+        <div class="input-group"  id="workplace">
+            <input id="workplaceBox" type="text" class="form-control" ng-change="isValidWorkplace=false"
+                   ng-model="temp"
+                   placeholder="Workplace..." >
+            <span class="input-group-btn">
+              <button class="btn btn-primary" type="button" ng-click="setAddress()">
+                  <span ng-show="loading" class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>
+                  <span ng-show="isValidWorkplace" class="glyphicon glyphicon-ok"></span>
+                  <span ng-show="!isValidWorkplace" class="glyphicon glyphicon-road"></span>
+              </button>
+            </span>
+        </div><!-- /input-group -->
+        <p ng-style ="{'color' : 'red'}" ng-show="!isValidWorkplace && searched">Invalid address provided</p>
+    </div>
+
     <div ng-repeat="question in questions">
         <div class="container-fluid">
             <question question = question></question>
