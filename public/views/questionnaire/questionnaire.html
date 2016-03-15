@@ -15,10 +15,11 @@
               <button class="btn btn-primary" type="button" ng-click="setAddress()">
                   <span ng-show="loading" class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>
                   <span ng-show="isValidWorkplace" class="glyphicon glyphicon-ok"></span>
-                  <span ng-show="!isValidWorkplace" class="glyphicon glyphicon-road"> </span>
+                  <span ng-show="!isValidWorkplace" class="glyphicon glyphicon-road"></span>
               </button>
             </span>
         </div><!-- /input-group -->
+        <p ng-style ="{'color' : 'red'}" ng-show="!isValidWorkplace && searched">Invalid address provided</p>
     </div>
 
     <div ng-repeat="question in questions">

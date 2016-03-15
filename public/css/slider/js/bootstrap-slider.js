@@ -138,8 +138,8 @@
 
 		if (tooltip === 'show') {
 			this.picker.on({
-				mouseenter: $.proxy(this.showTooltip, this),
-				mouseleave: $.proxy(this.hideTooltip, this)
+				mouseenter: $.proxy(this.showTooltip, this)
+				//mouseleave: $.proxy(this.hideTooltip, this)
 			});
 		} else {
 			this.tooltip.addClass('hide');
@@ -285,7 +285,7 @@
 
 			this.inDrag = false;
 			if (this.over == false) {
-				this.hideTooltip();
+				//this.hideTooltip();
 			}
 			this.element;
 			var val = this.calculateValue();
@@ -322,6 +322,10 @@
 			percentage = Math.round(percentage/this.percentage[2])*this.percentage[2];
 			return Math.max(0, Math.min(100, percentage));
 		},
+
+		/*showInfo: function() {
+			$.proxy(this.showTooltip, this);
+		},*/
 
 		getValue: function() {
 			if (this.range) {
@@ -375,11 +379,10 @@
 		step: 1,
 		orientation: 'horizontal',
 		value: 5,
-		selection: 'before',
 		tooltip: 'show',
 		handle: 'round',
 		formater: function(value) {
-			return value;
+			return value + " Minutes";
 		}
 	};
 

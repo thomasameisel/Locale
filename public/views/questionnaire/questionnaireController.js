@@ -3,11 +3,11 @@
  */
 app.controller('questionnaireController', function($scope, $stateParams, $state, directionsDataService) {
   $scope.isValidQuestionnaire = function () {
-    $scope.questions.forEach(function (question) {
-      if(!question.answered) {
+    for (var i = 0; i < $scope.questions.length; i++) {
+      if (!$scope.questions[i].answered) {
         return false;
       }
-    });
+    }
     return true;
   };
 
@@ -89,6 +89,7 @@ app.controller('questionnaireController', function($scope, $stateParams, $state,
   })
       .data('slider');
 
+  $scope.slider.showTooltip();
   $scope.minutes = $scope.slider.getValue();
   function updateSliderVal(slider){
     $scope.minutes = slider.getValue();
@@ -100,7 +101,7 @@ app.controller('questionnaireController', function($scope, $stateParams, $state,
 
 
   //$scope.minutes = slider.get();
-
+  $scope.searched = false;
   $scope.isValidWorkplace = false;
   var input = document.getElementById('workplaceBox');
   var autocomplete = new google.maps.places.Autocomplete(input, ['street_address']);
@@ -120,9 +121,10 @@ app.controller('questionnaireController', function($scope, $stateParams, $state,
             $scope.$apply();
         })
       } else {
+        $scope.searched = true;
         $scope.loading = false;
-        $scope.error = status;
         $scope.isValidWorkplace = false;
+        $scope.$apply();
       }
     });
   };
