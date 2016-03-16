@@ -46,7 +46,11 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
     $scope.$on('timeChange', function(ev){
         removeNeighborhoods();
         filterData();
+<<<<<<< HEAD
         mapPreferences();
+=======
+        // redraw communities on map
+>>>>>>> 7d21ba41758d210ff1cb35cb641f2ec9e7dca806
     });
 
     //Retrieve commute time for the communities
@@ -73,6 +77,7 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
     //Filter data based on time limit
     function filterData(){
         $scope.preferences = [];
+<<<<<<< HEAD
         $scope.$apply();
         var count = 0,
             index = 0;
@@ -82,6 +87,15 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
                 count++;
             }
             index++;
+=======
+        var count = 0;
+        for (var i = 0; i < $scope.communityData.length && count < 10; ++i) {
+          var time = $scope.communityTimes[$scope.communityData[i].communityID];
+          if (time !== null && time <= $scope.timeLimit) {
+            $scope.preferences.push($scope.communityData[i]);
+            count++;
+          }
+>>>>>>> 7d21ba41758d210ff1cb35cb641f2ec9e7dca806
         }
         $scope.safeApply();
     };
