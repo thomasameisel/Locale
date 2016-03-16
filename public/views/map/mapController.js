@@ -4,6 +4,32 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
     var lat = parseFloat($stateParams.lat),
         lng = parseFloat($stateParams.lng);
 
+    //Hard code bound for Chicago
+    var NW = {lat: 41.9786, lng: -87.9047},
+        SE = {lat: 41.6600, lng: -87.5500};
+
+    var defaultBounds = new google.maps.LatLngBounds(NW, SE);
+    var defaultCenter = defaultBounds.getCenter();
+
+    angular.element(document).ready(function () {
+        $scope.map = new google.maps.Map(document.getElementById('map'), {
+            disableDefaultUI: true,
+            center: {lat: defaultCenter.lat(), lng: defaultCenter.lng()},
+            zoom: 8,
+            scaleControl: false
+        });
+
+        $scope.map.fitBounds(defaultBounds);
+        google.maps.event.addListenerOnce(map, 'idle', function() {
+            google.maps.event.trigger(map, 'resize');
+        });
+        setPreferences();
+
+        $scope.directionsService = new google.maps.DirectionsService();
+        $scope.directionsDisplay = new google.maps.DirectionsRenderer();
+        $scope.directionsDisplay.setMap($scope.map);
+    });
+
     $scope.categories = {
         violentCrimePctOfAvg    :   'Violent Crime',
         nonViolentCrimePctOfAvg :   'Nonviolent Crime',
@@ -18,7 +44,10 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
 
     //Update communities when time limit changes
     $scope.$on('timeChange', function(ev){
-        $scope.filterData();
+        filterData();
+        if ($scope.showDetail){
+            returnToMainPanel();
+        }
     });
 
     //Retrieve commute time for the communities
@@ -28,13 +57,13 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
 
 
     //Populate map with preferences from database
-    $scope.setPreferences = function() {
+    function setPreferences() {
         communityDataService.preferences()
             .done(function (result) {
                 $scope.communityData = result;
                 $scope.safeApply();
-                $scope.filterData();
-                $scope.mapPreferences();
+                filterData();
+                mapPreferences();
             })
             .fail(function () {
                 console.log("Unable to retrieve preferences");
@@ -43,7 +72,7 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
     };
 
     //Filter data based on time limit
-    $scope.filterData = function(){
+    function filterData(){
         $scope.preferences = [];
         var count = 0,
             index = 0;
@@ -58,7 +87,7 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
     };
 
     //Map the preferred neighborhoods
-    $scope.mapPreferences = function() {
+    function mapPreferences() {
         $scope.neighborhoods = [];
 
         for (var i = 0; i < $scope.preferences.length; i++) {
@@ -92,19 +121,15 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
                 //calcRoute($scope.preferences[this.prefIndex].bounds.getCenter());
 
                 $scope.map.fitBounds(this.bounds);
-                google.maps.event.trigger($scope.map, 'resize');
+                google.maps.event.addListenerOnce(map, 'idle', function() {
+                    google.maps.event.trigger(map, 'resize');
+                });
                 $scope.safeApply();
             });
 
         }
     };
 
-    //Hard code bound for Chicago
-    var NW = {lat: 41.9786, lng: -87.9047},
-        SE = {lat: 41.6600, lng: -87.5500};
-
-    var defaultBounds = new google.maps.LatLngBounds(NW, SE);
-    var defaultCenter = defaultBounds.getCenter();
 
     $scope.choose = function (index) {
         google.maps.event.trigger($scope.neighborhoods[index], 'click', function (event) {
@@ -112,10 +137,17 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
     };
 
     $scope.$on('return', function () {
+        returnToMainPanel();
+    });
+
+    function returnToMainPanel() {
         $scope.showDetail = false;
         $scope.map.fitBounds(defaultBounds);
-        google.maps.event.trigger($scope.map, 'resize');
-    });
+        google.maps.event.addListenerOnce(map, 'idle', function() {
+            google.maps.event.trigger(map, 'resize');
+        });
+    }
+
 
     $scope.safeApply = function(fn) {
         var phase = this.$root.$$phase;
@@ -132,22 +164,6 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
         return new Array(n);
     };
 
-    angular.element(document).ready(function () {
-        $scope.map = new google.maps.Map(document.getElementById('map'), {
-            disableDefaultUI: true,
-            center: {lat: defaultCenter.lat(), lng: defaultCenter.lng()},
-            zoom: 8,
-            scaleControl: false
-        });
-
-        $scope.map.fitBounds(defaultBounds);
-        google.maps.event.trigger($scope.map, 'resize');
-        $scope.setPreferences();
-
-        $scope.directionsService = new google.maps.DirectionsService();
-        $scope.directionsDisplay = new google.maps.DirectionsRenderer();
-        $scope.directionsDisplay.setMap($scope.map);
-    });
 
     function calcRoute(end) {
         var request = {

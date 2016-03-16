@@ -16,9 +16,9 @@ app.service('communityDataService', function($resource, $http) {
         params[questionKey] = selectedVal.toString();
     };
 
-    var preferences = function (result) {
+    var preferences = function () {
         return $.get('/preferences', params, function (data) {
-            return result;
+            return data;
         });
     };
 
