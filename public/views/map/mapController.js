@@ -45,9 +45,6 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
     //Update communities when time limit changes
     $scope.$on('timeChange', function(ev){
         filterData();
-        if ($scope.showDetail){
-            returnToMainPanel();
-        }
     });
 
     //Retrieve commute time for the communities
