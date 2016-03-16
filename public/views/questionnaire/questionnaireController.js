@@ -90,14 +90,12 @@ app.controller('questionnaireController', function($scope, $stateParams, $state,
       .data('slider');
 
   $scope.slider.showTooltip();
-  $scope.minutes = $scope.slider.getValue();
+  $scope.minute = $scope.slider.getValue();
   function updateSliderVal(slider){
-    $scope.minutes = slider.getValue();
+    $scope.minute = slider.getValue();
+    directionsDataService.setTimeLimit(slider.getValue());
     $scope.$apply();
   }
-    /*formatter: function(value) {
-      return value + 'Minutes';
-    }*/
 
 
   //$scope.minutes = slider.get();

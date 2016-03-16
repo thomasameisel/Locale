@@ -2,11 +2,18 @@
  * Created by chrissu on 2/15/16.
  */
 app.service('directionsDataService', function($resource, $http) {
-    var timeDistance = [];
+    var timeDistance = {
+        communityTimes : [],
+        maxTime : 10
+    };
+
+    var setTimeLimit = function(timeLimit){
+        timeDistance.maxTime = timeLimit;
+    };
 
     var setWorkplace = function (params) {
         return $.get('/directions', params, function (result) {
-            timeDistance = result;
+            timeDistance.communityTimes = result;
         });
     };
 
@@ -16,6 +23,7 @@ app.service('directionsDataService', function($resource, $http) {
 
     return {
         setWorkplace        :   setWorkplace,
-        getCommunityTime    :   getCommunityTime
+        getCommunityTime    :   getCommunityTime,
+        setTimeLimit        :   setTimeLimit
     };
 });

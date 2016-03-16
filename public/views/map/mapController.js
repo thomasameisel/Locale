@@ -16,7 +16,9 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
     $scope.showDetail = false;
 
     //Retrieve commute time for the communities
-    var communityTime = directionsDataService.getCommunityTime();
+    var coordinatesInfo = directionsDataService.getCommunityTime();
+    var communityTimes = coordinatesInfo.communityTimes;
+    var timeLimit = coordinatesInfo.maxTime;
 
     //Populate map with preferences from database
     $scope.setPreferences = function() {
@@ -25,7 +27,7 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
                 var count = 0,
                     index = 0;
                 while (count < 10 && index < result.length){
-                    if (result[index] < communityTime[index]){
+                    if (timeLimit >= communityTimes[index]){
                         $scope.preferences.push(result[index]);
                         count++;
                     }
