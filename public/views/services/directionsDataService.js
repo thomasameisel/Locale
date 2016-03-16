@@ -21,9 +21,14 @@ app.service('directionsDataService', function($resource, $http) {
         return timeDistance;
     };
 
+    var getTimeLimit = function() {
+        return timeDistance.maxTime;
+    };
+
     return {
         setWorkplace        :   setWorkplace,
         getCommunityTime    :   getCommunityTime,
-        setTimeLimit        :   setTimeLimit
+        setTimeLimit        :   setTimeLimit,
+        getTimeLimit        :   getTimeLimit
     };
 });

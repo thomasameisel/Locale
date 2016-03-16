@@ -80,6 +80,11 @@ body {
     display: block;
 }
 
-.neightborhoodDivider{
+.neighborhoodDivider{
     margin-bottom:-6px;
+    width : 100%;
+}
+
+.minuteDivider{
+    width : 100%;
 }

@@ -15,32 +15,46 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
     $scope.preferences = [];
     $scope.showDetail = false;
 
+
+    //Update communities when time limit changes
+    $scope.$on('timeChange', function(ev){
+        $scope.filterData();
+    });
+
     //Retrieve commute time for the communities
     var coordinatesInfo = directionsDataService.getCommunityTime();
-    var communityTimes = coordinatesInfo.communityTimes;
-    var timeLimit = coordinatesInfo.maxTime;
+    $scope.communityTimes = coordinatesInfo.communityTimes;
+    $scope.timeLimit = coordinatesInfo.maxTime;
+
 
     //Populate map with preferences from database
     $scope.setPreferences = function() {
         communityDataService.preferences()
             .done(function (result) {
-                var count = 0,
-                    index = 0;
-                while (count < 10 && index < result.length){
-                    if (timeLimit >= communityTimes[index]){
-                        $scope.preferences.push(result[index]);
-                        count++;
-                    }
-                    index++;
-                }
+                $scope.communityData = result;
                 $scope.safeApply();
-
+                $scope.filterData();
                 $scope.mapPreferences();
             })
             .fail(function () {
                 console.log("Unable to retrieve preferences");
             });
 
+    };
+
+    //Filter data based on time limit
+    $scope.filterData = function(){
+        $scope.preferences = [];
+        var count = 0,
+            index = 0;
+        while (count < 10 && index < $scope.communityData.length){
+            if ($scope.timeLimit >= $scope.communityTimes[index]){
+                $scope.preferences.push($scope.communityData[index]);
+                count++;
+            }
+            index++;
+        }
+        $scope.safeApply();
     };
 
     //Map the preferred neighborhoods
@@ -74,6 +88,8 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
             google.maps.event.addListener(neighborhood, 'click', function (event) {
                 $scope.selectedPreference = $scope.preferences[this.prefIndex];
                 $scope.showDetail = true;
+
+                //calcRoute($scope.preferences[this.prefIndex].bounds.getCenter());
 
                 $scope.map.fitBounds(this.bounds);
                 google.maps.event.trigger($scope.map, 'resize');
@@ -127,7 +143,22 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
         $scope.map.fitBounds(defaultBounds);
         google.maps.event.trigger($scope.map, 'resize');
         $scope.setPreferences();
+
+        $scope.directionsService = new google.maps.DirectionsService();
+        $scope.directionsDisplay = new google.maps.DirectionsRenderer();
+        $scope.directionsDisplay.setMap($scope.map);
     });
 
-    $scope.minute = 10;
+    function calcRoute(end) {
+        var request = {
+            origin:defaultCenter,
+            destination:end,
+            travelMode: google.maps.TravelMode.DRIVING
+        };
+        $scope.directionsService.route(request, function(result, status) {
+            if (status == google.maps.DirectionsStatus.OK) {
+                $scope.directionsDisplay.setDirections(result);
+            }
+        });
+    }
 });

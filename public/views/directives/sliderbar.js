@@ -2,7 +2,7 @@ app.directive('sliderbar', function() {
     return {
         restrict: 'E',
         scope: {
-            minute: '='
+            timeLimit: '='
         },
         link: function($scope, element, attrs){
 
@@ -12,13 +12,18 @@ app.directive('sliderbar', function() {
             $scope.slider = $('#questionnaireSlider').slider()
                 .on('slide', function(ev){
                     updateSliderVal($scope.slider);
+                    $scope.$apply();
+
+                    $scope.$emit('timeChange', function (ev) {
+                       console.log("emit slider value:" + $scope.timeLimit)
+                    });
                 })
                 .data('slider');
 
             $scope.slider.showTooltip();
-            $scope.minute = $scope.slider.getValue();
+            $scope.timeLimit = $scope.slider.getValue();
             function updateSliderVal(slider){
-                $scope.minute = slider.getValue();
+                $scope.timeLimit = slider.getValue();
                 directionsDataService.setTimeLimit(slider.getValue());
                 $scope.$apply();
             }

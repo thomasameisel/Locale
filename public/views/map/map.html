@@ -6,9 +6,10 @@
     <div snap-drawer class="col-md-3">
         <div class="container col-md-3" id="content">
             <div class="col-md-offset-1 col-md-10" id="minuteDiv">
-                <h4>Time Limit: <b>{{minute}}</b> minutes</h4>
-                <sliderbar minute="minute"></sliderbar>
+                <h4>Time Limit: <b>{{timeLimit}}</b> minutes</h4>
+                <sliderbar time-limit="timeLimit"></sliderbar>
             </div>
+            <hr class="minuteDivider">
 
             <div ng-show="!showDetail"
                  class="labelDiv" ng-click="choose($index)"
@@ -26,7 +27,7 @@
                                      class="glyphicon glyphicon-star-empty" aria-hidden="true">
                         </span>
                     </div>
-                    <hr class="neightborhoodDivider">
+                    <hr class="neighborhoodDivider">
                 </div>
             </div>
 
