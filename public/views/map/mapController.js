@@ -88,19 +88,6 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
     var defaultBounds = new google.maps.LatLngBounds(NW, SE);
     var defaultCenter = defaultBounds.getCenter();
 
-    angular.element(document).ready(function () {
-        $scope.map = new google.maps.Map(document.getElementById('map'), {
-            disableDefaultUI: true,
-            center: {lat: defaultCenter.lat(), lng: defaultCenter.lng()},
-            zoom: 8,
-            scaleControl: false
-        });
-
-        $scope.map.fitBounds(defaultBounds);
-        google.maps.event.trigger($scope.map, 'resize');
-        $scope.setPreferences();
-    });
-
     $scope.choose = function (index) {
         google.maps.event.trigger($scope.neighborhoods[index], 'click', function (event) {
         });
@@ -126,4 +113,17 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
     $scope.getStars = function(n) {
         return new Array(n);
     };
+
+    angular.element(document).ready(function () {
+        $scope.map = new google.maps.Map(document.getElementById('map'), {
+            disableDefaultUI: true,
+            center: {lat: defaultCenter.lat(), lng: defaultCenter.lng()},
+            zoom: 8,
+            scaleControl: false
+        });
+
+        $scope.map.fitBounds(defaultBounds);
+        google.maps.event.trigger($scope.map, 'resize');
+        $scope.setPreferences();
+    });
 });
