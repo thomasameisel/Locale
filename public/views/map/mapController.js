@@ -44,7 +44,9 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
 
     //Update communities when time limit changes
     $scope.$on('timeChange', function(ev){
+        removeNeighborhoods();
         filterData();
+        mapPreferences();
     });
 
     //Retrieve commute time for the communities
@@ -71,6 +73,7 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
     //Filter data based on time limit
     function filterData(){
         $scope.preferences = [];
+        $scope.$apply();
         var count = 0,
             index = 0;
         while (count < 10 && index < $scope.communityData.length){
@@ -83,9 +86,19 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
         $scope.safeApply();
     };
 
+    //Remove neighborhoods
+    function removeNeighborhoods(){
+        for (var i =0 ; i< $scope.neighborhoods.length; i++){
+            $scope.neighborhoods[i].setMap(null);
+        }
+        $scope.$apply();
+    };
+
+
     //Map the preferred neighborhoods
     function mapPreferences() {
         $scope.neighborhoods = [];
+        $scope.$apply();
 
         for (var i = 0; i < $scope.preferences.length; i++) {
 
