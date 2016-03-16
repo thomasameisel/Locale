@@ -4,11 +4,11 @@
 app.service('communityDataService', function($resource, $http) {
 
     var params = {
-        violentCrime: '',
-        nonViolentCrime: '',
-        nightlife: '',
-        price: '',
-        crowded: ''
+        violentCrime: '2',
+        nonViolentCrime: '2',
+        nightlife: '2',
+        price: '2',
+        crowded: '2'
     };
 
 
