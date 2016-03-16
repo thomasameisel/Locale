@@ -128,4 +128,6 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
         google.maps.event.trigger($scope.map, 'resize');
         $scope.setPreferences();
     });
+
+    $scope.minute = 10;
 });

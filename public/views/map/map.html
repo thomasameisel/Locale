@@ -5,6 +5,11 @@
 <div class="col-md-12" id="snapContainer">
     <div snap-drawer class="col-md-3">
         <div class="container col-md-3" id="content">
+            <div class="col-md-offset-1 col-md-10" id="minuteDiv">
+                <h4>Time Limit: <b>{{minute}}</b> minutes</h4>
+                <sliderbar minute="minute"></sliderbar>
+            </div>
+
             <div ng-show="!showDetail"
                  class="labelDiv" ng-click="choose($index)"
                  ng-repeat="preference in preferences track by $index">
