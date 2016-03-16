@@ -4,7 +4,7 @@
 app.controller('questionnaireController', function($scope, $stateParams, $state, directionsDataService) {
 
   $scope.temp ="225 E Wacker Dr, Chicago, IL, United States";
-  $scope.minute = 10;
+  $scope.timeLimit = 10;
 
   $scope.isValidQuestionnaire = function () {
     for (var i = 0; i < $scope.questions.length; i++) {

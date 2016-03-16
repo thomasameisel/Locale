@@ -74,7 +74,7 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
         var count = 0,
             index = 0;
         while (count < 10 && index < $scope.communityData.length){
-            if ($scope.timeLimit >= $scope.communityTimes[index]){
+            if ($scope.communityTimes[index] !== null && $scope.timeLimit >= $scope.communityTimes[index]){
                 $scope.preferences.push($scope.communityData[index]);
                 count++;
             }

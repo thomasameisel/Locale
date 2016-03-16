@@ -14,9 +14,7 @@ app.directive('sliderbar', function() {
                     updateSliderVal($scope.slider);
                     $scope.$apply();
 
-                    $scope.$emit('timeChange', function (ev) {
-                       console.log("emit slider value:" + $scope.timeLimit)
-                    });
+                    $scope.$emit('timeChange');
                 })
                 .data('slider');
 
