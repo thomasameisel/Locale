@@ -10,7 +10,12 @@ app.service('directionsDataService', function($resource, $http) {
         });
     };
 
+    var getCommunityTime = function() {
+        return timeDistance;
+    };
+
     return {
-        setWorkplace : setWorkplace
+        setWorkplace        :   setWorkplace,
+        getCommunityTime    :   getCommunityTime
     };
 });
