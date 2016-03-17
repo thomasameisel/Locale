@@ -81,11 +81,34 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
         return result;
     }
 
+    function invertResult(result) {
+        for (var i = 0; i < result.length; ++i) {
+            for (var goodCriteria in result[i].goodCriteria) {
+                if (result[i].goodCriteria.hasOwnProperty(goodCriteria) &&
+                    goodCriteria !== 'nightlifePctOfAvg') {
+                    var inverse = 2 - result[i].goodCriteria[goodCriteria];
+                    result[i].goodCriteria[goodCriteria] = (inverse < 0) ?
+                        0.05 : inverse;
+                }
+            }
+            for (var badCriteria in result[i].badCriteria) {
+                if (result[i].badCriteria.hasOwnProperty(badCriteria) &&
+                    badCriteria !== 'nightlifePctOfAvg') {
+                    var inverse = 2 - result[i].badCriteria[badCriteria];
+                    result[i].badCriteria[badCriteria] = (inverse < 0) ?
+                        0.05 : inverse;
+                }
+            }
+        }
+        return result;
+    }
+
     //Populate map with preferences from database
     function setPreferences() {
         communityDataService.preferences()
             .done(function (result) {
-                $scope.communityData = addColors(result);
+                var invertedResult = invertResult(result);
+                $scope.communityData = addColors(invertedResult);
                 $scope.safeApply();
                 filterData();
                 mapPreferences($scope.preferences);
