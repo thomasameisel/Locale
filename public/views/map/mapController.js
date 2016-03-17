@@ -11,6 +11,11 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
     var defaultBounds = new google.maps.LatLngBounds(NW, SE);
     var defaultCenter = defaultBounds.getCenter();
 
+    var colors = [ "#771155", "#AA4488", "#CC99BB", "#114477",
+        "#4477AA", "#77AADD", "#117777", "#44AAAA", "#77CCCC", "#117744",
+        "#44AA77", "#88CCAA", "#777711", "#AAAA44", "#DDDD77", "#774411",
+        "#AA7744", "#DDAA77", "#771122", "#AA4455", "#DD7788" ];
+
     angular.element(document).ready(function () {
         $scope.map = new google.maps.Map(document.getElementById('map'), {
             disableDefaultUI: true,
@@ -69,18 +74,24 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
     $scope.communityTimes = coordinatesInfo.communityTimes;
     $scope.timeLimit = coordinatesInfo.maxTime;
 
+    function addColors(result) {
+        for (var i = 0; i < result.length; ++i) {
+            result[i].color = colors[i % colors.length];
+        }
+        return result;
+    }
 
     //Populate map with preferences from database
     function setPreferences() {
         communityDataService.preferences()
             .done(function (result) {
-                $scope.communityData = result;
+                $scope.communityData = addColors(result);
                 $scope.safeApply();
                 filterData();
                 mapPreferences($scope.preferences);
             })
             .fail(function () {
-                console.log("Unable to retrieve preferences");
+                console.error("Unable to retrieve preferences");
             });
 
     };
@@ -124,7 +135,7 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
             var neighborhood = new google.maps.Polygon({
                 map             : $scope.map,
                 paths           : preference.outline,
-                fillColor       : '#2e618d',
+                fillColor       : preference.color,
                 strokeOpacity   : 1,
                 fillOpacity     : 0.9,
                 name            : preference.name,
