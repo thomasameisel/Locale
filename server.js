@@ -25,11 +25,11 @@ function validParam(allPreferences, param) {
 
 function validatePreferencesParams(preferences) {
   var allPreferences = {
-    violentCrime: true,
-    nonViolentCrime: true,
+    safety: true,
+    qualityOfLife: true,
     nightlife: true,
-    price: true,
-    crowded: true
+    affordability: true,
+    breathingRoom: true
   };
   for (var preference in preferences) {
     if (preferences.hasOwnProperty(preference) &&
@@ -76,15 +76,15 @@ app.get('/preferences', function(req, res) {
   if (validatePreferencesParams(req.query)) {
     var params = {
       violentCrimePctOfAvg: {op: '<',
-                              num: parseInt(req.query.violentCrime)},
+                              num: 6 - parseInt(req.query.safety)},
       nonViolentCrimePctOfAvg: {op: '<',
-                                num: parseInt(req.query.nonViolentCrime)},
+                                num: 6 - parseInt(req.query.qualityOfLife)},
       nightlifePctOfAvg: {op: (req.query.nightlife > 3) ? '>' : '<',
                           num: parseInt(req.query.nightlife)},
       pricePctOfAvg: {op: '<',
-                      num: parseInt(req.query.price)},
+                      num: 6 - parseInt(req.query.affordability)},
       crowdedPctOfAvg: {op: '<',
-                        num: parseInt(req.query.crowded)}
+                        num: 6 - parseInt(req.query.breathingRoom)}
     };
     preferencesCommunities.communitiesByPreferences(params,
                                                     function(err, result) {
