@@ -1,8 +1,8 @@
 - [ ] Write more tests
 - [ ] Change how getAllData fails (send an email if failed)
-- [ ] Figure out how to correctly invert the crime, crowded, etc. (divide by half of max?)
+- [x] Figure out how to correctly invert the crime, crowded, etc. (divide by half of max?)
 - [x] Add the rest of the directions for the 600 coordinates - in process
-- [ ] Migrate to AWS and possibly setup a chron job to automatically update the community data periodically
+- [x] Migrate to AWS and possibly setup a chron job to automatically update the community data periodically
 - [x] Write code to automatically add community areas based on KML
 - Collin
   - [ ] Set up CD to test and deploy to Elastic Beanstalk upon push
@@ -11,3 +11,9 @@
   - [x] Add more communities to database
   - [x] Separate violent and non-violent crime
   - [x] Move to Docker
+- Chris
+  - [ ] allow users to not enter the work place (put a checkbox for enable directions)
+  - [ ] automatically do a directions request (user does not have to press button)
+  - [ ] make the map repopulation smooth when changing directions time
+  - [ ] add a button to go back to the questionnaire (top right in the title bar)
+  - [ ] change landing page search to only accept cities that we have (only Chicago for now)
