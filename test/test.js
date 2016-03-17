@@ -248,7 +248,12 @@ describe('DB', function() {
         "`crowdedPctOfAvg` REAL,`pricePctOfAvg` REAL," +
         "PRIMARY KEY(communityID)," +
         "FOREIGN KEY(`communityID`) REFERENCES `CommunityArea`(`communityID`))";
-    testDB.exec(commAreaStr).exec(commDataStr);
+    var prefStatStr = "CREATE TABLE 'PreferencesStatistics' (" +
+        "`statistic` TEXT UNIQUE,`violentCrimePctOfAvg` REAL," +
+        "`nonViolentCrimePctOfAvg` REAL,`nightlifePctOfAvg` REAL," +
+        "`crowdedPctOfAvg` REAL,`pricePctOfAvg` REAL," +
+        "PRIMARY KEY(statistic))";
+    testDB.exec(commAreaStr).exec(commDataStr).exec(prefStatStr);
     testDB.exec("INSERT INTO CommunityArea VALUES (1, 'Loop', 5000, '81,56'," +
                 "'80,55', '82,57', 1, 50)", function(err) {
                   if (err) {
@@ -271,26 +276,221 @@ describe('DB', function() {
     });
   });
 
-  it('should insert community data', function(done) {
-    var data = { violentCrimePctOfAvg: 0.6, nonViolentCrimePctOfAvg: 0.5,
-        nightlifePctOfAvg: 0.4, crowdedPctOfAvg: 0.2, pricePctOfAvg: 0.7 };
-    database.insertCommunityData(1, data, 'CommunityData');
-    testDB.get('SELECT * from CommunityData where communityID=1', [],
-                function(err, row) {
-      if (err) {
-        done(err);
-      } else {
-        row.should.have.all.keys('communityID', 'violentCrimePctOfAvg',
-          'nonViolentCrimePctOfAvg', 'pricePctOfAvg',
-          'nightlifePctOfAvg', 'crowdedPctOfAvg');
-        row.communityID.should.equal(1);
-        row.violentCrimePctOfAvg.should.equal(0.6);
-        row.nonViolentCrimePctOfAvg.should.equal(0.5);
-        row.nightlifePctOfAvg.should.equal(0.4);
-        row.crowdedPctOfAvg.should.equal(0.2);
-        row.pricePctOfAvg.should.equal(0.7);
-        done();
-      }
+  describe('getCommunityInfo', function() {
+    it('should get single community info', function(done) {
+      database.getCommunityInfo(1, function(err, result) {
+        if (err) {
+          done(err);
+        } else {
+          result.should.have.all.keys('communityID', 'name', 'landArea',
+              'latLng', 'sw', 'ne', 'truliaID', 'radius');
+          result.communityID.should.equal(1);
+          done();
+        }
+      });
+    });
+
+    it('should not return results for community not in db', function(done) {
+      database.getCommunityInfo(100, function(err, result) {
+        if (err) {
+          done(err);
+        } else {
+          console.assert(typeof result === 'undefined');
+          done();
+        }
+      })
+    });
+  });
+
+  describe('getAllCommunitiesInfo', function() {
+    before(function(done) {
+      // Turn off jscs so it doesn't complain about mixing commas in SQL strings
+      // jscs:disable
+      testDB.exec("INSERT INTO CommunityArea VALUES (2, 'Deerfield', 5000, " +
+          "'81,56', '80,55', '82,57', 2, 50)", done);
+      // jscs:enable
+    });
+
+    after(function(done) {
+      testDB.exec('DELETE FROM CommunityArea WHERE communityID=2',
+          done)
+    });
+
+    it('should return all communities', function(done) {
+      database.getAllCommunitiesInfo(function(err, rows) {
+        if (err) {
+          done(err);
+        } else {
+          rows.should.have.length(2);
+          rows[0].communityID.should.equal(1);
+          rows[1].communityID.should.equal(2);
+          done();
+        }
+      });
+    });
+  });
+
+  describe('getPreferencesStatistics', function() {
+    before(function(done) {
+      var insertStmt = 'INSERT INTO PreferencesStatistics VALUES' +
+          '("gmean", 0.5, 0.6, 0.2, 0.7, 0.3)';
+      testDB.exec(insertStmt, function(err) {
+        if (err) {
+          done(err);
+        } else {
+          var insertStmt2 = 'INSERT INTO PreferencesStatistics VALUES' +
+              '("gstddev", 0.2, 0.3, 0.1, 0.9, 0.4)';
+          testDB.exec(insertStmt2, done);
+        }
+      });
+    });
+
+    after(function(done) {
+      testDB.exec('DELETE FROM PreferencesStatistics', done);
+    })
+
+    it('should return object with gmean and gstddev', function(done) {
+      database.getPreferencesStatistics(function(err, result) {
+        if (err) {
+          done(err);
+        } else {
+          result.should.have.all.keys('gmean', 'gstddev');
+          result.gmean.should.have.all.keys('violentCrimePctOfAvg',
+              'nonViolentCrimePctOfAvg', 'pricePctOfAvg',
+              'nightlifePctOfAvg', 'crowdedPctOfAvg');
+          result.gstddev.should.have.all.keys('violentCrimePctOfAvg',
+              'nonViolentCrimePctOfAvg', 'pricePctOfAvg',
+              'nightlifePctOfAvg', 'crowdedPctOfAvg');
+          done();
+        }
+      });
+    })
+  });
+
+  describe('insertCommunityData', function() {
+    it('should insert community data', function(done) {
+      var data = {
+        violentCrimePctOfAvg: 0.6, nonViolentCrimePctOfAvg: 0.5,
+        nightlifePctOfAvg: 0.4, crowdedPctOfAvg: 0.2, pricePctOfAvg: 0.7
+      };
+      database.insertCommunityData(1, data, 'CommunityData');
+      testDB.get('SELECT * from CommunityData WHERE communityID=1', [],
+          function(err, row) {
+        if (err) {
+          done(err);
+        } else {
+          row.should.have.all.keys('communityID', 'violentCrimePctOfAvg',
+              'nonViolentCrimePctOfAvg', 'pricePctOfAvg',
+              'nightlifePctOfAvg', 'crowdedPctOfAvg');
+          row.communityID.should.equal(1);
+          row.violentCrimePctOfAvg.should.equal(0.6);
+          row.nonViolentCrimePctOfAvg.should.equal(0.5);
+          row.nightlifePctOfAvg.should.equal(0.4);
+          row.crowdedPctOfAvg.should.equal(0.2);
+          row.pricePctOfAvg.should.equal(0.7);
+          testDB.exec('DELETE FROM CommunityData WHERE communityID=1');
+          done();
+        }
+      });
+    });
+
+    it('should insert statistics data', function(done) {
+      var data = {
+        violentCrimePctOfAvg: 0.6, nonViolentCrimePctOfAvg: 0.5,
+        nightlifePctOfAvg: 0.4, crowdedPctOfAvg: 0.2, pricePctOfAvg: 0.7
+      };
+      database.insertCommunityData('gmean', data, 'PreferencesStatistics');
+      database.insertCommunityData('gstddev', data, 'PreferencesStatistics');
+      testDB.all('SELECT * from PreferencesStatistics', function(err, rows) {
+        if (err) {
+          done(err);
+        } else {
+          rows.should.have.length(2);
+          rows[0].should.have.all.keys('statistic', 'violentCrimePctOfAvg',
+              'nonViolentCrimePctOfAvg', 'pricePctOfAvg',
+              'nightlifePctOfAvg', 'crowdedPctOfAvg');
+          rows[1].should.have.all.keys('statistic', 'violentCrimePctOfAvg',
+              'nonViolentCrimePctOfAvg', 'pricePctOfAvg',
+              'nightlifePctOfAvg', 'crowdedPctOfAvg');
+          testDB.exec('DELETE FROM PreferencesStatistics WHERE ' +
+              'statistic="gmean" OR statistic="gstddev"');
+          done();
+        }
+      });
+    });
+
+    it('should change any non-numbers to "NULL"', function(done) {
+      var data = {
+        violentCrimePctOfAvg: 'apple', nonViolentCrimePctOfAvg: undefined,
+        nightlifePctOfAvg: 0.4, crowdedPctOfAvg: 0.2, pricePctOfAvg: 0.7
+      };
+      database.insertCommunityData(1, data, 'CommunityData');
+      testDB.get('SELECT * from CommunityData WHERE communityID=1', [],
+          function(err, row) {
+        if (err) {
+          done(err);
+        } else {
+          row.should.have.all.keys('communityID', 'violentCrimePctOfAvg',
+              'nonViolentCrimePctOfAvg', 'pricePctOfAvg',
+              'nightlifePctOfAvg', 'crowdedPctOfAvg');
+          row.communityID.should.equal(1);
+          row.violentCrimePctOfAvg.should.equal('NULL');
+          row.nonViolentCrimePctOfAvg.should.equal('NULL');
+          row.nightlifePctOfAvg.should.equal(0.4);
+          row.crowdedPctOfAvg.should.equal(0.2);
+          row.pricePctOfAvg.should.equal(0.7);
+          testDB.exec('DELETE FROM CommunityData WHERE communityID=1');
+          done();
+        }
+      });
+    });
+
+    it('should update row if already exists', function(done) {
+      var data = {
+        violentCrimePctOfAvg: 'apple', nonViolentCrimePctOfAvg: undefined,
+        nightlifePctOfAvg: 0.4, crowdedPctOfAvg: 0.2, pricePctOfAvg: 0.7
+      };
+      database.insertCommunityData(1, data, 'CommunityData');
+      testDB.get('SELECT * from CommunityData WHERE communityID=1', [],
+          function(err, row) {
+        if (err) {
+          done(err);
+        } else {
+          row.should.have.all.keys('communityID', 'violentCrimePctOfAvg',
+              'nonViolentCrimePctOfAvg', 'pricePctOfAvg',
+              'nightlifePctOfAvg', 'crowdedPctOfAvg');
+          row.communityID.should.equal(1);
+          row.violentCrimePctOfAvg.should.equal('NULL');
+          row.nonViolentCrimePctOfAvg.should.equal('NULL');
+          row.nightlifePctOfAvg.should.equal(0.4);
+          row.crowdedPctOfAvg.should.equal(0.2);
+          row.pricePctOfAvg.should.equal(0.7);
+
+          var newData = {
+            violentCrimePctOfAvg: 0.5, nonViolentCrimePctOfAvg: 0.1,
+            nightlifePctOfAvg: 0.8, crowdedPctOfAvg: 0.3, pricePctOfAvg: null
+          };
+          database.insertCommunityData(1, newData, 'CommunityData');
+          testDB.get('SELECT * from CommunityData WHERE communityID=1', [],
+              function(err, row) {
+            if (err) {
+              done(err);
+            } else {
+              row.should.have.all.keys('communityID', 'violentCrimePctOfAvg',
+                  'nonViolentCrimePctOfAvg', 'pricePctOfAvg',
+                  'nightlifePctOfAvg', 'crowdedPctOfAvg');
+              row.communityID.should.equal(1);
+              row.violentCrimePctOfAvg.should.equal(0.5);
+              row.nonViolentCrimePctOfAvg.should.equal(0.1);
+              row.nightlifePctOfAvg.should.equal(0.8);
+              row.crowdedPctOfAvg.should.equal(0.3);
+              row.pricePctOfAvg.should.equal('NULL');
+              testDB.exec('DELETE FROM CommunityData WHERE communityID=1');
+              done();
+            }
+          });
+        }
+      });
     });
   });
 });
@@ -318,7 +518,7 @@ describe('TruliaData', function() {
     });
   });
 
-  describe('getAveragePriceFromArr', function() {
+  /*describe('getAveragePriceFromArr', function() {
     var getAveragePriceFromArr = trulia.__get__('getAveragePriceFromArr');
     var fakeXML = `<TruliaWebServices>
                     <response>
@@ -379,5 +579,5 @@ describe('TruliaData', function() {
         }
       });
     });
-  });
+  });*/
 });
