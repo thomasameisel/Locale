@@ -12,6 +12,7 @@
   - [x] Separate violent and non-violent crime
   - [x] Move to Docker
 - Chris
+  - [ ] BUG: when you refresh the map no communities appear, it doesn't keep the directions object
   - [ ] allow users to not enter the work place (put a checkbox for enable directions)
   - [ ] automatically do a directions request (user does not have to press button)
   - [ ] make the map repopulation smooth when changing directions time
