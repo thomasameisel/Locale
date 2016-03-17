@@ -39,14 +39,29 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
     };
 
     $scope.preferences = [];
+    $scope.preferencesObj = {};
+    $scope.neighborhoods = {};
     $scope.showDetail = false;
-
 
     //Update communities when time limit changes
     $scope.$on('timeChange', function(ev){
-        removeNeighborhoods();
         filterData();
-        mapPreferences();
+        var remove = [];
+        for (var id in $scope.neighborhoods) {
+            if ($scope.neighborhoods.hasOwnProperty(id) &&
+                    !$scope.preferencesObj[id]) {
+                remove.push($scope.neighborhoods[id]);
+                delete $scope.neighborhoods[id];
+            }
+        }
+        var add = [];
+        for (var i = 0; i < $scope.preferences.length; ++i) {
+            if (!$scope.neighborhoods[$scope.preferences[i].communityID]) {
+                add.push($scope.preferences[i]);
+            }
+        }
+        removeNeighborhoods(remove);
+        mapPreferences(add);
     });
 
     //Retrieve commute time for the communities
@@ -62,7 +77,7 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
                 $scope.communityData = result;
                 $scope.safeApply();
                 filterData();
-                mapPreferences();
+                mapPreferences($scope.preferences);
             })
             .fail(function () {
                 console.log("Unable to retrieve preferences");
@@ -73,63 +88,65 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
     //Filter data based on time limit
     function filterData(){
         $scope.preferences = [];
+        $scope.preferencesObj = {};
         $scope.$apply();
         var count = 0;
         for (var i = 0; i < $scope.communityData.length && count < 10; ++i) {
-          var time = $scope.communityTimes[$scope.communityData[i].communityID];
-          if (time !== null && time <= $scope.timeLimit) {
-            $scope.preferences.push($scope.communityData[i]);
-            count++;
-          }
+            var time = $scope.communityTimes[$scope.communityData[i].communityID];
+            if (time !== null && time <= $scope.timeLimit) {
+                $scope.preferences.push($scope.communityData[i]);
+                $scope.preferencesObj[$scope.communityData[i].communityID] = true;
+                count++;
+            }
         }
         $scope.safeApply();
     };
 
     //Remove neighborhoods
-    function removeNeighborhoods(){
-        for (var i =0 ; i< $scope.neighborhoods.length; i++){
-            $scope.neighborhoods[i].setMap(null);
+    function removeNeighborhoods(communities){
+        for (var id in communities) {
+            if (communities.hasOwnProperty(id)) {
+                communities[id].setMap(null);
+            }
         }
         $scope.$apply();
     };
 
 
     //Map the preferred neighborhoods
-    function mapPreferences() {
-        $scope.neighborhoods = [];
+    function mapPreferences(communities) {
         $scope.$apply();
 
-        for (var i = 0; i < $scope.preferences.length; i++) {
+        for (var i = 0; i < communities.length; i++) {
 
-            var preference = $scope.preferences[i];
-            var bounds = new google.maps.LatLngBounds();
-
-            for (var j =0; j < preference.outline.length; j++) {
-                var xy = preference.outline[j];
-                var point = new google.maps.LatLng({lat:xy.lat,lng:xy.lng});
-                bounds.extend(point);
-            }
+            var preference = communities[i];
 
             var neighborhood = new google.maps.Polygon({
                 map             : $scope.map,
                 paths           : preference.outline,
                 fillColor       : '#2e618d',
                 strokeOpacity   : 1,
-                fillOpacity     : 0.9 - (0.05 * i),
+                fillOpacity     : 0.9,
                 name            : preference.name,
-                bounds          : bounds,
                 prefIndex       : i
             });
 
-            $scope.neighborhoods.push(neighborhood);
+            $scope.neighborhoods[preference.communityID] = neighborhood;
 
             google.maps.event.addListener(neighborhood, 'click', function (event) {
-                $scope.selectedPreference = $scope.preferences[this.prefIndex];
+                $scope.selectedPreference = communities[this.prefIndex];
                 $scope.showDetail = true;
 
                 //calcRoute($scope.preferences[this.prefIndex].bounds.getCenter());
 
-                $scope.map.fitBounds(this.bounds);
+                var bounds = new google.maps.LatLngBounds();
+
+                for (var j =0; j < $scope.selectedPreference.outline.length; j++) {
+                    var point = new google.maps.LatLng($scope.selectedPreference.outline[j]);
+                    bounds.extend(point);
+                }
+
+                $scope.map.fitBounds(bounds);
                 google.maps.event.addListenerOnce(map, 'idle', function() {
                     google.maps.event.trigger(map, 'resize');
                 });
@@ -141,7 +158,8 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
 
 
     $scope.choose = function (index) {
-        google.maps.event.trigger($scope.neighborhoods[index], 'click', function (event) {
+        var id = $scope.preferences[index].communityID;
+        google.maps.event.trigger($scope.neighborhoods[id], 'click', function (event) {
         });
     };
 
