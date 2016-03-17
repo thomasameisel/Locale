@@ -1,5 +1,6 @@
 - [ ] Write more tests
 - [ ] Change how getAllData fails (send an email if failed)
+- [ ] Add more cities (NYC, San Francisco, Nashville)
 - [x] Figure out how to correctly invert the crime, crowded, etc. (divide by half of max?)
 - [x] Add the rest of the directions for the 600 coordinates - in process
 - [x] Migrate to AWS and possibly setup a chron job to automatically update the community data periodically
@@ -14,11 +15,17 @@
 - Chris
   - [ ] BUG: when you refresh the map no communities appear, it doesn't keep the directions object
   - [ ] BUG: when the user does not move the slidebar, the time is the last value used (not 10)
-        - for example, if the user puts in the value 15 for the time then goes through the questionnaire
+        - for example, if the user puts in the value 15 for the time then clicks submit then goes back to the questionnaire
         and does not move the slidebar (it shows 10 minutes), the request will use 15 instead of 10
   - [ ] allow users to not enter the work place (put a checkbox for enable directions)
   - [ ] automatically do a directions request (user does not have to press button)
         - the slidebar on the maps page should also not appear in this situation
   - [x] make the map repopulation smooth when changing directions time
-  - [ ] add a button to go back to the questionnaire (top right in the title bar)
+  - [ ] add a button to go back to the questionnaire (top right in the title bar "Retake Survey")
   - [ ] change landing page search to only accept cities that we have (only Chicago for now)
+  - [ ] submit button should only appear when all questions are answered
+        - should slide in from bottom center of screen when all questions are answered
+        - if the directions request is not done, a loading icon should appear after the user presses submit
+  - [ ] pressing the answer to a question should automatically scroll to the next question
+  - [ ] add a picture of a city to background of landing page
+  - [ ] put shadow on title bar
