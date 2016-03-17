@@ -13,8 +13,12 @@
   - [x] Move to Docker
 - Chris
   - [ ] BUG: when you refresh the map no communities appear, it doesn't keep the directions object
+  - [ ] BUG: when the user does not move the slidebar, the time is the last value used (not 10)
+        - for example, if the user puts in the value 15 for the time then goes through the questionnaire
+        and does not move the slidebar (it shows 10 minutes), the request will use 15 instead of 10
   - [ ] allow users to not enter the work place (put a checkbox for enable directions)
   - [ ] automatically do a directions request (user does not have to press button)
-  - [ ] make the map repopulation smooth when changing directions time
+        - the slidebar on the maps page should also not appear in this situation
+  - [x] make the map repopulation smooth when changing directions time
   - [ ] add a button to go back to the questionnaire (top right in the title bar)
   - [ ] change landing page search to only accept cities that we have (only Chicago for now)
