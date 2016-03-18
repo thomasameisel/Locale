@@ -16,16 +16,21 @@
   - [ ] BUG: when you refresh the map no communities appear, it doesn't keep the directions object
   - [ ] BUG: when the user does not move the slidebar, the time is the last value used (not 10)
         - for example, if the user puts in the value 15 for the time then clicks submit then goes back to the questionnaire
-        and does not move the slidebar (it shows 10 minutes), the request will use 15 instead of 10
+        and does not move the slidebar (it shows 10 minutes), the new request will use 15 instead of 10
   - [ ] allow users to not enter the work place (put a checkbox for enable directions)
-  - [ ] automatically do a directions request (user does not have to press button)
         - the slidebar on the maps page should also not appear in this situation
+  - [ ] only allow users to select a work place in their selected city
+  - [ ] automatically do a directions request (user does not have to press button)
   - [x] make the map repopulation smooth when changing directions time
   - [ ] add a button to go back to the questionnaire (top right in the title bar "Retake Survey")
+  - [ ] add a button to change the city (next to retake in title bar)
+        - do not take the user back to landing page, just change city in the questionnaire
+        - void out work place when the user changes the city
   - [ ] change landing page search to only accept cities that we have (only Chicago for now)
   - [ ] submit button should only appear when all questions are answered
         - should slide in from bottom center of screen when all questions are answered
         - if the directions request is not done, a loading icon should appear after the user presses submit
-  - [ ] pressing the answer to a question should automatically scroll to the next question
+  - [ ] clicking the answer to a question should automatically scroll to the next question
   - [ ] add a picture of a city to background of landing page
   - [ ] put shadow on title bar
+  - [ ] write tests for the frontend (using phantom potentially)
