@@ -6,6 +6,7 @@ var directionsCommunities = require('./lib/directionsCommunities');
 var validator = require('validator');
 var express = require('express');
 var addressValidator = require('address-validator');
+var toobusy = require('toobusy-js');
 
 var app = express();
 
@@ -65,6 +66,15 @@ function validateDirectionsParams(req, callback) {
     callback(valid, address);
   });
 }
+
+// middleware which blocks requests when we're too busy
+app.use(function(req, res, next) {
+  if (toobusy()) {
+    res.send(503, 'Server is busy');
+  } else {
+    next();
+  }
+});
 
 // jscs:disable
 // http://localhost:8080/preferences?violentCrime=4&nonViolentCrime=3&nightlife=4&price=4&crowded=2
@@ -129,6 +139,13 @@ app.get('/directions', function(req, res) {
   });
 });
 
-app.listen(8080, function() {
+var server = app.listen(8080, function() {
   console.log('listening to port localhost:8080');
+});
+
+process.on('SIGINT', function() {
+  server.close();
+  // calling .shutdown allows your process to exit normally
+  toobusy.shutdown();
+  process.exit();
 });
