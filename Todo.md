@@ -1,3 +1,4 @@
+- [ ] BUG: preferences don't show up in the same order for every community in the detail view
 - [ ] Write more tests
 - [ ] Change how getAllData fails (send an email if failed)
 - [ ] Add more cities (NYC, San Francisco, Nashville)
