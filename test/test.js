@@ -238,10 +238,9 @@ describe('DB', function() {
     // jscs:disable
     var commAreaStr = "CREATE TABLE 'CommunityArea' (" +
         "`communityID` INTEGER UNIQUE,`name` TEXT NOT NULL," +
-        "`landArea` INTEGER NOT NULL,`latLng` TEXT NOT NULL," +
-        "`sw` TEXT NOT NULL,`ne` TEXT NOT NULL," +
+        "`landArea` INTEGER NOT NULL,`center` TEXT NOT NULL," +
         "`truliaID` INTEGER NOT NULL UNIQUE,`radius` INTEGER," +
-        "PRIMARY KEY(communityID))";
+        "`outline` TEXT NOT NULL,PRIMARY KEY(communityID))";
     var commDataStr = "CREATE TABLE 'CommunityData' (" +
         "`communityID` INTEGER UNIQUE,`violentCrimePctOfAvg` REAL," +
         "`nonViolentCrimePctOfAvg` REAL,`nightlifePctOfAvg` REAL," +
@@ -253,16 +252,20 @@ describe('DB', function() {
         "`nonViolentCrimePctOfAvg` REAL,`nightlifePctOfAvg` REAL," +
         "`crowdedPctOfAvg` REAL,`pricePctOfAvg` REAL," +
         "PRIMARY KEY(statistic))";
-    testDB.exec(commAreaStr).exec(commDataStr).exec(prefStatStr);
-    testDB.exec("INSERT INTO CommunityArea VALUES (1, 'Loop', 5000, '81,56'," +
-                "'80,55', '82,57', 1, 50)", function(err) {
-                  if (err) {
-                    done(err);
-                  } else {
-                    done();
-                  }
-                });
+    var direcStr = 'CREATE TABLE CommunityDirections' +
+      '(lat REAL NOT NULL,lng REAL NOT NULL,sinLat REAL NOT NULL,' +
+      'cosLat REAL NOT NULL,sinLng REAL NOT NULL,cosLng REAL NOT NULL,';
+    for (var i = 1; i <= 77; ++i) {
+      direcStr += ('\'' + i.toString() + '\'' + ' REAL');
+      if (i <= 76) {
+        direcStr += ',';
+      }
+    }
+    direcStr += ',PRIMARY KEY(lat,lng))';
+    testDB.exec(commAreaStr).exec(commDataStr).exec(prefStatStr)
+        .exec(direcStr);
     // jscs:enable
+    done();
   });
 
   it('should use the test database', function(done) {
@@ -270,20 +273,32 @@ describe('DB', function() {
       if (err) {
         done(err);
       } else {
-        result.should.have.length(1);
+        result.should.have.length(0);
         done();
       }
     });
   });
 
   describe('getCommunityInfo', function() {
+    before(function(done) {
+      // Turn off jscs so it doesn't complain about mixing commas in SQL strings
+      // jscs:disable
+      testDB.exec("INSERT INTO CommunityArea VALUES (1, 'Loop', 5000," +
+        "'12,12', 123, 456, '[{lat:1,lng:3}]')", done);
+      // jscs:enable
+    });
+
+    after(function(done) {
+      testDB.exec('DELETE FROM CommunityArea WHERE communityID=1', done);
+    });
+
     it('should get single community info', function(done) {
       database.getCommunityInfo(1, function(err, result) {
         if (err) {
           done(err);
         } else {
           result.should.have.all.keys('communityID', 'name', 'landArea',
-              'latLng', 'sw', 'ne', 'truliaID', 'radius');
+              'center', 'outline', 'radius', 'truliaID');
           result.communityID.should.equal(1);
           done();
         }
@@ -307,13 +322,12 @@ describe('DB', function() {
       // Turn off jscs so it doesn't complain about mixing commas in SQL strings
       // jscs:disable
       testDB.exec("INSERT INTO CommunityArea VALUES (2, 'Deerfield', 5000, " +
-          "'81,56', '80,55', '82,57', 2, 50)", done);
+          "'12,12', 123, 456, '[{lat:1,lng:3}]')", done);
       // jscs:enable
     });
 
     after(function(done) {
-      testDB.exec('DELETE FROM CommunityArea WHERE communityID=2',
-          done)
+      testDB.exec('DELETE FROM CommunityArea WHERE communityID=2', done);
     });
 
     it('should return all communities', function(done) {
@@ -321,9 +335,8 @@ describe('DB', function() {
         if (err) {
           done(err);
         } else {
-          rows.should.have.length(2);
-          rows[0].communityID.should.equal(1);
-          rows[1].communityID.should.equal(2);
+          rows.should.have.length(1);
+          rows[0].communityID.should.equal(2);
           done();
         }
       });
@@ -333,32 +346,33 @@ describe('DB', function() {
   describe('getPreferencesStatistics', function() {
     before(function(done) {
       var insertStmt = 'INSERT INTO PreferencesStatistics VALUES' +
-          '("gmean", 0.5, 0.6, 0.2, 0.7, 0.3)';
+          '("a", 0.5, 0.6, 0.2, 0.7, 0.3)';
       testDB.exec(insertStmt, function(err) {
         if (err) {
           done(err);
         } else {
           var insertStmt2 = 'INSERT INTO PreferencesStatistics VALUES' +
-              '("gstddev", 0.2, 0.3, 0.1, 0.9, 0.4)';
+              '("b", 0.2, 0.3, 0.1, 0.9, 0.4)';
           testDB.exec(insertStmt2, done);
         }
       });
     });
 
     after(function(done) {
-      testDB.exec('DELETE FROM PreferencesStatistics', done);
-    })
+      testDB.exec('DELETE FROM PreferencesStatistics WHERE statistic="a" OR ' +
+          'statistic="b"', done);
+    });
 
-    it('should return object with gmean and gstddev', function(done) {
+    it('should return object with preferences keys', function(done) {
       database.getPreferencesStatistics(function(err, result) {
         if (err) {
           done(err);
         } else {
-          result.should.have.all.keys('gmean', 'gstddev');
-          result.gmean.should.have.all.keys('violentCrimePctOfAvg',
+          result.should.have.all.keys('a', 'b');
+          result.a.should.have.all.keys('violentCrimePctOfAvg',
               'nonViolentCrimePctOfAvg', 'pricePctOfAvg',
               'nightlifePctOfAvg', 'crowdedPctOfAvg');
-          result.gstddev.should.have.all.keys('violentCrimePctOfAvg',
+          result.b.should.have.all.keys('violentCrimePctOfAvg',
               'nonViolentCrimePctOfAvg', 'pricePctOfAvg',
               'nightlifePctOfAvg', 'crowdedPctOfAvg');
           done();
@@ -368,13 +382,41 @@ describe('DB', function() {
   });
 
   describe('insertCommunityData', function() {
-    it('should insert community data', function(done) {
-      var data = {
+    before(function(done) {
+      var communityData = {
         violentCrimePctOfAvg: 0.6, nonViolentCrimePctOfAvg: 0.5,
         nightlifePctOfAvg: 0.4, crowdedPctOfAvg: 0.2, pricePctOfAvg: 0.7
       };
-      database.insertCommunityData(1, data, 'CommunityData');
-      testDB.get('SELECT * from CommunityData WHERE communityID=1', [],
+      var statsData = {
+        violentCrimePctOfAvg: 0.6, nonViolentCrimePctOfAvg: 0.5,
+        nightlifePctOfAvg: 0.4, crowdedPctOfAvg: 0.2, pricePctOfAvg: 0.7
+      };
+      var nullData = {
+        violentCrimePctOfAvg: 'apple', nonViolentCrimePctOfAvg: undefined,
+        nightlifePctOfAvg: 0.4, crowdedPctOfAvg: 0.2, pricePctOfAvg: 0.7
+      };
+      var updateDataBefore = {
+        violentCrimePctOfAvg: 'apple', nonViolentCrimePctOfAvg: undefined,
+        nightlifePctOfAvg: 0.4, crowdedPctOfAvg: 0.2, pricePctOfAvg: 0.7
+      };
+      database.insertCommunityData(9, updateDataBefore, 'CommunityData');
+      database.insertCommunityData(8, nullData, 'CommunityData');
+      database.insertCommunityData(5, communityData, 'CommunityData');
+      database.insertCommunityData('c', statsData, 'PreferencesStatistics');
+      database.insertCommunityData('d', statsData, 'PreferencesStatistics');
+      done();
+    });
+
+    after(function(done) {
+      testDB.exec('DELETE FROM CommunityData WHERE communityID=5 OR ' +
+          'communityID=8 OR communityID=9');
+      testDB.exec('DELETE FROM PreferencesStatistics WHERE ' +
+          'statistic="c" OR statistic="d"');
+      done();
+    });
+
+    it('should insert community data', function(done) {
+      testDB.get('SELECT * from CommunityData WHERE communityID=5', [],
           function(err, row) {
         if (err) {
           done(err);
@@ -382,25 +424,18 @@ describe('DB', function() {
           row.should.have.all.keys('communityID', 'violentCrimePctOfAvg',
               'nonViolentCrimePctOfAvg', 'pricePctOfAvg',
               'nightlifePctOfAvg', 'crowdedPctOfAvg');
-          row.communityID.should.equal(1);
+          row.communityID.should.equal(5);
           row.violentCrimePctOfAvg.should.equal(0.6);
           row.nonViolentCrimePctOfAvg.should.equal(0.5);
           row.nightlifePctOfAvg.should.equal(0.4);
           row.crowdedPctOfAvg.should.equal(0.2);
           row.pricePctOfAvg.should.equal(0.7);
-          testDB.exec('DELETE FROM CommunityData WHERE communityID=1');
           done();
         }
       });
     });
 
     it('should insert statistics data', function(done) {
-      var data = {
-        violentCrimePctOfAvg: 0.6, nonViolentCrimePctOfAvg: 0.5,
-        nightlifePctOfAvg: 0.4, crowdedPctOfAvg: 0.2, pricePctOfAvg: 0.7
-      };
-      database.insertCommunityData('gmean', data, 'PreferencesStatistics');
-      database.insertCommunityData('gstddev', data, 'PreferencesStatistics');
       testDB.all('SELECT * from PreferencesStatistics', function(err, rows) {
         if (err) {
           done(err);
@@ -412,20 +447,13 @@ describe('DB', function() {
           rows[1].should.have.all.keys('statistic', 'violentCrimePctOfAvg',
               'nonViolentCrimePctOfAvg', 'pricePctOfAvg',
               'nightlifePctOfAvg', 'crowdedPctOfAvg');
-          testDB.exec('DELETE FROM PreferencesStatistics WHERE ' +
-              'statistic="gmean" OR statistic="gstddev"');
           done();
         }
       });
     });
 
     it('should change any non-numbers to "NULL"', function(done) {
-      var data = {
-        violentCrimePctOfAvg: 'apple', nonViolentCrimePctOfAvg: undefined,
-        nightlifePctOfAvg: 0.4, crowdedPctOfAvg: 0.2, pricePctOfAvg: 0.7
-      };
-      database.insertCommunityData(1, data, 'CommunityData');
-      testDB.get('SELECT * from CommunityData WHERE communityID=1', [],
+      testDB.get('SELECT * from CommunityData WHERE communityID=8', [],
           function(err, row) {
         if (err) {
           done(err);
@@ -433,25 +461,19 @@ describe('DB', function() {
           row.should.have.all.keys('communityID', 'violentCrimePctOfAvg',
               'nonViolentCrimePctOfAvg', 'pricePctOfAvg',
               'nightlifePctOfAvg', 'crowdedPctOfAvg');
-          row.communityID.should.equal(1);
+          row.communityID.should.equal(8);
           row.violentCrimePctOfAvg.should.equal('NULL');
           row.nonViolentCrimePctOfAvg.should.equal('NULL');
           row.nightlifePctOfAvg.should.equal(0.4);
           row.crowdedPctOfAvg.should.equal(0.2);
           row.pricePctOfAvg.should.equal(0.7);
-          testDB.exec('DELETE FROM CommunityData WHERE communityID=1');
           done();
         }
       });
     });
 
     it('should update row if already exists', function(done) {
-      var data = {
-        violentCrimePctOfAvg: 'apple', nonViolentCrimePctOfAvg: undefined,
-        nightlifePctOfAvg: 0.4, crowdedPctOfAvg: 0.2, pricePctOfAvg: 0.7
-      };
-      database.insertCommunityData(1, data, 'CommunityData');
-      testDB.get('SELECT * from CommunityData WHERE communityID=1', [],
+      testDB.get('SELECT * from CommunityData WHERE communityID=9', [],
           function(err, row) {
         if (err) {
           done(err);
@@ -459,7 +481,7 @@ describe('DB', function() {
           row.should.have.all.keys('communityID', 'violentCrimePctOfAvg',
               'nonViolentCrimePctOfAvg', 'pricePctOfAvg',
               'nightlifePctOfAvg', 'crowdedPctOfAvg');
-          row.communityID.should.equal(1);
+          row.communityID.should.equal(9);
           row.violentCrimePctOfAvg.should.equal('NULL');
           row.nonViolentCrimePctOfAvg.should.equal('NULL');
           row.nightlifePctOfAvg.should.equal(0.4);
@@ -470,8 +492,8 @@ describe('DB', function() {
             violentCrimePctOfAvg: 0.5, nonViolentCrimePctOfAvg: 0.1,
             nightlifePctOfAvg: 0.8, crowdedPctOfAvg: 0.3, pricePctOfAvg: null
           };
-          database.insertCommunityData(1, newData, 'CommunityData');
-          testDB.get('SELECT * from CommunityData WHERE communityID=1', [],
+          database.insertCommunityData(9, newData, 'CommunityData');
+          testDB.get('SELECT * from CommunityData WHERE communityID=9', [],
               function(err, row) {
             if (err) {
               done(err);
@@ -479,16 +501,425 @@ describe('DB', function() {
               row.should.have.all.keys('communityID', 'violentCrimePctOfAvg',
                   'nonViolentCrimePctOfAvg', 'pricePctOfAvg',
                   'nightlifePctOfAvg', 'crowdedPctOfAvg');
-              row.communityID.should.equal(1);
+              row.communityID.should.equal(9);
               row.violentCrimePctOfAvg.should.equal(0.5);
               row.nonViolentCrimePctOfAvg.should.equal(0.1);
               row.nightlifePctOfAvg.should.equal(0.8);
               row.crowdedPctOfAvg.should.equal(0.3);
               row.pricePctOfAvg.should.equal('NULL');
-              testDB.exec('DELETE FROM CommunityData WHERE communityID=1');
               done();
             }
           });
+        }
+      });
+    });
+  });
+
+  describe('insertAllCommunitiesData', function() {
+    var communities = {
+      10: {
+        violentCrimePctOfAvg: 'apple', nonViolentCrimePctOfAvg: undefined,
+        nightlifePctOfAvg: 0.4, crowdedPctOfAvg: 0.2, pricePctOfAvg: 0.7
+      },
+      11: {
+        violentCrimePctOfAvg: 0.3, nonViolentCrimePctOfAvg: 0.4,
+        nightlifePctOfAvg: 0.1, crowdedPctOfAvg: 0.9, pricePctOfAvg: 'hello'
+      },
+      e: {
+        violentCrimePctOfAvg: 0.8, nonViolentCrimePctOfAvg: 0.1,
+        nightlifePctOfAvg: 0.5, crowdedPctOfAvg: 0.6, pricePctOfAvg: 0.4
+      }
+    };
+
+    before(function(done) {
+      database.insertAllCommunitiesData(communities);
+      // for some reason this makes everything work idk
+      setTimeout(done, 1);
+    });
+
+    after(function(done) {
+      testDB.exec('DELETE FROM CommunityData WHERE communityID=10 OR ' +
+          'communityID=11');
+      testDB.exec('DELETE FROM PreferencesStatistics WHERE ' +
+          'statistic="e"');
+      done();
+    });
+
+    it('should insert all communities given', function(done) {
+      testDB.all('SELECT * FROM CommunityData', function(err, rows) {
+        if (err) {
+          done(err);
+        } else {
+          rows.should.have.length(2);
+          for (var i = 0; i < rows.length; ++i) {
+            rows[i].communityID.should.equal(i + 10);
+            for (var key in communities[i]) {
+              if (communities[i].hasOwnProperty(key)) {
+                var val = communities[i][key];
+                if (isNaN(val)) {
+                  val = 'NULL';
+                }
+                rows[i][key].should.equal(val);
+              }
+            }
+          }
+          testDB.all('SELECT * FROM PreferencesStatistics',
+              function(err, rows) {
+            if (err) {
+              done(err);
+            } else {
+              rows[0].statistic.should.equal('e');
+              for (var key in communities.c) {
+                if (communities.c.hasOwnProperty(key)) {
+                  var val = communities.c[key];
+                  if (isNaN(val)) {
+                    val = 'NULL';
+                  }
+                  rows[0][key].should.equal(val);
+                }
+              }
+              done();
+            }
+          });
+        }
+      });
+    });
+  });
+
+  describe('insertDirectionsData', function() {
+    var lat1 = 81.3;
+    var lng1 = -23.4;
+    var lat2 = 12.2;
+    var lng2 = -34.6;
+
+    before(function(done) {
+      var latLng1 = lat1.toString() + ',' + lng1.toString();
+      var latLng2 = lat2.toString() + ',' + lng2.toString();
+      var fields = [];
+      var nullFields = [];
+      for (var i = 0; i <= 77; ++i) {
+        fields.push(i);
+        nullFields.push('h');
+      }
+      database.insertDirectionsData(latLng1, fields);
+      database.insertDirectionsData(latLng2, nullFields);
+      done();
+    });
+
+    after(function(done) {
+      testDB.exec('DELETE FROM CommunityDirections WHERE ' +
+          'lat=' + lat1 + ' OR lat=' + lat2);
+      done();
+    });
+
+    function degToRad(deg) {
+      return deg * Math.PI / 180;
+    }
+
+    it('should insert directions', function(done) {
+      testDB.all('SELECT * FROM CommunityDirections WHERE ' +
+          'lat=' + lat1, function(err, rows) {
+        if (err) {
+          done(err);
+        } else {
+          var radLat = degToRad(lat1);
+          var radLng = degToRad(lng1);
+          rows.should.have.length(1);
+          rows[0].lat.should.equal(lat1);
+          rows[0].lng.should.equal(lng1);
+          rows[0].sinLat.should.equal(Math.sin(radLat));
+          rows[0].cosLat.should.equal(Math.cos(radLat));
+          rows[0].sinLng.should.equal(Math.sin(radLng));
+          rows[0].cosLng.should.equal(Math.cos(radLng));
+          for (var key in rows[0]) {
+            if (rows[0].hasOwnProperty(key) && !isNaN(key)) {
+              rows[0][key].should.equal(parseInt(key));
+            }
+          }
+          done();
+        }
+      });
+    });
+
+    it('should change any non-numbers to "NULL"', function(done) {
+      testDB.all('SELECT * FROM CommunityDirections WHERE ' +
+          'lat=' + lat2, function(err, rows) {
+        if (err) {
+          done(err);
+        } else {
+          var radLat = degToRad(lat2);
+          var radLng = degToRad(lng2);
+          rows.should.have.length(1);
+          rows[0].lat.should.equal(lat2);
+          rows[0].lng.should.equal(lng2);
+          rows[0].sinLat.should.equal(Math.sin(radLat));
+          rows[0].cosLat.should.equal(Math.cos(radLat));
+          rows[0].sinLng.should.equal(Math.sin(radLng));
+          rows[0].cosLng.should.equal(Math.cos(radLng));
+          for (var key in rows[0]) {
+            if (rows[0].hasOwnProperty(key) && !isNaN(key)) {
+              console.assert(rows[0][key] === null);
+            }
+          }
+          done();
+        }
+      });
+    });
+  });
+
+  describe('insertAllDirectionsData', function() {
+    var lat1 = 81.3;
+    var lng1 = -23.4;
+    var lat2 = 12.2;
+    var lng2 = -34.6;
+
+    before(function(done) {
+      var latLng1 = lat1.toString() + ',' + lng1.toString();
+      var latLng2 = lat2.toString() + ',' + lng2.toString();
+      var fields = [];
+      var nullFields = [];
+      for (var i = 0; i <= 77; ++i) {
+        fields.push(i);
+        nullFields.push('h');
+      }
+      var latLngs = {};
+      latLngs[latLng1] = fields;
+      latLngs[latLng2] = nullFields;
+      database.insertAllDirectionsData(latLngs);
+      setTimeout(done, 1);
+    });
+
+    after(function(done) {
+      testDB.exec('DELETE FROM CommunityDirections WHERE ' +
+        'lat=' + lat1 + ' OR lat=' + lat2);
+      done();
+    });
+
+    it('should insert all directions', function(done) {
+      testDB.all('SELECT * FROM CommunityDirections', function(err, rows) {
+        if (err) {
+          done(err);
+        } else {
+          rows.should.have.length(2);
+          rows[0].lat.should.equal(lat1);
+          rows[0].lng.should.equal(lng1);
+          rows[1].lat.should.equal(lat2);
+          rows[1].lng.should.equal(lng2);
+          done();
+        }
+      });
+    });
+  });
+
+  describe('insertCommunityArea', function() {
+    var community = {
+      communityID: 12,
+      name: 'aaa',
+      landArea: 12,
+      center: '123',
+      truliaID: 13,
+      radius: 123,
+      outline: [{lat: 1, lng: 2}]
+    };
+
+    var communityNull = {
+      communityID: 13,
+      name: 'bbb',
+      landArea: 234,
+      center: '123',
+      truliaID: 5645,
+      radius: 'abc',
+      outline: undefined
+    };
+
+    before(function(done) {
+      database.insertCommunityArea(community.communityID, community);
+      database.insertCommunityArea(communityNull.communityID,
+          communityNull);
+      done();
+    });
+
+    after(function(done) {
+      testDB.exec('DELETE FROM CommunityArea WHERE communityID=12 OR ' +
+          'communityID=13');
+      done();
+    });
+
+    it('should insert community area', function(done) {
+      testDB.get('SELECT * FROM CommunityArea WHERE communityID=12',
+          function(err, row) {
+        if (err) {
+          done(err);
+        } else {
+          for (var key in row) {
+            if (row.hasOwnProperty(key)) {
+              if (key !== 'outline') {
+                row[key].should.equal(community[key]);
+              }
+            }
+          }
+          row.outline.should.equal(JSON.stringify(community.outline));
+          done();
+        }
+      });
+    });
+
+    it('should change incorrect values to "NULL"', function(done) {
+      testDB.get('SELECT * FROM CommunityArea WHERE communityID=13',
+          function(err, row) {
+        if (err) {
+          done(err);
+        } else {
+          row.radius.should.equal('NULL');
+          row.outline.should.equal('NULL');
+          done();
+        }
+      });
+    });
+  });
+
+  describe('insertAllCommunityAreas', function() {
+    var community = {
+      communityID: 14,
+      name: 'aaa',
+      landArea: 12,
+      center: '123',
+      truliaID: 13,
+      radius: 123,
+      outline: [{lat: 1, lng: 2}]
+    };
+
+    var communityNull = {
+      communityID: 15,
+      name: 'bbb',
+      landArea: 234,
+      center: '123',
+      truliaID: 5645,
+      radius: 'abc',
+      outline: undefined
+    };
+
+    var communities = {};
+
+    before(function(done) {
+      communities[community.communityID] = community;
+      communities[communityNull.communityID] = communityNull;
+      database.insertAllCommunityAreas(communities);
+      setTimeout(done, 1);
+    });
+
+    after(function(done) {
+      testDB.exec('DELETE FROM CommunityArea WHERE communityID=14 OR ' +
+        'communityID=15');
+      done();
+    });
+
+    it('should insert all community areas', function(done) {
+      testDB.all('SELECT * FROM CommunityArea', function(err, rows) {
+        if (err) {
+          done(err);
+        } else {
+          rows.should.have.length(2);
+          rows[0].communityID.should.equal(community.communityID);
+          rows[1].communityID.should.equal(communityNull.communityID);
+          done();
+        }
+      })
+    });
+  });
+
+  describe('getClosestLatLng', function() {
+    var lat1 = 81;
+    var lat2 = 100;
+    var closeLatLng = lat1.toString() + ',-23';
+    var farLatLng = lat2.toString() + ',-1';
+    var destLatLng = {lat: 82, lng: -22};
+
+    before(function(done) {
+      var fields = [];
+      for (var i = 0; i <= 77; ++i) {
+        fields.push(i);
+      }
+      var latLngs = {};
+      latLngs[closeLatLng] = fields;
+      latLngs[farLatLng] = fields;
+      database.insertAllDirectionsData(latLngs);
+      setTimeout(done, 0.00000000000001);
+    });
+
+    after(function(done) {
+      testDB.exec('DELETE FROM CommunityDirections WHERE ' +
+          'lat=' + lat1 + ' OR lat=' + lat2);
+      done();
+    });
+
+    it('should return closer coordinate', function(done) {
+      database.getClosestLatLng(destLatLng, function(err, row) {
+        if (err) {
+          done(err);
+        } else {
+          row.lat.should.equal(lat1);
+          row.lng.should.equal(-23);
+          done();
+        }
+      });
+    })
+  });
+
+  describe('getCommunitiesCondition', function() {
+    var communitiesArea = {
+      16: {
+        name: 'aaa', landArea: 12, center: '123', truliaID: 16, radius: 123,
+        outline: [{lat: 1, lng: 2}]
+      },
+      17: {
+        name: 'aaa', landArea: 12, center: '123', truliaID: 17, radius: 124,
+        outline: [{lat: 1, lng: 2}]
+      },
+      18: {
+        name: 'aaa', landArea: 12, center: '123', truliaID: 18, radius: 125,
+        outline: [{lat: 1, lng: 2}]
+      }
+    };
+
+    var communitiesData = {
+      16: {
+        violentCrimePctOfAvg: 'apple', nonViolentCrimePctOfAvg: undefined,
+        nightlifePctOfAvg: 0.4, crowdedPctOfAvg: 0.2, pricePctOfAvg: 0.7
+      },
+      17: {
+        violentCrimePctOfAvg: 0.3, nonViolentCrimePctOfAvg: 0.4,
+        nightlifePctOfAvg: 0.1, crowdedPctOfAvg: 0.9, pricePctOfAvg: 'hello'
+      },
+      18: {
+        violentCrimePctOfAvg: 0.8, nonViolentCrimePctOfAvg: 0.2,
+        nightlifePctOfAvg: 0.9, crowdedPctOfAvg: 0.3, pricePctOfAvg: 0.1
+      }
+    };
+
+    before(function(done) {
+      database.insertAllCommunityAreas(communitiesArea);
+      database.insertAllCommunitiesData(communitiesData);
+      // for some reason this makes everything work idk
+      setTimeout(done, 1);
+    });
+
+    after(function(done) {
+      testDB.exec('DELETE FROM CommunityData WHERE communityID=16 OR ' +
+        'communityID=17 OR communityID=18');
+      done();
+    });
+
+    it('should return all communities that match a condition', function(done) {
+      database.getCommunitiesCondition('nightlifePctOfAvg<0.5',
+          function(err, rows) {
+        if (err) {
+          done(err);
+        } else {
+          rows.should.have.length(2);
+          rows[0].communityID.should.equal(16);
+          rows[1].communityID.should.equal(17);
+          done();
         }
       });
     });
@@ -518,7 +949,7 @@ describe('TruliaData', function() {
     });
   });
 
-  /*describe('getAveragePriceFromArr', function() {
+  describe('getAveragePriceFromArr', function() {
     var getAveragePriceFromArr = trulia.__get__('getAveragePriceFromArr');
     var fakeXML = `<TruliaWebServices>
                     <response>
@@ -579,5 +1010,5 @@ describe('TruliaData', function() {
         }
       });
     });
-  });*/
+  });
 });
