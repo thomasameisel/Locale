@@ -6,154 +6,6 @@ var should = chai.should();
 var sinon = require('sinon');
 chai.use(require('sinon-chai'));
 
-describe('TribuneData', function() {
-  var tribune = rewire('../lib/tribuneData');
-
-  describe.skip('getAllCommunityData', function() {
-    it('should return an object with all expected keys', function(done) {
-      tribune.getAllCommunityData(1, function(err, obj) {
-        if (err) {
-          done(err);
-        } else {
-          obj.should.have.all.keys('adjacent_area_numbers', 'area_number',
-            'hardship_index', 'name', 'pct_crowded', 'pct_no_diploma',
-            'pct_old_and_young', 'pct_poverty', 'pct_unemployed',
-            'per_capita_income', 'population_2000', 'population_2010',
-            'shape_area', 'shape_len', 'slug', 'wikipedia');
-          done();
-        }
-      });
-    });
-  });
-
-  describe('getCrowdedPct', function() {
-    var getCrowdedPct = tribune.__get__('getCrowdedPct');
-    var reset;
-    before(function() {
-      reset = tribune.__set__('getAllCommunityData', function(ignore, cb) {
-        // Create dummy object to pass back
-        var retObj = {
-          adjacent_area_numbers: '5',
-          area_number: '2',
-          hardship_index: '0.7',
-          name: 'Loop',
-          pct_crowded: '0.6',
-          pct_no_diploma: '0.7',
-          pct_old_and_young: '0.43',
-          pct_poverty: '0.2'
-        };
-        cb(null, retObj);
-      });
-    });
-    after(function() {
-      reset();
-    });
-
-    it('should return only pct_crowded as a number', function(done) {
-      getCrowdedPct({ communityID: 1 }, function(err, num) {
-        if (err) {
-          done(err);
-        } else {
-          num.should.be.a('number');
-          num.should.not.be.NaN;
-          done();
-        }
-      });
-    });
-  });
-
-  describe('getCrimeCount', function() {
-    var getCrimeCount = tribune.__get__('getCrimeCount');
-
-    it('should pass the correct parameters to makeRequest', function(done) {
-      // NOTE: month is 0-based for the Date constructor
-      var clock = sinon.useFakeTimers(new Date(1993, 9, 30).getTime());
-      var revert = tribune.__set__('makeRequest', function(url, params, cb) {
-        params.should.contain.all.keys('community_area', 'limit',
-          'crime_date__gte', 'format');
-        params.community_area.should.equal(1);
-        params.limit.should.equal(0);
-        params.crime_date__gte.should.equal('1993-04-30');
-        params.format.should.equal('json');
-        clock.restore();
-        revert();
-        done();
-      });
-      getCrimeCount({ communityID: 1 }, function() {});
-    });
-
-    it.skip('should return an object with violent and non-violent crime',
-        function(done) {
-      this.timeout(3000);
-      getCrimeCount({ communityID: 1, landArea: 1800 },
-          function(err, obj) {
-        if (err) {
-          done(err);
-        } else {
-          obj.should.contain.all.keys('violent', 'nonViolent');
-          obj.violent.should.be.a('number');
-          obj.violent.should.not.be.NaN;
-          obj.violent.should.be.greaterThan(0);
-          obj.nonViolent.should.be.a('number');
-          obj.nonViolent.should.not.be.NaN;
-          obj.nonViolent.should.be.greaterThan(0);
-          done();
-        }
-      });
-    });
-  });
-
-  describe('communitiesCrimePctOfAvg', function() {
-    var fakeCommInfo = [
-      { communityID: 1,
-        landArea: 8000 },
-      { communityID: 2,
-        landArea: 8000}
-    ];
-
-    // Create variable to restore getCrimeCount
-    var reset;
-    before(function() {
-      reset = tribune.__set__('getCrimeCount', function(ignore, cb) {
-        cb(null, { violent: 0.5, nonViolent: 0.75 });
-      });
-    });
-    after(function() {
-      reset();
-    });
-
-    it('should return pctOfAvg for violent and non-violent crime',
-        function(done) {
-      tribune.communitiesCrimePctOfAvg(fakeCommInfo,
-                                       function(err, violent, nonViolent) {
-        if (err) {
-          done(err);
-        } else {
-          var violentSum = 0;
-          for (var vcommunity in violent) {
-            if (violent.hasOwnProperty(vcommunity)) {
-              violent[vcommunity].should.be.a('number');
-              violent[vcommunity].should.not.be.NaN;
-              violentSum += violent[vcommunity];
-            }
-          }
-          violentSum.should.equal(fakeCommInfo.length);
-          var nonViolentSum = 0;
-          for (var community in nonViolent) {
-            if (nonViolent.hasOwnProperty(community)) {
-              nonViolent[community].should.be.a('number');
-              nonViolent[community].should.not.be.NaN;
-              nonViolentSum += nonViolent[community];
-            }
-          }
-          nonViolentSum.should.equal(fakeCommInfo.length);
-          done();
-        }
-      });
-    });
-  });
-});
-
 describe('CommunitiesPctOfAvg', function() {
   var pctOfAvg = require('../lib/communitiesPctOfAvg');
 
@@ -221,6 +73,24 @@ describe('CommunitiesPctOfAvg', function() {
       var retVal = pctOfAvg.getPctOfAvg(fakeCommData, 4);
       retVal[1].should.equal(1.25);
       retVal[2].should.equal(0.75);
+    });
+  });
+
+  describe('communitiesPctOfAvg', function() {
+    it('should return the pct of avg for each community', function(done) {
+      var fakeCommInfo = [{ communityID: 1 }, { communityID: 2 },
+          { communityID: 3 }];
+      pctOfAvg.communitiesPctOfAvg(fakeCommInfo,
+          function(community, callback) {
+            callback(null, community.communityID);
+          },
+          function(err, result) {
+            result[1].should.equal(0.5);
+            result[2].should.equal(1);
+            result[3].should.equal(1.5);
+            done();
+          }
+      );
     });
   });
 });
@@ -923,6 +793,240 @@ describe('DB', function() {
         }
       });
     });
+  });
+});
+
+describe('Directions', function() {
+  var directions = require('../lib/directions');
+
+  describe.skip('getTimeToCommunities', function() {
+    it('should return time from coordinate to all communities',
+        function(done) {
+      var communities = [
+        {
+          communityID: 1,
+          latLng: '36.153128,-86.801081'
+        },
+        {
+          communityID: 2,
+          latLng: '36.139146,-86.829458'
+        }
+      ];
+      var drivingPreferences = {
+        mode: 'driving',
+        destination: '36.152035,-86.809247'
+      };
+      directions.getTimeToCommunities(communities, drivingPreferences,
+          function(err, result) {
+            if (err) {
+              done(err);
+            } else {
+              result[1].should.equal(4.15);
+              result[2].should.equal(7.716666666666667);
+              done();
+            }
+          });
+    });
+  });
+});
+
+describe('DirectionsCommunities', function() {
+  var directionsCommunities = require('../lib/directionsCommunities');
+
+  describe.skip('getTimeToCommunities', function() {
+    it('should get time to all communities', function(done) {
+      var drivingPreferences = {
+        mode: 'driving',
+        destination: '36.152035,-86.809247'
+      };
+      directionsCommunities.getTimeToCommunities(drivingPreferences,
+        function(err, result) {
+          if (err) {
+            done(err);
+          } else {
+            var communities = {};
+            for (var i = 1; i <= 77; ++i) {
+              communities[i] = false;
+            }
+            for (var key in result) {
+              if (result.hasOwnProperty(key)) {
+                communities[key] = true;
+              }
+            }
+            for (var id in communities) {
+              if (communities.hasOwnProperty(id)) {
+                communities[id].should.equal(true);
+              }
+            }
+            done();
+          }
+        });
+    });
+  });
+
+  describe.skip('getClosestLatLng', function() {
+    it('should get closest latLng to destination', function(done) {
+      var lat = 81;
+      var lng = -23;
+      var latLng = lat.toString() + ',' + lng.toString();
+      directionsCommunities.getClosestLatLng(latLng,
+          function(err, result) {
+            if (err) {
+              done(err);
+            } else {
+              // check result when we have more available
+              done();
+            }
+          });
+    });
+  });
+});
+
+describe('TribuneData', function() {
+  var tribune = rewire('../lib/tribuneData');
+
+  describe.skip('getAllCommunityData', function() {
+    it('should return an object with all expected keys', function(done) {
+      tribune.getAllCommunityData(1, function(err, obj) {
+        if (err) {
+          done(err);
+        } else {
+          obj.should.have.all.keys('adjacent_area_numbers', 'area_number',
+            'hardship_index', 'name', 'pct_crowded', 'pct_no_diploma',
+            'pct_old_and_young', 'pct_poverty', 'pct_unemployed',
+            'per_capita_income', 'population_2000', 'population_2010',
+            'shape_area', 'shape_len', 'slug', 'wikipedia');
+          done();
+        }
+      });
+    });
+  });
+
+  describe('getCrowdedPct', function() {
+    var getCrowdedPct = tribune.__get__('getCrowdedPct');
+    var reset;
+    before(function() {
+      reset = tribune.__set__('getAllCommunityData', function(ignore, cb) {
+        // Create dummy object to pass back
+        var retObj = {
+          adjacent_area_numbers: '5',
+          area_number: '2',
+          hardship_index: '0.7',
+          name: 'Loop',
+          pct_crowded: '0.6',
+          pct_no_diploma: '0.7',
+          pct_old_and_young: '0.43',
+          pct_poverty: '0.2'
+        };
+        cb(null, retObj);
+      });
+    });
+    after(function() {
+      reset();
+    });
+
+    it('should return only pct_crowded as a number', function(done) {
+      getCrowdedPct({ communityID: 1 }, function(err, num) {
+        if (err) {
+          done(err);
+        } else {
+          num.should.be.a('number');
+          num.should.not.be.NaN;
+          done();
+        }
+      });
+    });
+  });
+
+  describe('getCrimeCount', function() {
+    var getCrimeCount = tribune.__get__('getCrimeCount');
+
+    it('should pass the correct parameters to makeRequest', function(done) {
+      // NOTE: month is 0-based for the Date constructor
+      var clock = sinon.useFakeTimers(new Date(1993, 9, 30).getTime());
+      var revert = tribune.__set__('makeRequest', function(url, params, cb) {
+        params.should.contain.all.keys('community_area', 'limit',
+          'crime_date__gte', 'format');
+        params.community_area.should.equal(1);
+        params.limit.should.equal(0);
+        params.crime_date__gte.should.equal('1993-04-30');
+        params.format.should.equal('json');
+        clock.restore();
+        revert();
+        done();
+      });
+      getCrimeCount({ communityID: 1 }, function() {});
+    });
+
+    it.skip('should return an object with violent and non-violent crime',
+      function(done) {
+        this.timeout(3000);
+        getCrimeCount({ communityID: 1, landArea: 1800 },
+          function(err, obj) {
+            if (err) {
+              done(err);
+            } else {
+              obj.should.contain.all.keys('violent', 'nonViolent');
+              obj.violent.should.be.a('number');
+              obj.violent.should.not.be.NaN;
+              obj.violent.should.be.greaterThan(0);
+              obj.nonViolent.should.be.a('number');
+              obj.nonViolent.should.not.be.NaN;
+              obj.nonViolent.should.be.greaterThan(0);
+              done();
+            }
+          });
+      });
+  });
+
+  describe('communitiesCrimePctOfAvg', function() {
+    var fakeCommInfo = [
+      { communityID: 1,
+        landArea: 8000 },
+      { communityID: 2,
+        landArea: 8000}
+    ];
+
+    // Create variable to restore getCrimeCount
+    var reset;
+    before(function() {
+      reset = tribune.__set__('getCrimeCount', function(ignore, cb) {
+        cb(null, { violent: 0.5, nonViolent: 0.75 });
+      });
+    });
+    after(function() {
+      reset();
+    });
+
+    it('should return pctOfAvg for violent and non-violent crime',
+      function(done) {
+        tribune.communitiesCrimePctOfAvg(fakeCommInfo,
+          function(err, violent, nonViolent) {
+            if (err) {
+              done(err);
+            } else {
+              var violentSum = 0;
+              for (var vcommunity in violent) {
+                if (violent.hasOwnProperty(vcommunity)) {
+                  violent[vcommunity].should.be.a('number');
+                  violent[vcommunity].should.not.be.NaN;
+                  violentSum += violent[vcommunity];
+                }
+              }
+              violentSum.should.equal(fakeCommInfo.length);
+              var nonViolentSum = 0;
+              for (var community in nonViolent) {
+                if (nonViolent.hasOwnProperty(community)) {
+                  nonViolent[community].should.be.a('number');
+                  nonViolent[community].should.not.be.NaN;
+                  nonViolentSum += nonViolent[community];
+                }
+              }
+              nonViolentSum.should.equal(fakeCommInfo.length);
+              done();
+            }
+          });
+      });
   });
 });
 
