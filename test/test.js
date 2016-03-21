@@ -818,14 +818,14 @@ describe('Directions', function() {
       };
       directions.getTimeToCommunities(communities, drivingPreferences,
           function(err, result) {
-            if (err) {
-              done(err);
-            } else {
-              result[1].should.equal(4.15);
-              result[2].should.equal(7.716666666666667);
-              done();
-            }
-          });
+        if (err) {
+          done(err);
+        } else {
+          result[1].should.equal(4.15);
+          result[2].should.equal(7.716666666666667);
+          done();
+        }
+      });
     });
   });
 });
@@ -840,27 +840,27 @@ describe('DirectionsCommunities', function() {
         destination: '36.152035,-86.809247'
       };
       directionsCommunities.getTimeToCommunities(drivingPreferences,
-        function(err, result) {
-          if (err) {
-            done(err);
-          } else {
-            var communities = {};
-            for (var i = 1; i <= 77; ++i) {
-              communities[i] = false;
-            }
-            for (var key in result) {
-              if (result.hasOwnProperty(key)) {
-                communities[key] = true;
-              }
-            }
-            for (var id in communities) {
-              if (communities.hasOwnProperty(id)) {
-                communities[id].should.equal(true);
-              }
-            }
-            done();
+          function(err, result) {
+        if (err) {
+          done(err);
+        } else {
+          var communities = {};
+          for (var i = 1; i <= 77; ++i) {
+            communities[i] = false;
           }
-        });
+          for (var key in result) {
+            if (result.hasOwnProperty(key)) {
+              communities[key] = true;
+            }
+          }
+          for (var id in communities) {
+            if (communities.hasOwnProperty(id)) {
+              communities[id].should.equal(true);
+            }
+          }
+          done();
+        }
+      });
     });
   });
 
@@ -871,15 +871,45 @@ describe('DirectionsCommunities', function() {
       var latLng = lat.toString() + ',' + lng.toString();
       directionsCommunities.getClosestLatLng(latLng,
           function(err, result) {
-            if (err) {
-              done(err);
-            } else {
-              // check result when we have more available
-              done();
-            }
-          });
+        if (err) {
+          done(err);
+        } else {
+          // check result when we finish populating directions
+          done('check result when we finish populating directions');
+        }
+      });
     });
   });
+});
+
+describe('MakeRequest', function() {
+  var makeRequest = require('../lib/makeRequest');
+
+  it('should make a request', function(done) {
+    makeRequest('http://example.com', null, function(err, result) {
+      if (err) {
+        done(err);
+      } else {
+        console.assert(err === null);
+        result.should.not.be.equal(null);
+        done();
+      }
+    });
+  });
+
+  it('should give an error for bad requests', function(done) {
+    makeRequest('http://example.com/foo', null, function(err, result) {
+      console.assert(result === undefined);
+      err.toString().should.be.equal(new Error('Response Code:404').toString());
+      done();
+    });
+  });
+});
+
+describe('Nightlife', function() {
+  var nightlife = require('../lib/nightlife');
+
+
 });
 
 describe('TribuneData', function() {
