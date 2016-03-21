@@ -130,7 +130,6 @@ app.get('/directions', function(req, res) {
         } else {
           res.send(result);
           var end = new Date();
-          console.log('Coordinate used:', result);
           console.log('Time elapsed:', (end - start) / 1000, 's');
         }
       });
