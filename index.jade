@@ -28,7 +28,11 @@ html
         for(var i = 0; i < points.length; ++i) {
           var marker = new google.maps.Marker({
             position: points[i],
-            map: map
+            map: map,
+            title: points[i].lat + ',' + points[i].lng
+          });
+          marker.addListener('click', function() {
+            console.log(this.title);
           });
         }
       }
