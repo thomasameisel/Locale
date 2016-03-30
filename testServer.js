@@ -6,6 +6,7 @@ app.set('view engine', 'jade');
 
 var pointString = fs.readFileSync('./lib/unusedPoints.txt');
 var directionsString = fs.readFileSync('./lib/directionsCoords.json');
+var randomPointString = fs.readFileSync('./lib/randomCoords.json');
 
 app.get('/', function(req, res) {
   res.render('index.jade', { points: pointString });
@@ -13,6 +14,10 @@ app.get('/', function(req, res) {
 
 app.get('/directions', function(req, res) {
   res.render('index.jade', { points: directionsString });
+});
+
+app.get('/random', function(req, res) {
+  res.render('index.jade', { points: randomPointString });
 });
 
 app.listen(8080, function() {

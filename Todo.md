@@ -1,4 +1,4 @@
-- [ ] BUG: preferences don't show up in the same order for every community in the detail view
+- [ ] Preferences don't show up in the same order for every community in the detail view
 - [ ] Write more tests
 - [ ] Change how getAllData fails (send an email if failed)
 - [ ] Add more cities (NYC, San Francisco, Nashville)
@@ -8,7 +8,7 @@
 - [x] Write code to automatically add community areas based on KML
 - Collin
   - [ ] Set up CD to test and deploy to Elastic Beanstalk upon push
-  - [ ] Set up DNS routing for website
+  - [x] Set up DNS routing for website
   - [x] Add noise complaint data
   - [x] Add more communities to database
   - [x] Separate violent and non-violent crime
@@ -28,6 +28,7 @@
         - do not take the user back to landing page, just change city in the questionnaire
         - void out work place when the user changes the city
   - [ ] change landing page search to only accept cities that we have (only Chicago for now)
+        - leaving the input box blank prints 'NO_RESULTS' next to the box
   - [ ] submit button should only appear when all questions are answered
         - should slide in from bottom center of screen when all questions are answered
         - if the directions request is not done, a loading icon should appear after the user presses submit

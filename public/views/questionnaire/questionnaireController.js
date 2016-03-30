@@ -18,65 +18,65 @@ app.controller('questionnaireController', function($scope, $stateParams, $state,
   $scope.questions = [
     {
       key: 'safety',
-      text: 'Safety',
+      text: 'Late at night, I would feel comfortable:',
       options: [
-        '1',
-        '2',
-        '3',
-        '4',
-        '5'
+        'Doing anything. No one crosses me.',
+        'Walking home with friends.',
+        'Walking across the street from home.',
+        'Taking a cab back alone.',
+        'Being at home, with the door deadbolted.'
       ]
     },
 
     {
       key: 'qualityOfLife',
-      text: 'Quality of Life',
+      text: 'How do you feel about drug use and prostitution?',
       options: [
-        '1',
-        '2',
-        '3',
-        '4',
-        '5'
+        "B****, don't kill my vibe!",
+        "It's the world's oldest profession for a reason."
+        "I don't mind, as long as it doesn't affect me.",
+        "They're gateways to worse crimes.",
+        'Just knowing they happen makes me sick.',
       ]
     },
 
     {
       key: 'nightlife',
-      text: 'Nightlife',
+      text: 'On a typical weekend night, I can be found:',
       options: [
-        '1',
-        '2',
-        '3',
-        '4',
-        '5'
+        'Enjoying a book in peace and quiet.',
+        'Staying in with friends.',
+        'Sometimes I go out, others I stay in.',
+        'Having a drink with friends.',
+        "I usually can't remember my nights..."
       ]
     },
 
     {
       key: 'affordability',
-      text: 'Affordability',
+      text: 'My price range is best described as:',
       options: [
-        '1',
-        '2',
-        '3',
-        '4',
-        '5'
+        'Warren Buffet asks me for loans.',
+        'Comfort is worth a premium.'
+        "An average apartment's cost.",
+        "I'm trying not to break the bank.",
+        'Just get me off the street.',
       ]
     },
 
     {
       key: 'breathingRoom',
-      text: 'Breathing Room',
+      text: 'How do you feel about crowds?',
       options: [
-        '1',
-        '2',
-        '3',
-        '4',
-        '5'
+        'I love the hustle and bustle of city life.'
+        'Meeting new people is fun.',
+        "I'm pretty indifferent.",
+        'I need some space to myself.',
+        'I hate people.',
       ]
     }
   ];
-  
+
   $scope.searched = false;
   $scope.isValidWorkplace = false;
   var input = document.getElementById('workplaceBox');
