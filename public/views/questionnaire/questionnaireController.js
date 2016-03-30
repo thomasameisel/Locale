@@ -33,7 +33,7 @@ app.controller('questionnaireController', function($scope, $stateParams, $state,
       text: 'How do you feel about drug use and prostitution?',
       options: [
         "B****, don't kill my vibe!",
-        "It's the world's oldest profession for a reason."
+        "It's the world's oldest profession for a reason.",
         "I don't mind, as long as it doesn't affect me.",
         "They're gateways to worse crimes.",
         'Just knowing they happen makes me sick.',
@@ -57,7 +57,7 @@ app.controller('questionnaireController', function($scope, $stateParams, $state,
       text: 'My price range is best described as:',
       options: [
         'Warren Buffet asks me for loans.',
-        'Comfort is worth a premium.'
+        'Comfort is worth a premium.',
         "An average apartment's cost.",
         "I'm trying not to break the bank.",
         'Just get me off the street.',
@@ -68,7 +68,7 @@ app.controller('questionnaireController', function($scope, $stateParams, $state,
       key: 'breathingRoom',
       text: 'How do you feel about crowds?',
       options: [
-        'I love the hustle and bustle of city life.'
+        'I love the hustle and bustle of city life.',
         'Meeting new people is fun.',
         "I'm pretty indifferent.",
         'I need some space to myself.',
