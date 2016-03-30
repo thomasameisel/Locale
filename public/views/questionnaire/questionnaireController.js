@@ -32,11 +32,11 @@ app.controller('questionnaireController', function($scope, $stateParams, $state,
       key: 'qualityOfLife',
       text: 'How do you feel about drug use and prostitution?',
       options: [
-        'Just knowing they happen makes me sick.',
-        "They're gateways to worse crimes.",
+        "B****, don't kill my vibe!",
+        "It's the world's oldest profession for a reason."
         "I don't mind, as long as it doesn't affect me.",
-        "It's the world's oldest profession for a reason.",
-        "Bitch, don't kill my vibe!"
+        "They're gateways to worse crimes.",
+        'Just knowing they happen makes me sick.',
       ]
     },
 
@@ -56,11 +56,11 @@ app.controller('questionnaireController', function($scope, $stateParams, $state,
       key: 'affordability',
       text: 'My price range is best described as:',
       options: [
-        'Just get me off the street.',
-        "I'm trying not to break the bank.",
+        'Warren Buffet asks me for loans.',
+        'Comfort is worth a premium.'
         "An average apartment's cost.",
-        'Comfort is worth a premium.',
-        'Warren Buffet asks me for loans.'
+        "I'm trying not to break the bank.",
+        'Just get me off the street.',
       ]
     },
 
@@ -68,11 +68,11 @@ app.controller('questionnaireController', function($scope, $stateParams, $state,
       key: 'breathingRoom',
       text: 'How do you feel about crowds?',
       options: [
-        'I hate people.',
-        'I need some space to myself.',
-        "I'm pretty indifferent.",
-        'Meeting new people is fun.',
         'I love the hustle and bustle of city life.'
+        'Meeting new people is fun.',
+        "I'm pretty indifferent.",
+        'I need some space to myself.',
+        'I hate people.',
       ]
     }
   ];
