@@ -3,6 +3,7 @@
  */
 var preferencesCommunities = require('./lib/preferencesCommunities');
 var directionsCommunities = require('./lib/directionsCommunities');
+var cities = require('./lib/cities');
 var validator = require('validator');
 var express = require('express');
 var addressValidator = require('address-validator');
@@ -11,6 +12,15 @@ var toobusy = require('toobusy-js');
 var app = express();
 
 app.use(express.static('public'));
+
+function keyByValue(value, obj) {
+  for (var key in obj) {
+    if (obj.hasOwnProperty(key) && obj[key] === value) {
+      return key;
+    }
+  }
+  return undefined;
+}
 
 function validOp(op) {
   return op === '<' || op === '>';
@@ -34,12 +44,22 @@ function validatePreferencesParams(preferences) {
   };
   for (var preference in preferences) {
     if (preferences.hasOwnProperty(preference) &&
+          preference !== 'city' &&
           (!validParam(allPreferences, preference) ||
           !validNum(preferences[preference]))) {
       return false;
     }
   }
-  return true;
+  if (validator.isAlpha(preferences.city)) {
+    for (var city in cities) {
+      if (cities.hasOwnProperty(city) &&
+          cities[city] == preferences.city) {
+        return true;
+      }
+    }
+  }
+
+  return false;
 }
 
 function validateAddress(address, callback) {
@@ -52,19 +72,19 @@ function validateAddress(address, callback) {
       callback(false);
     } else {
       var addressType = (exact.length > 0) ? exact : inexact;
+      var city;
       var location;
       if (addressType.length > 0) {
+        city = addressType[0].city;
         location = addressType[0].location;
       }
-      callback(addressType.length > 0, location);
+      callback(addressType.length > 0, city, location);
     }
   });
 }
 
 function validateDirectionsParams(req, callback) {
-  validateAddress(req.query.destination, function(valid, address) {
-    callback(valid, address);
-  });
+  validateAddress(req.query.destination, callback);
 }
 
 // middleware which blocks requests when we're too busy
@@ -77,12 +97,11 @@ app.use(function(req, res, next) {
 });
 
 // jscs:disable
-// http://localhost:8080/preferences?violentCrime=4&nonViolentCrime=3&nightlife=4&price=4&crowded=2
+// http://localhost:8080/preferences?safety=4&qualityOfLife=3&nightlife=4&affordability=4&breathingRoom=2&city=Chicago
 // jscs:enable
 app.get('/preferences', function(req, res) {
   // console.log(req.query);
   console.log('GET /preferences');
-  var start = new Date();
   if (validatePreferencesParams(req.query)) {
     var params = {
       violentCrimePctOfAvg: {op: '<',
@@ -94,17 +113,19 @@ app.get('/preferences', function(req, res) {
       pricePctOfAvg: {op: '<',
                       num: 6 - parseInt(req.query.affordability)},
       crowdedPctOfAvg: {op: '<',
-                        num: 6 - parseInt(req.query.breathingRoom)}
+                        num: 6 - parseInt(req.query.breathingRoom)},
+      city: keyByValue(req.query.city, cities)
     };
+    var start = new Date();
     preferencesCommunities.communitiesByPreferences(params,
                                                     function(err, result) {
       if (err) {
         res.send('<p>Error with request</p>');
       } else {
         res.send(result);
-        var end = new Date();
-        console.log('Time elapsed:', (end - start) / 1000, 's');
       }
+      var end = new Date();
+      console.log('Time elapsed:', (end - start) / 1000, 's');
     });
   } else {
     res.send('<p>Preferences are not valid</p>');
@@ -117,21 +138,22 @@ app.get('/preferences', function(req, res) {
 app.get('/directions', function(req, res) {
   // console.log(req.query);
   console.log('GET /directions');
-  var start = new Date();
-  validateDirectionsParams(req, function(valid, coordinates) {
+  validateDirectionsParams(req, function(valid, city, coordinates) {
     if (valid) {
       var latLng = {
         lat: coordinates.lat,
         lng: coordinates.lon
       };
-      directionsCommunities.getClosestLatLng(latLng, function(err, result) {
+      var start = new Date();
+      directionsCommunities.getClosestLatLng(keyByValue(city, cities), latLng,
+          function(err, result) {
         if (err) {
           res.send(err);
         } else {
           res.send(result);
-          var end = new Date();
-          console.log('Time elapsed:', (end - start) / 1000, 's');
         }
+        var end = new Date();
+        console.log('Time elapsed:', (end - start) / 1000, 's');
       });
     } else {
       res.send('<p>Address is not valid</p>');

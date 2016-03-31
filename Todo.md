@@ -27,6 +27,7 @@
   - [ ] add a button to change the city (next to retake in title bar)
         - do not take the user back to landing page, just change city in the questionnaire
         - void out work place when the user changes the city
+  - [ ] change the params city key based on the city the user selects
   - [ ] change landing page search to only accept cities that we have (only Chicago for now)
         - leaving the input box blank prints 'NO_RESULTS' next to the box
   - [ ] submit button should only appear when all questions are answered
