@@ -98,11 +98,12 @@ describe('CommunitiesPctOfAvg', function() {
 describe('DB', function() {
   var sqlite3 = require('sqlite3');
   var database = rewire('../lib/db');
+  var city = 'CHICAGO';
 
   // Swap to an in-memory database and create the schema
   var testDB = new sqlite3.Database(':memory:');
   before(function(done) {
-    database.__set__('db', testDB);
+    database.__set__('dbs.CHICAGO', testDB);
 
     // Turn off jscs so it doesn't complain about mixing commas in SQL strings
     // jscs:disable
@@ -139,7 +140,7 @@ describe('DB', function() {
   });
 
   it('should use the test database', function(done) {
-    database.getAllCommunitiesInfo(function(err, result) {
+    database.getAllCommunitiesInfo(city, function(err, result) {
       if (err) {
         done(err);
       } else {
@@ -163,7 +164,7 @@ describe('DB', function() {
     });
 
     it('should get single community info', function(done) {
-      database.getCommunityInfo(1, function(err, result) {
+      database.getCommunityInfo(city, 1, function(err, result) {
         if (err) {
           done(err);
         } else {
@@ -176,7 +177,7 @@ describe('DB', function() {
     });
 
     it('should not return results for community not in db', function(done) {
-      database.getCommunityInfo(100, function(err, result) {
+      database.getCommunityInfo(city, 100, function(err, result) {
         if (err) {
           done(err);
         } else {
@@ -201,7 +202,7 @@ describe('DB', function() {
     });
 
     it('should return all communities', function(done) {
-      database.getAllCommunitiesInfo(function(err, rows) {
+      database.getAllCommunitiesInfo(city, function(err, rows) {
         if (err) {
           done(err);
         } else {
@@ -234,7 +235,7 @@ describe('DB', function() {
     });
 
     it('should return object with preferences keys', function(done) {
-      database.getPreferencesStatistics(function(err, result) {
+      database.getPreferencesStatistics(city, function(err, result) {
         if (err) {
           done(err);
         } else {
@@ -269,11 +270,16 @@ describe('DB', function() {
         violentCrimePctOfAvg: 'apple', nonViolentCrimePctOfAvg: undefined,
         nightlifePctOfAvg: 0.4, crowdedPctOfAvg: 0.2, pricePctOfAvg: 0.7
       };
-      database.insertCommunityData(9, updateDataBefore, 'CommunityData');
-      database.insertCommunityData(8, nullData, 'CommunityData');
-      database.insertCommunityData(5, communityData, 'CommunityData');
-      database.insertCommunityData('c', statsData, 'PreferencesStatistics');
-      database.insertCommunityData('d', statsData, 'PreferencesStatistics');
+      database.insertCommunityData(city,
+          9, updateDataBefore, 'CommunityData');
+      database.insertCommunityData(city,
+          8, nullData, 'CommunityData');
+      database.insertCommunityData(city,
+          5, communityData, 'CommunityData');
+      database.insertCommunityData(city,
+          'c', statsData, 'PreferencesStatistics');
+      database.insertCommunityData(city,
+          'd', statsData, 'PreferencesStatistics');
       done();
     });
 
@@ -362,7 +368,7 @@ describe('DB', function() {
             violentCrimePctOfAvg: 0.5, nonViolentCrimePctOfAvg: 0.1,
             nightlifePctOfAvg: 0.8, crowdedPctOfAvg: 0.3, pricePctOfAvg: null
           };
-          database.insertCommunityData(9, newData, 'CommunityData');
+          database.insertCommunityData(city, 9, newData, 'CommunityData');
           testDB.get('SELECT * from CommunityData WHERE communityID=9', [],
               function(err, row) {
             if (err) {
@@ -402,7 +408,7 @@ describe('DB', function() {
     };
 
     before(function(done) {
-      database.insertAllCommunitiesData(communities);
+      database.insertAllCommunitiesData(city, communities);
       // for some reason this makes everything work idk
       setTimeout(done, 1);
     });
@@ -471,8 +477,8 @@ describe('DB', function() {
         fields.push(i);
         nullFields.push('h');
       }
-      database.insertDirectionsData(latLng1, fields);
-      database.insertDirectionsData(latLng2, nullFields);
+      database.insertDirectionsData(city, latLng1, fields);
+      database.insertDirectionsData(city, latLng2, nullFields);
       done();
     });
 
@@ -555,7 +561,7 @@ describe('DB', function() {
       var latLngs = {};
       latLngs[latLng1] = fields;
       latLngs[latLng2] = nullFields;
-      database.insertAllDirectionsData(latLngs);
+      database.insertAllDirectionsData(city, latLngs);
       setTimeout(done, 1);
     });
 
@@ -603,8 +609,8 @@ describe('DB', function() {
     };
 
     before(function(done) {
-      database.insertCommunityArea(community.communityID, community);
-      database.insertCommunityArea(communityNull.communityID,
+      database.insertCommunityArea(city, community.communityID, community);
+      database.insertCommunityArea(city, communityNull.communityID,
           communityNull);
       done();
     });
@@ -674,7 +680,7 @@ describe('DB', function() {
     before(function(done) {
       communities[community.communityID] = community;
       communities[communityNull.communityID] = communityNull;
-      database.insertAllCommunityAreas(communities);
+      database.insertAllCommunityAreas(city, communities);
       setTimeout(done, 1);
     });
 
@@ -713,7 +719,7 @@ describe('DB', function() {
       var latLngs = {};
       latLngs[closeLatLng] = fields;
       latLngs[farLatLng] = fields;
-      database.insertAllDirectionsData(latLngs);
+      database.insertAllDirectionsData(city, latLngs);
       setTimeout(done, 0.00000000000001);
     });
 
@@ -724,7 +730,7 @@ describe('DB', function() {
     });
 
     it('should return closer coordinate', function(done) {
-      database.getClosestLatLng(destLatLng, function(err, row) {
+      database.getClosestLatLng(city, destLatLng, function(err, row) {
         if (err) {
           done(err);
         } else {
@@ -768,8 +774,8 @@ describe('DB', function() {
     };
 
     before(function(done) {
-      database.insertAllCommunityAreas(communitiesArea);
-      database.insertAllCommunitiesData(communitiesData);
+      database.insertAllCommunityAreas(city, communitiesArea);
+      database.insertAllCommunitiesData(city, communitiesData);
       // for some reason this makes everything work idk
       setTimeout(done, 1);
     });
@@ -781,7 +787,7 @@ describe('DB', function() {
     });
 
     it('should return all communities that match a condition', function(done) {
-      database.getCommunitiesCondition('nightlifePctOfAvg<0.5',
+      database.getCommunitiesCondition(city, 'nightlifePctOfAvg<0.5',
           function(err, rows) {
         if (err) {
           done(err);
@@ -798,6 +804,7 @@ describe('DB', function() {
 
 describe('Directions', function() {
   var directions = require('../lib/directions');
+  var city = 'CHICAGO';
 
   describe.skip('getTimeToCommunities', function() {
     it('should return time from coordinate to all communities',
@@ -816,7 +823,7 @@ describe('Directions', function() {
         mode: 'driving',
         destination: '36.152035,-86.809247'
       };
-      directions.getTimeToCommunities(communities, drivingPreferences,
+      directions.getTimeToCommunities(city, communities, drivingPreferences,
           function(err, result) {
         if (err) {
           done(err);
@@ -832,6 +839,7 @@ describe('Directions', function() {
 
 describe('DirectionsCommunities', function() {
   var directionsCommunities = require('../lib/directionsCommunities');
+  var city = 'CHICAGO';
 
   describe.skip('getTimeToCommunities', function() {
     it('should get time to all communities', function(done) {
@@ -839,7 +847,7 @@ describe('DirectionsCommunities', function() {
         mode: 'driving',
         destination: '36.152035,-86.809247'
       };
-      directionsCommunities.getTimeToCommunities(drivingPreferences,
+      directionsCommunities.getTimeToCommunities(city, drivingPreferences,
           function(err, result) {
         if (err) {
           done(err);
@@ -869,7 +877,7 @@ describe('DirectionsCommunities', function() {
       var lat = 81;
       var lng = -23;
       var latLng = lat.toString() + ',' + lng.toString();
-      directionsCommunities.getClosestLatLng(latLng,
+      directionsCommunities.getClosestLatLng(city, latLng,
           function(err, result) {
         if (err) {
           done(err);
