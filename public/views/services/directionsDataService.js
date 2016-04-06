@@ -17,9 +17,11 @@ app.service('directionsDataService', function($resource, $http) {
         });
     };
 
-    var getCommunityTime = function() {
-        return timeDistance;
+    var getCommunityTime = function(){
+        return timeDistance.communityTimes;
     };
+
+
 
     var getTimeLimit = function() {
         return timeDistance.maxTime;

@@ -20,7 +20,6 @@ app.directive('sliderbar', function() {
 
             $scope.slider.setValue($scope.timeLimit);
             $scope.slider.showTooltip();
-            //$scope.timeLimit = $scope.slider.getValue();
             function updateSliderVal(slider){
                 $scope.timeLimit = slider.getValue();
                 directionsDataService.setTimeLimit(slider.getValue());
