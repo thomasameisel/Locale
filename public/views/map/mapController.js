@@ -70,9 +70,8 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
     });
 
     //Retrieve commute time for the communities
-    var coordinatesInfo = directionsDataService.getCommunityTime();
-    $scope.communityTimes = coordinatesInfo.communityTimes;
-    $scope.timeLimit = coordinatesInfo.maxTime;
+    $scope.communityTimes = directionsDataService.getCommunityTime();
+    $scope.timeLimit = directionsDataService.getTimeLimit();
 
     function addColors(result) {
         for (var i = 0; i < result.length; ++i) {

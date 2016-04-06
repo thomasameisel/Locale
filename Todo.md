@@ -18,7 +18,7 @@
   - [ ] BUG: when the user does not move the slidebar, the time is the last value used (not 10)
         - for example, if the user puts in the value 15 for the time then clicks submit then goes back to the questionnaire
         and does not move the slidebar (it shows 10 minutes), the new request will use 15 instead of 10
-  - [ ] allow users to not enter the work place (put a checkbox for enable directions)
+  - [X] allow users to not enter the work place (put a checkbox for enable directions)
         - the slidebar on the maps page should also not appear in this situation
   - [ ] only allow users to select a work place in their selected city
   - [ ] automatically do a directions request (user does not have to press button)
