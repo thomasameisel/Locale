@@ -115,13 +115,13 @@ describe('DB', function() {
     var commDataStr = "CREATE TABLE 'CommunityData' (" +
         "`communityID` INTEGER UNIQUE,`violentCrimePctOfAvg` REAL," +
         "`nonViolentCrimePctOfAvg` REAL,`nightlifePctOfAvg` REAL," +
-        "`crowdedPctOfAvg` REAL,`pricePctOfAvg` REAL," +
+        "`crowdedPctOfAvg` REAL,`pricePctOfAvg` REAL,`avgNoise` REAL," +
         "PRIMARY KEY(communityID)," +
         "FOREIGN KEY(`communityID`) REFERENCES `CommunityArea`(`communityID`))";
     var prefStatStr = "CREATE TABLE 'PreferencesStatistics' (" +
         "`statistic` TEXT UNIQUE,`violentCrimePctOfAvg` REAL," +
         "`nonViolentCrimePctOfAvg` REAL,`nightlifePctOfAvg` REAL," +
-        "`crowdedPctOfAvg` REAL,`pricePctOfAvg` REAL," +
+        "`crowdedPctOfAvg` REAL,`pricePctOfAvg` REAL,`avgNoise` REAL," +
         "PRIMARY KEY(statistic))";
     var direcStr = 'CREATE TABLE CommunityDirections' +
       '(lat REAL NOT NULL,lng REAL NOT NULL,sinLat REAL NOT NULL,' +
@@ -184,7 +184,7 @@ describe('DB', function() {
           console.assert(typeof result === 'undefined');
           done();
         }
-      })
+      });
     });
   });
 
@@ -249,7 +249,7 @@ describe('DB', function() {
           done();
         }
       });
-    })
+    });
   });
 
   describe('insertCommunityData', function() {
@@ -700,7 +700,7 @@ describe('DB', function() {
           rows[1].communityID.should.equal(communityNull.communityID);
           done();
         }
-      })
+      });
     });
   });
 
@@ -739,7 +739,7 @@ describe('DB', function() {
           done();
         }
       });
-    })
+    });
   });
 
   describe('getCommunitiesCondition', function() {
