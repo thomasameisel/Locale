@@ -34,6 +34,6 @@
         - should slide in from bottom center of screen when all questions are answered
         - if the directions request is not done, a loading icon should appear after the user presses submit
   - [ ] clicking the answer to a question should automatically scroll to the next question
-  - [ ] add a picture of a city to background of landing page
+  - [x] add a picture of a city to background of landing page
   - [ ] put shadow on title bar
   - [ ] write tests for the frontend (using phantom potentially)
