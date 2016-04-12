@@ -45,7 +45,7 @@
 
                 <div class="mapPageBtns" ng-if="inMapState">
                     <p class="navbar-btn navbar-right mapBtn">
-                        <a class="btn btn-warning"  data-toggle="modal" data-target="#myModal">Change City</a>
+                        <a class="btn btn-warning" ng-click="goToLandingPage()"> <!--data-toggle="modal" data-target="#myModal"-->Change City</a>
                     </p>
 
                     <p class="navbar-btn navbar-right mapBtn">
@@ -54,12 +54,11 @@
                 </div>
             </div>
 
-            <div id="myModal" class="modal fade" role="dialog">
+            <!-- <div id="myModal" class="modal fade" role="dialog">
                 <div class="modal-dialog">
 
-                    <!-- Modal content-->
                     <div class="modal-content" id="searchModal">
-                        <div class="modal-header">
+                        <div class="modal-header" id="myModalHeader">
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                             <h4 class="modal-title">Change City</h4>
                         </div>
@@ -67,7 +66,7 @@
                     </div>
 
                 </div>
-            </div>
+            </div> -->
     </nav>
 
     <div ui-view></div>

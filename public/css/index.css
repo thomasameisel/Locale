@@ -28,4 +28,15 @@
 }
 .modal-backdrop{
     z-index: 10;
-}​
+}
+
+ #searchModal{
+     padding-left: 15px;
+     padding-right: 15px;
+ }
+
+ #myModalHeader{
+     padding-left: 0px;
+     padding-right: 0px;
+     border : none;
+ }

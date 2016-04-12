@@ -6,11 +6,6 @@ var app = angular.module('Apartment', ['snap', 'ngResource', 'ui.router', 'ngAni
 
 app.controller('navController', function($scope, $state, communityDataService) {
 
-    $scope.requestChangeCity = function() {
-
-        //communityDataService.resetParams();
-    };
-
     $scope.$watch(
         function() { return communityDataService.getCity(); },
         function(newVal, oldVal){
