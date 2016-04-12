@@ -4,12 +4,12 @@
 app.service('communityDataService', function($resource, $http) {
 
     var params = {
-        safety: '2',
-        qualityOfLife: '2',
-        nightlife: '2',
-        affordability: '2',
-        breathingRoom: '2',
-        city: 'Chicago'
+        safety: '',
+        qualityOfLife: '',
+        nightlife: '',
+        affordability: '',
+        breathingRoom: '',
+        city: ''
     };
 
 
@@ -19,7 +19,11 @@ app.service('communityDataService', function($resource, $http) {
 
     var setCity = function(city) {
         params.city = city;
-    }
+    };
+
+    var getCity = function(){
+        return params.city;
+    };
 
     var preferences = function () {
         return $.get('/preferences', params, function (data) {
@@ -27,9 +31,19 @@ app.service('communityDataService', function($resource, $http) {
         });
     };
 
+    var resetParams = function(){
+        for (var key in params) {
+            if (params.hasOwnProperty(key)) {
+                params[key] = '';
+            }
+        }
+    };
+
     return {
         preferences : preferences,
         setFilters : setFilters,
-        setCity : setCity
+        setCity : setCity,
+        getCity : getCity,
+        resetParams : resetParams
     };
 });

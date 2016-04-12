@@ -1,5 +1,5 @@
 app.controller('landingController', function($scope, $state, $stateParams) {
-    var input = document.getElementById('searchBox');
+    /*var input = document.getElementById('searchBox1');
     //var searchBox = new google.maps.places.SearchBox(input);
     var autocomplete = new google.maps.places.Autocomplete(input, { types: ['(cities)']});
 
@@ -7,7 +7,7 @@ app.controller('landingController', function($scope, $state, $stateParams) {
 
 
     $scope.search = function() {
-        var address = document.getElementById('searchBox').value;
+        var address = document.getElementById('searchBox1').value;
 
         geocoder.geocode({'address': address}, function(results, status) {
             if (status === google.maps.GeocoderStatus.OK) {
@@ -22,5 +22,5 @@ app.controller('landingController', function($scope, $state, $stateParams) {
         if(event.which === 13) {
             $scope.search();
         }
-    };
+    };*/
 });

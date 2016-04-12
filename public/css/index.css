@@ -6,3 +6,12 @@
     box-shadow: 0 15px 20px -6px #999;
 }
 
+.mapBtn{
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.mapPageBtns{
+    margin-top: 2px;
+    margin-right: 5px;
+}

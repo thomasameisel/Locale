@@ -5,7 +5,8 @@ app.directive('question', function() {
     return {
         restrict: 'E',
         scope: {
-            question: '='
+            question: '=',
+            questionid: '='
         },
         link: function($scope, element, attrs){
 

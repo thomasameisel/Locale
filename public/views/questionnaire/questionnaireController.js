@@ -1,7 +1,7 @@
 /**
  * Created by chrissu on 12/12/15.
  */
-app.controller('questionnaireController', function($scope, $stateParams, $state, directionsDataService) {
+app.controller('questionnaireController', function($scope, $stateParams, $state, directionsDataService,$location, $anchorScroll) {
 
   $scope.temp ="225 E Wacker Dr, Chicago, IL, United States";
   $scope.timeLimit = directionsDataService.getTimeLimit();
@@ -17,6 +17,7 @@ app.controller('questionnaireController', function($scope, $stateParams, $state,
 
   $scope.questions = [
     {
+      id: 1,
       key: 'safety',
       text: 'Late at night, I would feel comfortable:',
       options: [
@@ -29,6 +30,7 @@ app.controller('questionnaireController', function($scope, $stateParams, $state,
     },
 
     {
+      id: 2,
       key: 'qualityOfLife',
       text: 'How do you feel about drug use and prostitution?',
       options: [
@@ -41,6 +43,7 @@ app.controller('questionnaireController', function($scope, $stateParams, $state,
     },
 
     {
+      id: 3,
       key: 'nightlife',
       text: 'On a typical weekend night, I can be found:',
       options: [
@@ -53,6 +56,7 @@ app.controller('questionnaireController', function($scope, $stateParams, $state,
     },
 
     {
+      id: 4,
       key: 'affordability',
       text: 'My price range is best described as:',
       options: [
@@ -65,6 +69,7 @@ app.controller('questionnaireController', function($scope, $stateParams, $state,
     },
 
     {
+      id: 5,
       key: 'breathingRoom',
       text: 'How do you feel about crowds?',
       options: [
@@ -105,10 +110,16 @@ app.controller('questionnaireController', function($scope, $stateParams, $state,
     });
   };
 
+  $scope.$watch(
+      function() { return $scope.isValidWorkplace && $scope.isValidQuestionnaire(); },
+      function(newVal, oldVal){
+        $scope.ready = newVal;
+      }
+  );
+
+
   $scope.submitAnswers = function() {
-    if ($scope.isValidWorkplace && $scope.isValidQuestionnaire()){
       $state.go('map', {lng : $stateParams.lng , lat : $stateParams.lat});
-    }
   };
 
 });

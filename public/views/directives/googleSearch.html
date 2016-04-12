@@ -1,0 +1,10 @@
+<div class="input-group col-md-11">
+    <input id="{{id}}" ng-keypress="press($event)" type="text" class="form-control"
+           placeholder="Search for..." >
+      <span class="input-group-btn">
+        <button class="btn btn-primary" type="button" ng-click="search()">Go!</button>
+      </span>
+</div><!-- /input-group -->
+<h2 ng-show="error">
+    {{error}}
+</h2>

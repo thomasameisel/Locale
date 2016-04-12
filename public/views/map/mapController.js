@@ -1,4 +1,4 @@
-app.controller('mapController', function($scope, $stateParams, communityDataService, directionsDataService) {
+app.controller('mapController', function($scope, $stateParams, communityDataService, directionsDataService, $state) {
 
     //Obtain lat and lng for searched city
     var lat = parseFloat($stateParams.lat),

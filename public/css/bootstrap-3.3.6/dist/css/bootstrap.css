@@ -118,36 +118,33 @@ samp {
 }
 button,
 input,
-optgroup,
 select,
 textarea {
-  color: inherit;
-  font: inherit;
   margin: 0;
+  font-size: 100%;
+  vertical-align: middle;
 }
-button {
-  overflow: visible;
-}
+
 button,
-select {
-  text-transform: none;
+input {
+  *overflow: visible;
+  line-height: normal;
 }
+
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+  padding: 0;
+  border: 0;
+}
+
 button,
 html input[type="button"],
 input[type="reset"],
 input[type="submit"] {
-  -webkit-appearance: button;
   cursor: pointer;
+  -webkit-appearance: button;
 }
-button[disabled],
-html input[disabled] {
-  cursor: default;
-}
-button::-moz-focus-inner,
-input::-moz-focus-inner {
-  border: 0;
-  padding: 0;
-}
+
 input {
   line-height: normal;
 }
@@ -1130,7 +1127,7 @@ img {
   height: auto;
 }
 .img-rounded {
-  border-radius: 0;
+  border-radius: 6px;
 }
 .img-thumbnail {
   padding: 4px;
@@ -3021,7 +3018,7 @@ select[multiple].input-lg {
   padding: 8px 12px;
   font-size: 15px;
   line-height: 1.4;
-  border-radius: 0;
+  border-radius: 6px;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
