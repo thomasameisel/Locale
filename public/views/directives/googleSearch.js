@@ -47,6 +47,7 @@ app.directive('googlesearch', function() {
                     }
                 };
             };
+
         },
         templateUrl: './views/directives/googlesearch.html'
     };

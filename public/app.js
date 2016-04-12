@@ -25,8 +25,15 @@ app.controller('navController', function($scope, $state, communityDataService) {
         }
     );
 
+    $scope.goToLandingPage = function(){
+        communityDataService.resetParams(true);
+        $state.go('landing');
+    };
+
+
     $scope.retakeSurvey = function(){
-        $state.go('questionnaire', {lng : $stateParams.lng , lat : $stateParams.lat});
+        communityDataService.resetParams(false);
+        $state.go('questionnaire');
     };
 
 });

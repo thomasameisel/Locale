@@ -23,7 +23,7 @@
   - [ ] only allow users to select a work place in their selected city
   - [ ] automatically do a directions request (user does not have to press button)
   - [x] make the map repopulation smooth when changing directions time
-  - [ ] add a button to go back to the questionnaire (top right in the title bar "Retake Survey")
+  - [x] add a button to go back to the questionnaire (top right in the title bar "Retake Survey")
   - [ ] add a button to change the city (next to retake in title bar)
         - do not take the user back to landing page, just change city in the questionnaire
         - void out work place when the user changes the city

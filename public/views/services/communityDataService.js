@@ -31,11 +31,14 @@ app.service('communityDataService', function($resource, $http) {
         });
     };
 
-    var resetParams = function(){
+    var resetParams = function(changeCity){
         for (var key in params) {
-            if (params.hasOwnProperty(key)) {
+            if (params.hasOwnProperty(key) && key != 'city') {
                 params[key] = '';
             }
+        }
+        if (changeCity){
+            params['city'] = '';
         }
     };
 
