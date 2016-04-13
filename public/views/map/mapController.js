@@ -1,5 +1,7 @@
 app.controller('mapController', function($scope, $stateParams, communityDataService, directionsDataService, $state) {
 
+    $scope.useCommute = directionsDataService.getUseCommute();
+
     //Obtain lat and lng for searched city
     var lat = parseFloat($stateParams.lat),
         lng = parseFloat($stateParams.lng);
@@ -125,8 +127,15 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
         $scope.$apply();
         var count = 0;
         for (var i = 0; i < $scope.communityData.length && count < 10; ++i) {
-            var time = $scope.communityTimes[$scope.communityData[i].communityID];
-            if (time !== null && time <= $scope.timeLimit) {
+
+            if (time !== null) {
+                if ($scope.useCommute){
+                    var time = $scope.communityTimes[$scope.communityData[i].communityID];
+                    if (time > $scope.timeLimit){
+                        continue;
+                    }
+                }
+
                 $scope.preferences.push($scope.communityData[i]);
                 $scope.preferencesObj[$scope.communityData[i].communityID] = true;
                 count++;
