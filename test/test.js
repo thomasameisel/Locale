@@ -115,13 +115,13 @@ describe('DB', function() {
     var commDataStr = "CREATE TABLE 'CommunityData' (" +
         "`communityID` INTEGER UNIQUE,`violentCrimePctOfAvg` REAL," +
         "`nonViolentCrimePctOfAvg` REAL,`nightlifePctOfAvg` REAL," +
-        "`crowdedPctOfAvg` REAL,`pricePctOfAvg` REAL,`avgNoise` REAL," +
+        "`crowdedPctOfAvg` REAL,`pricePctOfAvg` REAL," +
         "PRIMARY KEY(communityID)," +
         "FOREIGN KEY(`communityID`) REFERENCES `CommunityArea`(`communityID`))";
     var prefStatStr = "CREATE TABLE 'PreferencesStatistics' (" +
         "`statistic` TEXT UNIQUE,`violentCrimePctOfAvg` REAL," +
         "`nonViolentCrimePctOfAvg` REAL,`nightlifePctOfAvg` REAL," +
-        "`crowdedPctOfAvg` REAL,`pricePctOfAvg` REAL,`avgNoise` REAL," +
+        "`crowdedPctOfAvg` REAL,`pricePctOfAvg` REAL," +
         "PRIMARY KEY(statistic))";
     var direcStr = 'CREATE TABLE CommunityDirections' +
       '(lat REAL NOT NULL,lng REAL NOT NULL,sinLat REAL NOT NULL,' +
@@ -401,7 +401,7 @@ describe('DB', function() {
         violentCrimePctOfAvg: 0.3, nonViolentCrimePctOfAvg: 0.4,
         nightlifePctOfAvg: 0.1, crowdedPctOfAvg: 0.9, pricePctOfAvg: 'hello'
       },
-      e: {
+      gmean: {
         violentCrimePctOfAvg: 0.8, nonViolentCrimePctOfAvg: 0.1,
         nightlifePctOfAvg: 0.5, crowdedPctOfAvg: 0.6, pricePctOfAvg: 0.4
       }
@@ -417,7 +417,7 @@ describe('DB', function() {
       testDB.exec('DELETE FROM CommunityData WHERE communityID=10 OR ' +
           'communityID=11');
       testDB.exec('DELETE FROM PreferencesStatistics WHERE ' +
-          'statistic="e"');
+          'statistic="gmean"');
       done();
     });
 
@@ -444,7 +444,7 @@ describe('DB', function() {
             if (err) {
               done(err);
             } else {
-              rows[0].statistic.should.equal('e');
+              rows[0].statistic.should.equal('gmean');
               for (var key in communities.c) {
                 if (communities.c.hasOwnProperty(key)) {
                   var val = communities.c[key];
