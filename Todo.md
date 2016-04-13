@@ -9,7 +9,6 @@
 - Collin
   - [ ] Set up CD to test and deploy to Elastic Beanstalk upon push
   - [x] Set up DNS routing for website
-  - [x] Add noise complaint data
   - [x] Add more communities to database
   - [x] Separate violent and non-violent crime
   - [x] Move to Docker
