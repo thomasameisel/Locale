@@ -111,15 +111,21 @@ app.controller('questionnaireController', function($scope, $stateParams, $state,
   };
 
   $scope.$watch(
-      function() { return $scope.isValidWorkplace && $scope.isValidQuestionnaire(); },
+      function() {
+        if ($scope.useCommute){
+          return $scope.isValidWorkplace && $scope.isValidQuestionnaire();
+        } else {
+          return $scope.isValidQuestionnaire;
+        }
+       },
       function(newVal, oldVal){
         $scope.ready = newVal;
       }
   );
 
-
   $scope.submitAnswers = function() {
       $state.go('map', {lng : $stateParams.lng , lat : $stateParams.lat});
   };
+
 
 });
