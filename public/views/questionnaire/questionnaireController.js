@@ -113,9 +113,11 @@ app.controller('questionnaireController', function($scope, $stateParams, $state,
   $scope.$watch(
       function() {
         if ($scope.useCommute){
+          console.log("Using commute");
           return $scope.isValidWorkplace && $scope.isValidQuestionnaire();
         } else {
-          return $scope.isValidQuestionnaire;
+          console.log("Not using commute");
+          return $scope.isValidQuestionnaire();
         }
        },
       function(newVal, oldVal){
