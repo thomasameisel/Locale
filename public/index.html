@@ -43,12 +43,12 @@
                 </div>
                 <p class="navbar-text">{{city}}</p>
 
-                <div class="mapPageBtns" ng-if="inMapState">
-                    <p class="navbar-btn navbar-right mapBtn">
+                <div class="mapPageBtns" >
+                    <p class="navbar-btn navbar-right mapBtn" ng-if="inMapState || inQuestionnaireState">
                         <a class="btn btn-warning" ng-click="goToLandingPage()"> <!--data-toggle="modal" data-target="#myModal"-->Change City</a>
                     </p>
 
-                    <p class="navbar-btn navbar-right mapBtn">
+                    <p class="navbar-btn navbar-right mapBtn" ng-if="inMapState">
                         <a class="btn btn-primary" ng-click="retakeSurvey()">Retake Survey</a>
                     </p>
                 </div>

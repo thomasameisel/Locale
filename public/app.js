@@ -17,6 +17,7 @@ app.controller('navController', function($scope, $state, communityDataService) {
         function() { return $state.current; },
         function(newVal, oldVal){
             $scope.inMapState = newVal.name == 'map';
+            $scope.inQuestionnaireState = newVal.name == 'questionnaire';
         }
     );
 
