@@ -4,10 +4,18 @@
     min-height: 94vh; /* These two lines are counted as one :-)       */
 
     display: flex;
-    align-items: center;
+    /*align-items: center;*/
 }
 
 #landingDiv{
     background-image:   url('../images/ChicagoSkyline.jpg');
     background-size:    cover;
+}
+
+#searchDiv{
+    margin-top: 50px;
+}
+#landingText{
+
+    color : white;
 }
