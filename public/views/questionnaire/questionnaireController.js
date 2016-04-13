@@ -64,7 +64,7 @@ app.controller('questionnaireController', function($scope, $stateParams, $state,
         'Comfort is worth a premium.',
         "An average apartment's cost.",
         "I'm trying not to break the bank.",
-        'Just get me off the street.',
+        'Just get me off the street.'
       ]
     },
 
@@ -77,7 +77,7 @@ app.controller('questionnaireController', function($scope, $stateParams, $state,
         'Meeting new people is fun.',
         "I'm pretty indifferent.",
         'I need some space to myself.',
-        'I hate people.',
+        'I hate people.'
       ]
     }
   ];
