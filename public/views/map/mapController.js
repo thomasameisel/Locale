@@ -128,18 +128,16 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
         var count = 0;
         for (var i = 0; i < $scope.communityData.length && count < 10; ++i) {
 
-            if (time !== null) {
-                if ($scope.useCommute){
-                    var time = $scope.communityTimes[$scope.communityData[i].communityID];
-                    if (time > $scope.timeLimit){
-                        continue;
-                    }
+            if ($scope.useCommute){
+                var time = $scope.communityTimes[$scope.communityData[i].communityID];
+                if (time === null || time > $scope.timeLimit){
+                    continue;
                 }
-
-                $scope.preferences.push($scope.communityData[i]);
-                $scope.preferencesObj[$scope.communityData[i].communityID] = true;
-                count++;
             }
+
+            $scope.preferences.push($scope.communityData[i]);
+            $scope.preferencesObj[$scope.communityData[i].communityID] = true;
+            count++;
         }
         $scope.safeApply();
     };
