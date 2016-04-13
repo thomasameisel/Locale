@@ -10,6 +10,14 @@
     margin-bottom: 20px;
 }
 
+.checkboxtext
+{
+    font-size: 30px;
+    margin-left: 10px;
+    display: inline;
+    vertical-align: middle;
+}
+
 .answersDiv{
     margin-left:90px;
 }
