@@ -13,6 +13,9 @@ app.service('communityDataService', function($resource, $http) {
     };
 
 
+
+
+
     var setFilters = function(questionKey, selectedVal) {
         params[questionKey] = selectedVal.toString();
     };

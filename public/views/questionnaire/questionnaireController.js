@@ -4,6 +4,7 @@
 app.controller('questionnaireController', function($scope, $stateParams, $state, directionsDataService,$location, $anchorScroll) {
   $scope.temp ="225 E Wacker Dr, Chicago, IL, United States";
   $scope.timeLimit = directionsDataService.getTimeLimit();
+  $scope.useCommute = directionsDataService.getUseCommute();
 
   $scope.isValidQuestionnaire = function () {
     for (var i = 0; i < $scope.questions.length; i++) {
@@ -123,6 +124,7 @@ app.controller('questionnaireController', function($scope, $stateParams, $state,
   );
 
   $scope.submitAnswers = function() {
+      directionsDataService.setUseCommute($scope.useCommute);
       $state.go('map', {lng : $stateParams.lng , lat : $stateParams.lat});
   };
 

@@ -7,6 +7,16 @@ app.service('directionsDataService', function($resource, $http) {
         maxTime : 10
     };
 
+    var useCommute = false;
+
+    var setUseCommute = function(val){
+        useCommute = val;
+    };
+
+    var getUseCommute = function() {
+        return useCommute;
+    };
+
     var setTimeLimit = function(timeLimit){
         timeDistance.maxTime = timeLimit;
     };
@@ -31,6 +41,8 @@ app.service('directionsDataService', function($resource, $http) {
         setWorkplace        :   setWorkplace,
         getCommunityTime    :   getCommunityTime,
         setTimeLimit        :   setTimeLimit,
-        getTimeLimit        :   getTimeLimit
+        getTimeLimit        :   getTimeLimit,
+        setUseCommute       :   setUseCommute,
+        getUseCommute       :   getUseCommute
     };
 });

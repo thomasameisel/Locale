@@ -15,7 +15,7 @@
   - [x] Move to Docker
 - Chris
   - [ ] BUG: when you refresh the map no communities appear, it doesn't keep the directions object
-  - [ ] BUG: when the user does not move the slidebar, the time is the last value used (not 10)
+  - [x] BUG: when the user does not move the slidebar, the time is the last value used (not 10)
         - for example, if the user puts in the value 15 for the time then clicks submit then goes back to the questionnaire
         and does not move the slidebar (it shows 10 minutes), the new request will use 15 instead of 10
   - [X] allow users to not enter the work place (put a checkbox for enable directions)

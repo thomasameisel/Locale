@@ -28,7 +28,7 @@ app.controller('navController', function($scope, $state, communityDataService) {
 
 
     $scope.retakeSurvey = function(){
-        //communityDataService.resetParams(false);
+        communityDataService.resetParams(false);
         $state.go('questionnaire');
     };
 
