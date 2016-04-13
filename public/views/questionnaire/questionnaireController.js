@@ -115,7 +115,7 @@ app.controller('questionnaireController', function($scope, $stateParams, $state,
         if ($scope.useCommute){
           return $scope.isValidWorkplace && $scope.isValidQuestionnaire();
         } else {
-          return $scope.isValidQuestionnaire;
+          return $scope.isValidQuestionnaire();
         }
        },
       function(newVal, oldVal){
