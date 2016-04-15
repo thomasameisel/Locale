@@ -4,7 +4,7 @@
 - [ ] Change preferences bars hue to support green/red colorblindness
 - [ ] Put tick mark on preferences bars to display user selections
 - [ ] Denote that middle line on preferences bars is city average
-- [ ] Make top bar float
+- [x] Make top bar float
 - [ ] Change landing page search to only accept cities that we have (only Chicago for now)
   - leaving the input box blank prints 'NO_RESULTS' next to the box
 - [ ] Change stars on map page to make it clear that they are based on preferences
