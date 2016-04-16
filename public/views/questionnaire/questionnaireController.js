@@ -8,6 +8,7 @@ app.controller('questionnaireController', function($scope, $stateParams, $state,
 
   $scope.isValidQuestionnaire = function () {
     for (var i = 0; i < $scope.questions.length; i++) {
+      console.log($scope.questions[i].answered)
       if (!$scope.questions[i].answered) {
         return false;
       }
@@ -110,11 +111,11 @@ app.controller('questionnaireController', function($scope, $stateParams, $state,
             lng: address.geometry.location.lng()
           };
           directionsDataService.setWorkplace(destination)
-              .done(function () {
-                $scope.loading = false;
-                $scope.isValidWorkplace = true;
-                $scope.$apply();
-              })
+            .done(function () {
+              $scope.loading = false;
+              $scope.isValidWorkplace = true;
+              $scope.$apply();
+            })
         }
 
       } else {
@@ -129,23 +130,23 @@ app.controller('questionnaireController', function($scope, $stateParams, $state,
   };
 
   $scope.$watch(
-      function() {
-        if ($scope.useCommute){
-          console.log("Using commute");
-          return $scope.isValidWorkplace && $scope.isValidQuestionnaire();
-        } else {
-          console.log("Not using commute");
-          return $scope.isValidQuestionnaire();
-        }
-       },
-      function(newVal, oldVal){
-        $scope.ready = newVal;
+    function() {
+      if ($scope.useCommute){
+        console.log("Using commute");
+        return $scope.isValidWorkplace && $scope.isValidQuestionnaire();
+      } else {
+        console.log("Not using commute");
+        return $scope.isValidQuestionnaire();
       }
+    },
+    function(newVal, oldVal){
+      $scope.ready = newVal;
+    }
   );
 
   $scope.submitAnswers = function() {
-      directionsDataService.setUseCommute($scope.useCommute);
-      $state.go('map', {lng : $stateParams.lng , lat : $stateParams.lat});
+    directionsDataService.setUseCommute($scope.useCommute);
+    $state.go('map', {lng : $stateParams.lng , lat : $stateParams.lat});
   };
 
 

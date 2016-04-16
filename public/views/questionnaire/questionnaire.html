@@ -35,8 +35,8 @@
     </div>
 
     <div id="submitDiv">
-        <button ng-class="{'disabled': !ready, 'btn-primary': ready}" type="submit"
-                class="btn btn-default" ng-click="submitAnswers()">Submit</button>
+        <button ng-class="{disabled: !ready}" type="submit"
+                class="button" ng-click="submitAnswers()" ng-disabled="!ready"></button>
         <span ng-show="loading" class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>
     </div>
 

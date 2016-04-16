@@ -80,5 +80,27 @@
 }
 
 #submitDiv{
-    position: fixed; bottom: 20px; right: 20px;
+    position: fixed; bottom: 40px; right: 50px;
+}
+
+.button {
+    height: 80px;
+    width: 80px;
+    border-radius: 80px;
+    border: 0px solid #000;
+    background: #F44336 url("../images/ic_done_white.png") 15px 15px no-repeat;
+    -webkit-box-shadow: 0 8px 6px -6px #999;
+    -moz-box-shadow: 0 8px 6px -6px #999;
+    box-shadow: 0 15px 20px -6px #999;
+}
+
+.disabled {
+    height: 80px;
+    width: 80px;
+    border-radius: 80px;
+    border: 0px solid #000;
+    background: grey url("../images/ic_done_white.png") 15px 15px no-repeat;
+    -webkit-box-shadow: 0 8px 6px -6px #999;
+    -moz-box-shadow: 0 8px 6px -6px #999;
+    box-shadow: 0 15px 20px -6px #999;
 }
