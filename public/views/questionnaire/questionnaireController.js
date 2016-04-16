@@ -8,7 +8,6 @@ app.controller('questionnaireController', function($scope, $stateParams, $state,
 
   $scope.isValidQuestionnaire = function () {
     for (var i = 0; i < $scope.questions.length; i++) {
-      console.log($scope.questions[i].answered)
       if (!$scope.questions[i].answered) {
         return false;
       }

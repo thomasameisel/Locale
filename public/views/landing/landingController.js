@@ -23,4 +23,8 @@ app.controller('landingController', function($scope, $state, $stateParams) {
             $scope.search();
         }
     };*/
+    $scope.update = function() {
+        console.log('hi');
+        $state.go('questionnaire', undefined);
+    }
 });
