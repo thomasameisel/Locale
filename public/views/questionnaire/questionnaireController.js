@@ -84,27 +84,42 @@ app.controller('questionnaireController', function($scope, $stateParams, $state,
 
   $scope.searched = false;
   $scope.isValidWorkplace = false;
+  $scope.workplaceError = '';
   var input = document.getElementById('workplaceBox');
   var autocomplete = new google.maps.places.Autocomplete(input, ['street_address']);
 
 
   $scope.setAddress = function() {
+    $scope.loading = true;
     var address = document.getElementById('workplaceBox').value;
     var geocoder = new google.maps.Geocoder();
 
     geocoder.geocode({'address': address}, function(results, status) {
-      $scope.loading = true;
       if (status === google.maps.GeocoderStatus.OK) {
-        $scope.loading = false;
-        directionsDataService.setWorkplace({destination : results[0].formatted_address})
-        .done(function () {
-            $scope.isValidWorkplace = true;
-            $scope.$apply();
-        })
+        var address = results[0];
+
+        //check to see if work place address is in Chicago
+        var components = address.address_components;
+        if (components[components.length - 5].long_name !=="Chicago"){
+          $scope.workplaceError = "Please enter a work place address in Chicago";
+        }
+
+        else {
+          $scope.workplaceError = '';
+          directionsDataService.setWorkplace({destination: address.formatted_address})
+              .done(function () {
+                $scope.loading = false;
+                $scope.isValidWorkplace = true;
+                $scope.$apply();
+              })
+        }
+
       } else {
         $scope.searched = true;
         $scope.loading = false;
         $scope.isValidWorkplace = false;
+
+        $scope.workplaceError = "Please enter a valid address";
         $scope.$apply();
       }
     });
@@ -113,8 +128,10 @@ app.controller('questionnaireController', function($scope, $stateParams, $state,
   $scope.$watch(
       function() {
         if ($scope.useCommute){
+          console.log("Using commute");
           return $scope.isValidWorkplace && $scope.isValidQuestionnaire();
         } else {
+          console.log("Not using commute");
           return $scope.isValidQuestionnaire();
         }
        },

@@ -1,5 +1,5 @@
 ### Most Important
-- [ ] Make questionnaire submit button float and greyed out when the questionnaire is incomplete
+- [x] Make questionnaire submit button float and greyed out when the questionnaire is incomplete
   - if the directions request is not done, a loading icon should appear after the user presses submit
 - [ ] Change preferences bars hue to support green/red colorblindness
 - [ ] Put tick mark on preferences bars to display user selections
