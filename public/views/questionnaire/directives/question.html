@@ -3,7 +3,7 @@
     <div class="answersDiv">
         <div
             class="well well-lg col-md-3 answers container"
-            ng-class="{hoverAnswer : hover, selectedAnswer : $index == selected}"
+            ng-class="{hoverAnswer : hover, selectedAnswer : $index == selected, lastAnswers : $index == 3 || $index == 4}"
             ng-mouseenter="hover = true"
             ng-mouseleave="hover = false"
             ng-repeat="option in question.options track by $index"
