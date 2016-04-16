@@ -24,7 +24,11 @@ app.service('directionsDataService', function($resource, $http) {
     var setWorkplace = function (params) {
         return $.get('/directions', params, function (result) {
             timeDistance.communityTimes = result;
-        });
+        })
+          .fail(function() {
+            // Indicate on client side that there is an error
+            console.log('Something went wrong');
+          });
     };
 
     var getCommunityTime = function(){
