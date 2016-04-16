@@ -62,29 +62,46 @@ function validatePreferencesParams(preferences) {
   return false;
 }
 
-function validateAddress(address, callback) {
-  if (!address) {
-    callback(false);
-  }
-  addressValidator.validate(address, addressValidator.match.streetAddress,
-                            function(err, exact, inexact) {
-    if (err) {
-      callback(false);
-    } else {
-      var addressType = (exact.length > 0) ? exact : inexact;
-      var city;
-      var location;
-      if (addressType.length > 0) {
-        city = addressType[0].city;
-        location = addressType[0].location;
-      }
-      callback(addressType.length > 0, city, location);
-    }
-  });
+// function validateAddress(address, callback) {
+//   if (!address) {
+//     return callback(false);
+//   }
+//   addressValidator.validate(address, addressValidator.match.streetAddress,
+//                             function(err, exact, inexact) {
+//     if (err) {
+//       return callback(false);
+//     } else {
+//       var addressType = (exact.length > 0) ? exact : inexact;
+//       var city;
+//       var location;
+//       if (addressType.length > 0) {
+//         city = addressType[0].city;
+//         location = addressType[0].location;
+//       }
+//       callback(addressType.length > 0, city, location);
+//     }
+//   });
+// }
+
+function validateLatLng(lat, lng) {
+  const maxLat = 90;
+  const maxLng = 180;
+  return validator.isFloat(lat, { min: -maxLat, max: maxLat }) &&
+         validator.isFloat(lng, { min: -maxLng, max: maxLng });
 }
 
 function validateDirectionsParams(req, callback) {
-  validateAddress(req.query.destination, callback);
+  // validateAddress(req.query, callback);
+  if (!req.query.lat || !req.query.lng || !req.query.city ||
+      !validateLatLng(req.query.lat, req.query.lng)) {
+    return callback(false);
+  } else {
+    var latLng = {
+      lat: Number(req.query.lat),
+      lng: Number(req.query.lng)
+    };
+    return callback(true, req.query.city, latLng);
+  }
 }
 
 // middleware which blocks requests when we're too busy
@@ -138,17 +155,13 @@ app.get('/preferences', function(req, res) {
 app.get('/directions', function(req, res) {
   // console.log(req.query);
   console.log('GET /directions');
-  validateDirectionsParams(req, function(valid, city, coordinates) {
+  validateDirectionsParams(req, function(valid, city, latLng) {
     if (valid) {
-      var latLng = {
-        lat: coordinates.lat,
-        lng: coordinates.lon
-      };
       var start = new Date();
       directionsCommunities.getClosestLatLng(keyByValue(city, cities), latLng,
           function(err, result) {
         if (err) {
-          res.send(err);
+          res.status(500).send(err);
         } else {
           res.send(result);
         }
@@ -156,7 +169,7 @@ app.get('/directions', function(req, res) {
         console.log('Time elapsed:', (end - start) / 1000, 's');
       });
     } else {
-      res.send('<p>Address is not valid</p>');
+      res.status(400).send('<p>Address is not valid</p>');
     }
   });
 });

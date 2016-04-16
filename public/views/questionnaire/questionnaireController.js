@@ -1,7 +1,7 @@
 /**
  * Created by chrissu on 12/12/15.
  */
-app.controller('questionnaireController', function($scope, $stateParams, $state, directionsDataService,$location, $anchorScroll) {
+app.controller('questionnaireController', function($scope, $stateParams, $state, directionsDataService, communityDataService, $location, $anchorScroll) {
   $scope.temp ="225 E Wacker Dr, Chicago, IL, United States";
   $scope.timeLimit = directionsDataService.getTimeLimit();
   $scope.useCommute = directionsDataService.getUseCommute();
@@ -96,7 +96,12 @@ app.controller('questionnaireController', function($scope, $stateParams, $state,
       $scope.loading = true;
       if (status === google.maps.GeocoderStatus.OK) {
         $scope.loading = false;
-        directionsDataService.setWorkplace({destination : results[0].formatted_address})
+        var destination = {
+          city: communityDataService.getCity(),
+          lat: results[0].geometry.location.lat(),
+          lng: results[0].geometry.location.lng()
+        };
+        directionsDataService.setWorkplace(destination)
         .done(function () {
             $scope.isValidWorkplace = true;
             $scope.$apply();

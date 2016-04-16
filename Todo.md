@@ -1,10 +1,10 @@
 ### Most Important
+- [ ] Show on client side when there is an error in the directions request
 - [ ] Make questionnaire submit button float and greyed out when the questionnaire is incomplete
   - if the directions request is not done, a loading icon should appear after the user presses submit
 - [ ] Change preferences bars hue to support green/red colorblindness
 - [ ] Put tick mark on preferences bars to display user selections
 - [ ] Denote that middle line on preferences bars is city average
-- [x] Make top bar float
 - [ ] Change landing page search to only accept cities that we have (only Chicago for now)
   - leaving the input box blank prints 'NO_RESULTS' next to the box
 - [ ] Change stars on map page to make it clear that they are based on preferences
@@ -13,7 +13,6 @@
 ### Stretch Goals
 - [ ] Preferences don't show up in the same order for every community in the detail view
 - [ ] Only allow users to select a work place in their selected city
-- [ ] BUG: when you refresh the map, no communities appear, it doesn't keep the directions object
 - [ ] Add more cities (NYC, San Francisco, Nashville)
 - [ ] Automatically do a directions request (user does not have to press button)
   - do not take the user back to landing page, just change city in the questionnaire
@@ -24,6 +23,9 @@
 - [ ] write tests for the frontend (using phantom potentially)
 
 ### Completed
+- [x] Change directions to send lat/lng to server, rather than an address
+- [x] Make top bar float
+- [x] BUG: when you refresh the map, no communities appear, it doesn't keep the directions object
 - [x] BUG: when the user does not move the slidebar, the time is the last value used (not 10)
   - for example, if the user puts in the value 15 for the time then clicks submit then goes back to the questionnaire
   and does not move the slidebar (it shows 10 minutes), the new request will use 15 instead of 10
