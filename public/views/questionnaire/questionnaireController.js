@@ -96,18 +96,20 @@ app.controller('questionnaireController', function($scope, $stateParams, $state,
 
     geocoder.geocode({'address': address}, function(results, status) {
       if (status === google.maps.GeocoderStatus.OK) {
-<<<<<<< HEAD
         var address = results[0];
 
         //check to see if work place address is in Chicago
         var components = address.address_components;
         if (components[components.length - 5].long_name !=="Chicago"){
           $scope.workplaceError = "Please enter a work place address in Chicago";
-        }
-
-        else {
+        } else {
           $scope.workplaceError = '';
-          directionsDataService.setWorkplace({destination: address.formatted_address})
+          var destination = {
+            city: communityDataService.getCity(),
+            lat: address.geometry.location.lat(),
+            lng: address.geometry.location.lng()
+          };
+          directionsDataService.setWorkplace(destination)
               .done(function () {
                 $scope.loading = false;
                 $scope.isValidWorkplace = true;
@@ -115,19 +117,6 @@ app.controller('questionnaireController', function($scope, $stateParams, $state,
               })
         }
 
-=======
-        $scope.loading = false;
-        var destination = {
-          city: communityDataService.getCity(),
-          lat: results[0].geometry.location.lat(),
-          lng: results[0].geometry.location.lng()
-        };
-        directionsDataService.setWorkplace(destination)
-        .done(function () {
-            $scope.isValidWorkplace = true;
-            $scope.$apply();
-        })
->>>>>>> 9188fb6909489db61a726c1b1bf0afd452f3eeab
       } else {
         $scope.searched = true;
         $scope.loading = false;
