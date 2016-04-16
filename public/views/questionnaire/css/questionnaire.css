@@ -1,7 +1,6 @@
 
 .questionContainer{
     margin-bottom: 70px;
-    cursor: pointer;
 }
 
 .questionText{
@@ -23,6 +22,7 @@
 }
 
 .answers{
+    cursor: pointer;
     font-size: 20px;
     text-align:center;
     box-shadow: 0 3px 3px -3px #999;
@@ -108,4 +108,9 @@
 
 .lastAnswers{
     margin-left: 125px;
+}
+
+
+#commuteLabel{
+    margin-bottom: 30px;
 }

@@ -1,10 +1,12 @@
 <link rel="stylesheet" type="text/css" href="views/questionnaire/css/questionnaire.css">
 <div id="bufferDiv"></div>
-<div>
-    <div class="col-md-offset-3 col-md-6">
-        <label>
-            <input type="checkbox" id="chkbx" ng-model="useCommute"><span class="checkboxtext">Set work commute time limit</span><br>
-        </label>
+<div class="col-md-12">
+    <div class="col-md-offset-3">
+        <div  id="commuteLabel" class="col-md-offset-1 col-md-8">
+            <label>
+                <input type="checkbox" id="chkbx" ng-model="useCommute"><span class="checkboxtext">Set work commute time limit</span><br>
+            </label>
+        </div>
     </div>
 
     <div class="col-md-offset-3 col-md-6" id="workplaceDiv" ng-show="useCommute">
