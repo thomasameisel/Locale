@@ -45,6 +45,14 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
         crowdedPctOfAvg         :   'Breathing Room'
     };
 
+    $scope.orderedCategories = [
+      'violentCrimePctOfAvg',
+      'nonViolentCrimePctOfAvg',
+      'nightlifePctOfAvg',
+      'pricePctOfAvg',
+      'crowdedPctOfAvg'
+    ];
+
     $scope.preferences = [];
     $scope.preferencesObj = {};
     $scope.neighborhoods = {};
@@ -84,22 +92,29 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
 
     function invertResult(result) {
         for (var i = 0; i < result.length; ++i) {
-            for (var goodCriteria in result[i].goodCriteria) {
-                if (result[i].goodCriteria.hasOwnProperty(goodCriteria) &&
-                    goodCriteria !== 'nightlifePctOfAvg') {
-                    var inverse = 2 - result[i].goodCriteria[goodCriteria];
-                    result[i].goodCriteria[goodCriteria] = (inverse < 0) ?
-                        0.05 : inverse;
+            for (var criteria in result[i].allCriteria) {
+                if (result[i].allCriteria.hasOwnProperty(criteria) &&
+                    criteria !== 'nightlifePctOfAvg') {
+                    var inverse = 2 - result[i].allCriteria[criteria].value;
+                    if (inverse < 0) {
+                      result[i].allCriteria[criteria].value = 0.05;
+                    } else if (inverse > 2) {
+                      result[i].allCriteria[criteria].value = 2;
+                    } else {
+                      result[i].allCriteria[criteria].value = inverse;
+                    }
+                    // result[i].allCriteria[criteria].value = (inverse < 0) ?
+                    //     0.05 : inverse;
                 }
             }
-            for (var badCriteria in result[i].badCriteria) {
-                if (result[i].badCriteria.hasOwnProperty(badCriteria) &&
-                    badCriteria !== 'nightlifePctOfAvg') {
-                    var inverse = 2 - result[i].badCriteria[badCriteria];
-                    result[i].badCriteria[badCriteria] = (inverse < 0) ?
-                        0.05 : inverse;
-                }
-            }
+            // for (var badCriteria in result[i].badCriteria) {
+            //     if (result[i].badCriteria.hasOwnProperty(badCriteria) &&
+            //         badCriteria !== 'nightlifePctOfAvg') {
+            //         var inverse = 2 - result[i].badCriteria[badCriteria];
+            //         result[i].badCriteria[badCriteria] = (inverse < 0) ?
+            //             0.05 : inverse;
+            //     }
+            // }
         }
         return result;
     }
