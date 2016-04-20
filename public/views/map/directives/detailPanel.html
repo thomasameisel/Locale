@@ -20,13 +20,13 @@
         <span>Your Selections: </span><span class="glyphicon glyphicon-triangle-top"></span>
         <div class="panel-body col-md-12" ng-repeat="(key, val) in preference.goodCriteria">
             <div ng-if="val" class="categoryLabel"> {{categories[key]}} </div>
-            <div ng-if="val" ng-class="{'ext col-md-6': true}"><div ng-style="{'width': (val>2?100:val*50)+'%'}" ng-class="{'bar green': true}"></div></div>
+            <div ng-if="val" ng-class="{'ext col-md-6': true}"><div ng-style="{'width': (val>2?100:val*50)+'%'}" class="bar"></div></div>
             <div ng-style="{'left': userpreferences[key]+'%'}" class="glyphicon glyphicon-triangle-top"></div>
         </div>
 
         <div class="panel-body col-md-12" ng-repeat="(key, val) in preference.badCriteria">
             <div ng-if="val" class="categoryLabel">{{categories[key]}}</div>
-            <div ng-if="val" ng-class="{'ext col-md-6': true}"><div ng-style="{'width': (val>2?100:val*50)+'%'}" ng-class="{'bar red': true}"></div></div>
+            <div ng-if="val" ng-class="{'ext col-md-6': true}"><div ng-style="{'width': (val>2?100:val*50)+'%'}" class="bar"></div></div>
             <div ng-style="{'left': userpreferences[key]+'%'}" class="glyphicon glyphicon-triangle-top"></div>
         </div>
     </div>
