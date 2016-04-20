@@ -139,7 +139,14 @@ app.get('/preferences', function(req, res) {
       if (err) {
         res.send('<p>Error with request</p>');
       } else {
-        res.send(result);
+        var selectedPreferences = {
+          violentCrimePctOfAvg: req.query.safety,
+          nonViolentCrimePctOfAvg: req.query.qualityOfLife,
+          nightlifePctOfAvg: req.query.nightlife,
+          pricePctOfAvg: req.query.affordability,
+          crowdedPctOfAvg: req.query.breathingRoom
+        };
+        res.send({ response: result, selectedPreferences: selectedPreferences });
       }
       var end = new Date();
       console.log('Time elapsed:', (end - start) / 1000, 's');

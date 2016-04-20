@@ -104,11 +104,38 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
         return result;
     }
 
+    function transformPreferencesForDisplay(selectedPreferences) {
+      for (var preference in selectedPreferences) {
+        if (selectedPreferences.hasOwnProperty(preference)) {
+          switch (selectedPreferences[preference]) {
+            case '1':
+              selectedPreferences[preference] = -50;
+              break;
+            case '2':
+              selectedPreferences[preference] = -25;
+              break;
+            case '3':
+              selectedPreferences[preference] = 0;
+              break;
+            case '4':
+              selectedPreferences[preference] = 25;
+              break;
+            case '5':
+              selectedPreferences[preference] = 50;
+              break;
+          }
+        }
+      }
+    }
+
     //Populate map with preferences from database
     function setPreferences() {
         communityDataService.preferences()
             .done(function (result) {
-                var invertedResult = invertResult(result);
+                $scope.userpreferences = result.selectedPreferences
+                transformPreferencesForDisplay($scope.userpreferences);
+                var response = result.response;
+                var invertedResult = invertResult(response);
                 $scope.communityData = addColors(invertedResult);
                 $scope.safeApply();
                 filterData();

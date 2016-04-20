@@ -7,7 +7,8 @@ app.directive('detailPanel', function() {
         restrict: 'E',
         scope: {
             preference: '=',
-            categories: '='
+            categories: '=',
+            userpreferences: '='
         },
         link: function($scope, element, attrs){
 
