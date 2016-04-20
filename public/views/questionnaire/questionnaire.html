@@ -1,10 +1,12 @@
 <link rel="stylesheet" type="text/css" href="views/questionnaire/css/questionnaire.css">
 <div id="bufferDiv"></div>
-<div>
-    <div class="col-md-offset-3 col-md-6">
-        <label>
-            <input type="checkbox" id="chkbx" ng-model="useCommute"><span class="checkboxtext">Set work commute time limit</span><br>
-        </label>
+<div class="col-md-12">
+    <div class="col-md-offset-3">
+        <div  id="commuteLabel" class="col-md-offset-1 col-md-8">
+            <label>
+                <input type="checkbox" id="chkbx" ng-model="useCommute"><span class="checkboxtext">Set work commute time limit</span><br>
+            </label>
+        </div>
     </div>
 
     <div class="col-md-offset-3 col-md-6" id="workplaceDiv" ng-show="useCommute">
@@ -28,15 +30,15 @@
         <p ng-style ="{'color' : 'red'}" ng-show="workplaceError">{{workplaceError}}</p>
     </div>
 
-    <div ng-repeat="question in questions">
-        <div class="container-fluid" id="{{question.id}}">
+    <div ng-repeat="question in questions track by $index">
+        <div class="container-fluid" id="{{question.id}}" >
             <question question = question questionid = questionid></question>
         </div>
     </div>
 
     <div id="submitDiv">
-        <button ng-class="{'disabled': !ready, 'btn-primary': ready}" type="submit"
-                class="btn btn-default" ng-click="submitAnswers()">Submit</button>
+        <button ng-class="{disabled: !ready}" type="submit"
+                class="button" ng-click="submitAnswers()" ng-disabled="!ready"></button>
         <span ng-show="loading" class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>
     </div>
 

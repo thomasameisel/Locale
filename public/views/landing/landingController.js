@@ -1,4 +1,4 @@
-app.controller('landingController', function($scope, $state, $stateParams) {
+app.controller('landingController', function($scope, $state, $stateParams, communityDataService) {
     /*var input = document.getElementById('searchBox1');
     //var searchBox = new google.maps.places.SearchBox(input);
     var autocomplete = new google.maps.places.Autocomplete(input, { types: ['(cities)']});
@@ -23,4 +23,8 @@ app.controller('landingController', function($scope, $state, $stateParams) {
             $scope.search();
         }
     };*/
+    $scope.update = function() {
+        communityDataService.setCity($scope.data.singleSelect);
+        $state.go('questionnaire', undefined);
+    }
 });

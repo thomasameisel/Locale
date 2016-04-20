@@ -7,8 +7,11 @@
                 <h1 class="searchText" id="landingText">
                     Find the perfect neighborhood
                 </h1>
+                <select name="singleSelect" class="form-control" ng-model="data.singleSelect" ng-change="update()">
+                    <option value="Chicago">Chicago, IL</option>
+                    <option value="New York City">New York City, NY</option>
+                </select>
             </span>
-            <googlesearch></googlesearch>
         </div><!-- /.col-lg-6 -->
     </div>
 </div>
