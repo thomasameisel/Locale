@@ -32,13 +32,12 @@
             </div>
             <div ng-style="{'left': '-50%'}" class="glyphicon glyphicon-triangle-top"></div>
         </div> -->
-        <div class="panel-body col-md-12" ng-repeat="category in orderedCategories">
-            <div>{{category}}</div>
-            <!-- <div class="categoryLabel">{{categories[category]}}</div>
-            <div ng-class="{'ext col-md-6': true}">
-                <div ng-style="{'width': (preference.allCriteria[category].value*50)+'%'}" ng-class="{preference.allCriteria[category].good?'bar green':'bar red'}"></div>
+        <div class="panel-body col-md-12" ng-repeat="(key,val) in preference.allCriteria">
+            <div ng-if="val" class="categoryLabel">{{categories[key]}}</div>
+            <div ng-if="val" ng-class="{'ext col-md-6': true}">
+                <div ng-style="{'width': (val.value>2?100:val.value*50)+'%'}" ng-class="{'bar green':val.good,'bar red':!val.good}"></div>
             </div>
-            <div ng-style="{'left': '-50%'}" class="glyphicon glyphicon-triangle-top"></div> -->
+            <div ng-style="{'left': ((preference.normalizedPreferences[key]>2?100:preference.normalizedPreferences[key]*50)-50)+'%'}" class="glyphicon glyphicon-triangle-top"></div>
         </div>
         <div>City Average</div>
     </div>
