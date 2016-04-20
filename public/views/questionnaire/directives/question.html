@@ -2,10 +2,14 @@
     <div class="questionText"> {{question.text}}</div>
     <div class="answersDiv">
         <div
-            class="well well-lg col-md-3 answers container"
-            ng-class="{hoverAnswer : hover, selectedAnswer : $index == selected, lastAnswers : $index == 3 || $index == 4}"
+            class="well well-lg col-md-3 container"
             ng-mouseenter="hover = true"
             ng-mouseleave="hover = false"
+            ng-class="{hoverAnswer : hover, selectedAnswer : $index == selected,
+            'col-md-offset-2' : $index >= 3,
+            'col-md-offset-1' : $index < 3,
+            answers : $index < 3,
+            lastAnswers : $index >= 3}"
             ng-repeat="option in question.options track by $index"
             ng-click="select($index)">
                 {{option}}

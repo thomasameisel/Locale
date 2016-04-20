@@ -22,15 +22,8 @@
     display: block;
 }*/
 
-.bar.red {
-    background-color: red;
-}
-
-.bar.green {
-    background-color: green;
-}
-
 .bar {
     width: 10%;
     height: 7px;
+    background-color: #2196F3;
 }

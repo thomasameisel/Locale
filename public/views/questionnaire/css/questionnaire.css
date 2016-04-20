@@ -17,19 +17,6 @@
     vertical-align: middle;
 }
 
-.answersDiv{
-    margin-left:90px;
-}
-
-.answers{
-    cursor: pointer;
-    font-size: 20px;
-    text-align:center;
-    box-shadow: 0 3px 3px -3px #999;
-    height: 100px;
-    margin: 25px;
-}
-
 .hoverAnswer {
     background-color: #009fd3;
 }
@@ -107,9 +94,24 @@
 
 
 .lastAnswers{
-    margin-left: 125px;
+    cursor: pointer;
+    font-size: 20px;
+    text-align:center;
+    box-shadow: 0 3px 3px -3px #999;
+    height: 100px;
+    margin-top: 25px;
+    margin-bottom: 25px;
 }
 
+.answers{
+    cursor: pointer;
+    font-size: 20px;
+    text-align:center;
+    box-shadow: 0 3px 3px -3px #999;
+    height: 100px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
 
 #commuteLabel{
     margin-bottom: 30px;
