@@ -37,7 +37,7 @@
             <div ng-if="val" ng-class="{'ext col-md-6': true}">
                 <div ng-style="{'width': (val.value>2?100:val.value*50)+'%'}" ng-class="{'bar green':val.good,'bar red':!val.good}"></div>
             </div>
-            <div ng-style="{'left': ((preference.normalizedPreferences[key]>2?100:preference.normalizedPreferences[key]*50)-50)+'%'}" class="glyphicon glyphicon-triangle-top"></div>
+            <div ng-style="{'left': displayPreference(key, preference.normalizedPreferences[key])+'%'}" class="glyphicon glyphicon-triangle-top"></div>
         </div>
         <div>City Average</div>
     </div>
