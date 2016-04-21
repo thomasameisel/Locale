@@ -70,6 +70,19 @@
     position: fixed; bottom: 40px; right: 50px;
 }
 
+.buttonNoCheckbox {
+    height: 80px;
+    width: 80px;
+    border-radius: 80px;
+    border: 0px solid #000;
+    background: #F44336;
+    -webkit-box-shadow: 0 8px 6px -6px #999;
+    -moz-box-shadow: 0 8px 6px -6px #999;
+    box-shadow: 0 15px 20px -6px #999;
+    font-size: 2em;
+    color: black;
+}
+
 .button {
     height: 80px;
     width: 80px;
@@ -79,6 +92,8 @@
     -webkit-box-shadow: 0 8px 6px -6px #999;
     -moz-box-shadow: 0 8px 6px -6px #999;
     box-shadow: 0 15px 20px -6px #999;
+    font-size: 2em;
+    color: black;
 }
 
 .disabled {
@@ -90,6 +105,21 @@
     -webkit-box-shadow: 0 8px 6px -6px #999;
     -moz-box-shadow: 0 8px 6px -6px #999;
     box-shadow: 0 15px 20px -6px #999;
+    font-size: 2em;
+    color: black;
+}
+
+.disabledNoCheckbox {
+    height: 80px;
+    width: 80px;
+    border-radius: 80px;
+    border: 0px solid #000;
+    background: grey;
+    -webkit-box-shadow: 0 8px 6px -6px #999;
+    -moz-box-shadow: 0 8px 6px -6px #999;
+    box-shadow: 0 15px 20px -6px #999;
+    font-size: 2em;
+    color: black;
 }
 
 

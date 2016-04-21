@@ -35,9 +35,11 @@
     </div>
 
     <div id="submitDiv">
-        <button ng-class="{disabled: !ready}" type="submit"
-                class="button" ng-click="submitAnswers()" ng-disabled="!ready"></button>
-        <span ng-show="loading" class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>
+      <button ng-class="{disabled: !ready && !(loading && isValidQuestionnaire()),
+                         disabledNoCheckbox: !ready && loading && isValidQuestionnaire(),
+                         'buttonNoCheckbox glyphicon glyphicon-refresh glyphicon-refresh-animate': loading && isValidQuestionnaire(),
+                         button: !(loading && isValidQuestionnaire())}"
+              type="submit" style="{font-size:2em;color:black}"ng-click="submitAnswers()" ng-disabled="!ready"></button>
     </div>
 
 </div>
