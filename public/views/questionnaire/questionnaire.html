@@ -39,7 +39,7 @@
                          disabledNoCheckbox: !ready && loading && isValidQuestionnaire(),
                          'buttonNoCheckbox glyphicon glyphicon-refresh glyphicon-refresh-animate': loading && isValidQuestionnaire(),
                          button: !(loading && isValidQuestionnaire())}"
-              type="submit" style="{font-size:2em;color:black}"ng-click="submitAnswers()" ng-disabled="!ready"></button>
+              type="submit" ng-click="submitAnswers()" ng-disabled="!ready || loading"></button>
     </div>
 
 </div>

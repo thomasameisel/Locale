@@ -37,21 +37,20 @@
 
 <body>
     <nav ng-controller="navController" class="navbar navbar-default navbar-fixed-top" id="navbar">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="#/" ng-click="goToLandingPage()">Locale</a>
-                </div>
-                <p class="navbar-text">{{city}}</p>
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#/" ng-click="goToLandingPage()">Locale</a>
+            </div>
+            <p class="navbar-text">{{city}}</p>
 
-                <div class="mapPageBtns" >
-                    <p class="navbar-btn navbar-right mapBtn" ng-if="inMapState || inQuestionnaireState">
-                        <a class="btn btn-warning" ng-click="goToLandingPage()"> <!--data-toggle="modal" data-target="#myModal"-->Change City</a>
-                    </p>
+            <div class="mapPageBtns" >
+                <p class="navbar-btn navbar-right mapBtn" ng-if="inMapState || inQuestionnaireState">
+                    <a class="btn btn-warning" ng-click="goToLandingPage()"> <!--data-toggle="modal" data-target="#myModal"-->Change City</a>
+                </p>
 
-                    <p class="navbar-btn navbar-right mapBtn" ng-if="inMapState">
-                        <a class="btn btn-primary" ng-click="retakeSurvey()">Retake Survey</a>
-                    </p>
-                </div>
+                <p class="navbar-btn navbar-right mapBtn" ng-if="inMapState">
+                    <a class="btn btn-primary" ng-click="retakeSurvey()">Retake Survey</a>
+                </p>
             </div>
         </div>
     </nav>

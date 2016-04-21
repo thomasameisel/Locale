@@ -100,8 +100,19 @@ app.controller('questionnaireController', function($scope, $stateParams, $state,
 
         //check to see if work place address is in Chicago
         var components = address.address_components;
-        if (components[components.length - 5].long_name !=="Chicago"){
+        var city = '';
+        for (var i = 0; i < components.length; ++i) {
+          if (components[i].types[0] === 'locality' && components[i].types[1] === 'political') {
+            city = components[i].long_name;
+            break;
+          }
+        }
+        if (city !== "Chicago"){
           $scope.workplaceError = "Please enter a work place address in Chicago";
+          $scope.searched = true;
+          $scope.loading = false;
+          $scope.isValidWorkplace = false;
+          $scope.$apply();
         } else {
           $scope.workplaceError = '';
           var destination = {
