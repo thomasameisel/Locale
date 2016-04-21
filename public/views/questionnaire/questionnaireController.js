@@ -85,9 +85,18 @@ app.controller('questionnaireController', function($scope, $stateParams, $state,
   $scope.searched = false;
   $scope.isValidWorkplace = false;
   $scope.workplaceError = '';
-  var input = document.getElementById('workplaceBox');
-  var autocomplete = new google.maps.places.Autocomplete(input, ['street_address']);
 
+  var defaultBounds = new google.maps.LatLngBounds(
+    new google.maps.LatLng(41.643075, -87.865046),
+    new google.maps.LatLng(42.028974, -87.525375));
+
+  var input = document.getElementById('workplaceBox');
+  var options = {
+    bounds: defaultBounds,
+    types: ['address']
+  };
+
+  autocomplete = new google.maps.places.Autocomplete(input, options);
 
   $scope.setAddress = function() {
     $scope.loading = true;
@@ -98,7 +107,7 @@ app.controller('questionnaireController', function($scope, $stateParams, $state,
       if (status === google.maps.GeocoderStatus.OK) {
         var address = results[0];
 
-        //check to see if work place address is in Chicago
+        // check to see if work place address is in Chicago
         var components = address.address_components;
         var city = '';
         for (var i = 0; i < components.length; ++i) {

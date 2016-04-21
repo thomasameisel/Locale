@@ -25,7 +25,7 @@
             </span>
 
         </div>
-        <p ng-style ="{'color' : 'red'}" ng-show="workplaceError">{{workplaceError}}</p>
+        <p style ="color:red" ng-show="workplaceError">{{workplaceError}}</p>
     </div>
 
     <div ng-repeat="question in questions track by $index">
@@ -35,11 +35,12 @@
     </div>
 
     <div id="submitDiv">
-      <button ng-class="{disabled: !ready && !(loading && isValidQuestionnaire()),
-                         disabledNoCheckbox: !ready && loading && isValidQuestionnaire(),
-                         'buttonNoCheckbox glyphicon glyphicon-refresh glyphicon-refresh-animate': loading && isValidQuestionnaire(),
-                         button: !(loading && isValidQuestionnaire())}"
-              type="submit" ng-click="submitAnswers()" ng-disabled="!ready || loading"></button>
+      <button class="button" ng-style ="{background: ((ready && !loading) ? '#F44336' : 'grey')}"
+              type="submit" ng-click="submitAnswers()" ng-disabled="!ready || loading">
+          <span ng-class="{'glyphicon glyphicon-refresh glyphicon-refresh-animate': loading && isValidQuestionnaire(),
+                           checkmark: !(loading && isValidQuestionnaire())}"
+                style="font-size:2em;color:black;"></span>
+      </button>
     </div>
 
 </div>
