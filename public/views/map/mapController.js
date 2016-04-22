@@ -91,10 +91,14 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
     }
 
     function invertResult(result) {
+        if (result[0].normalizedPreferences.nightlifePctOfAvg < 1) {
+            $scope.categories.nightlifePctOfAvg = 'Quietness';
+        }
         for (var i = 0; i < result.length; ++i) {
             for (var criteria in result[i].allCriteria) {
                 if (result[i].allCriteria.hasOwnProperty(criteria) &&
-                    criteria !== 'nightlifePctOfAvg') {
+                      (criteria !== 'nightlifePctOfAvg' ||
+                       result[i].normalizedPreferences[criteria] < 1)) {
                     var inverse = 2 - result[i].allCriteria[criteria].value;
                     if (inverse < 0) {
                       result[i].allCriteria[criteria].value = 0.05;
@@ -119,38 +123,11 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
         return result;
     }
 
-    function transformPreferencesForDisplay(selectedPreferences) {
-      for (var preference in selectedPreferences) {
-        if (selectedPreferences.hasOwnProperty(preference)) {
-          switch (selectedPreferences[preference]) {
-            case '1':
-              selectedPreferences[preference] = -50;
-              break;
-            case '2':
-              selectedPreferences[preference] = -25;
-              break;
-            case '3':
-              selectedPreferences[preference] = 0;
-              break;
-            case '4':
-              selectedPreferences[preference] = 25;
-              break;
-            case '5':
-              selectedPreferences[preference] = 50;
-              break;
-          }
-        }
-      }
-    }
-
     //Populate map with preferences from database
     function setPreferences() {
         communityDataService.preferences()
             .done(function (result) {
-                $scope.userpreferences = result.selectedPreferences
-                transformPreferencesForDisplay($scope.userpreferences);
-                var response = result.response;
-                var invertedResult = invertResult(response);
+                var invertedResult = invertResult(result);
                 $scope.communityData = addColors(invertedResult);
                 $scope.safeApply();
                 filterData();

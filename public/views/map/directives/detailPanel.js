@@ -23,7 +23,7 @@ app.directive('detailPanel', function() {
             };
 
             $scope.displayPreference = function(preference, value) {
-              if (preference === 'nightlifePctOfAvg') {
+              if (preference === 'nightlifePctOfAvg' && value > 1) {
                 return (value>2?100:value*50)-50
               } else {
                 return 100-(value>2?100:value*50)-50
