@@ -71,7 +71,8 @@ body {
     margin-left: -15px;
     margin-right: -15px;
     margin-bottom :-20px;
-    height:100%;
+    height:85%;
+    overflow: auto;
 }
 
 .categoryLabel {
