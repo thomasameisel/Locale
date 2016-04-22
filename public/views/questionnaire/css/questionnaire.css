@@ -75,6 +75,7 @@
     width: 80px;
     border-radius: 80px;
     border: 0px solid #000;
+    background: #F44336;
     -webkit-box-shadow: 0 8px 6px -6px #999;
     -moz-box-shadow: 0 8px 6px -6px #999;
     box-shadow: 0 15px 20px -6px #999;
@@ -111,4 +112,17 @@
     background-image: url("../images/ic_done_white.png");
     background-repeat: no-repeat;
     background-position: center center;
+}
+
+#loading {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    width: 100vw;
+    height: 100vh;
+    background: white url("../images/balls.svg");
+    background-repeat: no-repeat;
+    background-position: center;
 }

@@ -99,7 +99,6 @@ app.controller('questionnaireController', function($scope, $stateParams, $state,
   autocomplete = new google.maps.places.Autocomplete(input, options);
 
   $scope.setAddress = function() {
-    $scope.loading = true;
     var address = document.getElementById('workplaceBox').value;
     var geocoder = new google.maps.Geocoder();
 
@@ -118,30 +117,29 @@ app.controller('questionnaireController', function($scope, $stateParams, $state,
         }
         if (city !== "Chicago"){
           $scope.workplaceError = "Please enter a work place address in Chicago";
-          $scope.searched = true;
-          $scope.loading = false;
           $scope.isValidWorkplace = false;
           $scope.$apply();
         } else {
+          $scope.isValidWorkplace = true;
           $scope.workplaceError = '';
           var destination = {
             city: communityDataService.getCity(),
             lat: address.geometry.location.lat(),
             lng: address.geometry.location.lng()
           };
+          $scope.gettingDirectionsData = true;
           directionsDataService.setWorkplace(destination)
               .done(function () {
-                $scope.loading = false;
-                $scope.isValidWorkplace = true;
+              $scope.gettingDirectionsData = false;
                 $scope.$apply();
+                if ($scope.attemptingSubmit) {
+                  $scope.submitAnswers();
+                }
               })
         }
 
       } else {
-        $scope.searched = true;
-        $scope.loading = false;
         $scope.isValidWorkplace = false;
-
         $scope.workplaceError = "Please enter a valid address";
         $scope.$apply();
       }
@@ -162,9 +160,11 @@ app.controller('questionnaireController', function($scope, $stateParams, $state,
   );
 
   $scope.submitAnswers = function() {
-      directionsDataService.setUseCommute($scope.useCommute);
-      $state.go('map', {lng : $stateParams.lng , lat : $stateParams.lat});
+      if (!$scope.gettingDirectionsData) {
+        directionsDataService.setUseCommute($scope.useCommute);
+        $state.go('map', {lng: $stateParams.lng, lat: $stateParams.lat});
+      } else {
+        $scope.attemptingSubmit = true;
+      }
   };
-
-
 });

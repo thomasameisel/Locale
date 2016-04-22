@@ -157,7 +157,7 @@ app.get('/preferences', function(req, res) {
 });
 
 // jscs:disable
-// http://localhost:8080/directions?destination=201%20S%20Wacker%20Dr,%20Chicago,%20IL
+// http://localhost:8080/directions?lat=41.887572&lng=-87.618552&city=Chicago
 // jscs:enable
 app.get('/directions', function(req, res) {
   // console.log(req.query);
