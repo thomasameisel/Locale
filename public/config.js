@@ -1,5 +1,5 @@
 
-app.config(function($stateProvider, $urlRouterProvider){
+app.config(function($stateProvider, $urlRouterProvider, $locationProvider){
     $stateProvider
        .state('landing', {
             name            :   'Main Page',
@@ -21,6 +21,6 @@ app.config(function($stateProvider, $urlRouterProvider){
        });
 
     $urlRouterProvider.otherwise("/");
-
+    $locationProvider.html5Mode(true);
 });
 

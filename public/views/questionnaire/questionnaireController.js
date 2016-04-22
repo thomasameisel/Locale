@@ -2,7 +2,6 @@
  * Created by chrissu on 12/12/15.
  */
 app.controller('questionnaireController', function($scope, $stateParams, $state, directionsDataService, communityDataService, $location, $anchorScroll) {
-  $scope.temp ="225 E Wacker Dr, Chicago, IL, United States";
   $scope.timeLimit = directionsDataService.getTimeLimit();
   $scope.useCommute = directionsDataService.getUseCommute();
 
@@ -130,7 +129,7 @@ app.controller('questionnaireController', function($scope, $stateParams, $state,
           $scope.gettingDirectionsData = true;
           directionsDataService.setWorkplace(destination)
               .done(function () {
-              $scope.gettingDirectionsData = false;
+                $scope.gettingDirectionsData = false;
                 $scope.$apply();
                 if ($scope.attemptingSubmit) {
                   $scope.submitAnswers();

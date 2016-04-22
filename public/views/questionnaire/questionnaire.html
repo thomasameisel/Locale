@@ -16,13 +16,12 @@
         <div class="input-group"  id="workplace">
             <input id="workplaceBox" type="text" class="form-control" ng-change="isValidWorkplace=false"
                    ng-model="temp"
-                   placeholder="225 E Wacker Dr, Chicago, IL, United States" >
+                   placeholder="Work address" >
             <span class="input-group-btn">
               <button class="btn btn-primary" type="button" ng-click="setAddress()">
                   <span class="glyphicon glyphicon-send"></span>
               </button>
             </span>
-
         </div>
         <p style ="color:red" ng-show="workplaceError">{{workplaceError}}</p>
     </div>
