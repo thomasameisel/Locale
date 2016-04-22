@@ -120,6 +120,7 @@ app.controller('questionnaireController', function($scope, $stateParams, $state,
           $scope.$apply();
         } else {
           $scope.isValidWorkplace = true;
+          $scope.$apply();
           $scope.workplaceError = '';
           var destination = {
             city: communityDataService.getCity(),
