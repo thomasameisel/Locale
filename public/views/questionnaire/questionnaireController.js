@@ -95,12 +95,16 @@ app.controller('questionnaireController', function($scope, $stateParams, $state,
     types: ['address']
   };
 
-  autocomplete = new google.maps.places.Autocomplete(input, options);
+  var autocomplete = new google.maps.places.Autocomplete(input, options);
+
+  google.maps.event.addListener(autocomplete, 'place_changed', function() {
+    document.getElementById('workplaceBox').blur();
+    $scope.setAddress();
+  });
 
   $scope.setAddress = function() {
     var address = document.getElementById('workplaceBox').value;
     var geocoder = new google.maps.Geocoder();
-
     geocoder.geocode({'address': address}, function(results, status) {
       if (status === google.maps.GeocoderStatus.OK) {
         var address = results[0];
