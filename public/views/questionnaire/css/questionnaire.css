@@ -81,41 +81,6 @@
     box-shadow: 0 15px 20px -6px #999;
 }
 
-@media screen and (max-width: 992px) {
-    .lastAnswers{
-        cursor: pointer;
-        font-size: 40px;
-        text-align:center;
-        box-shadow: 0 3px 3px -3px #999;
-        height: 100px;
-        min-height: 100px;
-        margin-top: 25px;
-        margin-bottom: 25px;
-    }
-
-    .answers{
-        cursor: pointer;
-        font-size: 40px;
-        text-align:center;
-        box-shadow: 0 3px 3px -3px #999;
-        height: 100px;
-        min-height: 100px;
-        margin-top: 25px;
-        margin-bottom: 25px;
-    }
-}
-
-.lastAnswers{
-    cursor: pointer;
-    font-size: 20px;
-    text-align:center;
-    box-shadow: 0 3px 3px -3px #999;
-    height: 100px;
-    min-height: 100px;
-    margin-top: 25px;
-    margin-bottom: 25px;
-}
-
 .answers{
     cursor: pointer;
     font-size: 20px;
@@ -126,6 +91,20 @@
     margin-top: 25px;
     margin-bottom: 25px;
 }
+
+@media screen and (max-width: 1150px) {
+    .answers{
+        cursor: pointer;
+        font-size: 17px;
+        text-align:center;
+        box-shadow: 0 3px 3px -3px #999;
+        height: 100px;
+        min-height: 100px;
+        margin-top: 25px;
+        margin-bottom: 25px;
+    }
+}
+
 
 #commuteLabel{
     margin-bottom: 30px;
