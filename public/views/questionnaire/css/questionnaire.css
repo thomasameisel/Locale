@@ -87,7 +87,6 @@
     font-size: 20px;
     text-align:center;
     box-shadow: 0 3px 3px -3px #999;
-    height: 100px;
     min-height: 100px;
     margin-top: 25px;
     margin-bottom: 25px;
@@ -97,21 +96,6 @@
     display: table-cell;
     vertical-align: middle;
 }
-
-/* NOTE: 1268 is the width at which the text goes outside of the wells */
-/*@media screen and (max-width: 1268px) {
-    .answers{
-        cursor: pointer;
-        font-size: 17px;
-        text-align:center;
-        box-shadow: 0 3px 3px -3px #999;
-        height: 100px;
-        min-height: 100px;
-        margin-top: 25px;
-        margin-bottom: 25px;
-    }
-}*/
-
 
 #commuteLabel{
     margin-bottom: 30px;

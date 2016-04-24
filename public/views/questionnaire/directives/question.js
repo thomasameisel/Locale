@@ -12,6 +12,9 @@ app.directive('question', function() {
 
         },
         controller: function ($scope, communityDataService) {
+            $scope.secondIndex = function(index) {
+              return index + 3;
+            };
             $scope.select = function(index){
                 $scope.selected = index;
                 communityDataService.setFilters($scope.question.key, $scope.selected+1);
