@@ -18,6 +18,19 @@ app.controller('questionnaireController', function($scope, $stateParams, $state,
     {
       id: 1,
       key: 'safety',
+      text: 'Late at night, I would feel comfortable:',
+      options: [
+        'Doing anything. No one crosses me.',
+        'Walking home with friends.',
+        'Walking across the street from home.',
+        'Taking a cab back alone.',
+        'Being at home, with the door deadbolted.'
+      ]
+    },
+
+    {
+      id: 2,
+      key: 'qualityOfLife',
       text: 'If someone were to steal from my house how would I react:',
       options: [
         'Just try to remember to lock the door.',
@@ -25,19 +38,6 @@ app.controller('questionnaireController', function($scope, $stateParams, $state,
         'Call the police.',
         'Get a security system.',
         'Look for a new apartment.'
-      ]
-    },
-
-    {
-      id: 2,
-      key: 'qualityOfLife',
-      text: 'How do you feel about drug use and prostitution?',
-      options: [
-        "B****, don't kill my vibe!",
-        "It's the world's oldest profession for a reason.",
-        "I don't mind, as long as it doesn't affect me.",
-        "They're gateways to worse crimes.",
-        'Just knowing they happen makes me sick.',
       ]
     },
 
