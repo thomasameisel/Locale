@@ -15,7 +15,7 @@
                  class="labelDiv" ng-click="choose($index)"
                  ng-repeat="preference in preferences track by $index">
                 <div>
-                    <h3 class="name unselectable">
+                    <h3 class="name unselectable" ng-style="{'color' : '{{preference.color}}'}">
                         <span>{{preference.name}}</span>
                     </h3>
                     <span class="glyphicon glyphicon-menu-right expandButton" aria-hidden="true"
