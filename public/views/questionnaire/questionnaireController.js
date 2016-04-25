@@ -18,13 +18,13 @@ app.controller('questionnaireController', function($scope, $stateParams, $state,
     {
       id: 1,
       key: 'safety',
-      text: 'Late at night, I would feel comfortable:',
+      text: 'If someone were to steal from my house how would I react:',
       options: [
-        'Doing anything. No one crosses me.',
-        'Walking home with friends.',
-        'Walking across the street from home.',
-        'Taking a cab back alone.',
-        'Being at home, with the door deadbolted.'
+        'Just try to remember to lock the door.',
+        'Ask the neighbor to look out for your place.',
+        'Call the police.',
+        'Get a security system.',
+        'Look for a new apartment.'
       ]
     },
 
