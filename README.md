@@ -1,9 +1,9 @@
 # Locale
 ### Finds your perfect neighborhood.
 
-Uses the [Chicago Tribune crime data API](https://github.com/newsapps/chicagocrime), along with Foursquare and Zillow.
+Uses the [Chicago Tribune crime data API](https://github.com/newsapps/chicagocrime), along with Trulia and Google Places.
 
-Users answer a series of fun questions, similar to a Buzzfeed quiz. Based on their responses, the application determines their preferences for several metrics, including crime, nightlife, price, and more. It then ranks the 77 community areas of Chicago by how well they fit the user's preferences and displays them on a map of the city, with information about each.
+Users answer a series of fun questions, similar to a Buzzfeed quiz. Based on their responses, the application determines their preferences for several metrics, including crime, nightlife, price, and more. It then ranks the communities of select large cities by how well they fit the user's preferences and displays them on a map of the city, with information about each.
 
 ## Docker
 Run `docker build -t locale .` whenever there is a code change. To start the application, run `docker run --rm -p 8080:8080 locale`. To run tests, run `docker run --rm locale npm test`.
