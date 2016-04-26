@@ -56,10 +56,10 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="navbar-buttons">
                 <ul class="nav navbar-nav navbar-right">
-                    <li ng-if="inMapState">
+                    <li ng-if="inMapState" data-toggle="collapse" data-target="#navbar-buttons">
                         <a href="/" ng-click="retakeSurvey()">Retake Survey</a>
                     </li>
-                    <li ng-if="inMapState || inQuestionnaireState">
+                    <li ng-if="inMapState || inQuestionnaireState" data-toggle="collapse" data-target="#navbar-buttons">
                         <a href="/" ng-click="goToLandingPage()">Change City</a>
                     </li>
                 </ul>
