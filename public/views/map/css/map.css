@@ -97,19 +97,21 @@ body {
 }
 
 .gMap {
-    margin-left: 400px;
+    margin-left: 400px !important;
+    height: 100vh !important;
 }
 
 @media (max-width: 1000px) {
     .leftPanel {
         width:100%;
-        margin-bottom: 50vh;
+        margin-bottom: 40vh;
     }
 
     .gMap {
-        margin-left: 0;
+        margin-left: 0 !important;
         position: fixed;
         bottom: 0;
+        height: 40vh !important;
         width: 100%;
     }
 }

@@ -1,5 +1,7 @@
 app.controller('mapController', function($scope, $stateParams, communityDataService, directionsDataService, $state) {
-    $scope.width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    var width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    $scope.height = (width > 1000) ? '100vh' : '40vh';
+    $scope.margin_left = (width > 1000) ? '400px' : '0';
     $scope.useCommute = directionsDataService.getUseCommute();
 
     //Obtain lat and lng for searched city
@@ -253,4 +255,23 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
             }
         });
     }
+
+    var addEvent = function(object, type, callback) {
+        if (object == null || typeof(object) == 'undefined') return;
+        if (object.addEventListener) {
+            object.addEventListener(type, callback, false);
+        } else if (object.attachEvent) {
+            object.attachEvent("on" + type, callback);
+        } else {
+            object["on"+type] = callback;
+        }
+    };
+
+    addEvent(window, 'resize', function() {
+        $scope.map.fitBounds(defaultBounds);
+        google.maps.event.addListenerOnce(map, 'idle', function() {
+            google.maps.event.trigger(map, 'resize');
+        });
+        $scope.safeApply();
+    });
 });
