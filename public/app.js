@@ -5,8 +5,7 @@ var app = angular.module('Apartment', ['snap', 'ngResource', 'ui.router', 'ngAni
 
 
 app.controller('navController', function($scope, $state, communityDataService) {
-    var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-console.log(w);
+
     $scope.$watch(
         function() { return communityDataService.getCity(); },
         function(newVal, oldVal){
