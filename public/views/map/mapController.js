@@ -99,26 +99,16 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
                 if (result[i].allCriteria.hasOwnProperty(criteria) &&
                       (criteria !== 'nightlifePctOfAvg' ||
                        result[i].normalizedPreferences[criteria] < 1)) {
-                    var inverse = 2 - result[i].allCriteria[criteria].value;
+                    var inverse = 2 - result[i].allCriteria[criteria];
                     if (inverse < 0) {
-                      result[i].allCriteria[criteria].value = 0.05;
+                      result[i].allCriteria[criteria] = 0.05;
                     } else if (inverse > 2) {
-                      result[i].allCriteria[criteria].value = 2;
+                      result[i].allCriteria[criteria] = 2;
                     } else {
-                      result[i].allCriteria[criteria].value = inverse;
+                      result[i].allCriteria[criteria] = inverse;
                     }
-                    // result[i].allCriteria[criteria].value = (inverse < 0) ?
-                    //     0.05 : inverse;
                 }
             }
-            // for (var badCriteria in result[i].badCriteria) {
-            //     if (result[i].badCriteria.hasOwnProperty(badCriteria) &&
-            //         badCriteria !== 'nightlifePctOfAvg') {
-            //         var inverse = 2 - result[i].badCriteria[badCriteria];
-            //         result[i].badCriteria[badCriteria] = (inverse < 0) ?
-            //             0.05 : inverse;
-            //     }
-            // }
         }
         return result;
     }

@@ -20,7 +20,7 @@
       <div class="panel-body col-md-12" ng-repeat="(key,val) in preference.allCriteria">
           <div ng-if="val" class="categoryLabel">{{categories[key]}}</div>
           <div ng-if="val" ng-class="{'ext col-md-6': true}">
-              <div ng-style="{'width': (val.value>2?100:val.value*50)+'%'}" class="bar"></div>
+              <div ng-style="{'width': val*50+'%'}" class="bar"></div>
           </div>
           <div ng-style="{'left': displayPreference(key, preference.normalizedPreferences[key])+'%'}" class="glyphicon glyphicon-triangle-top"></div>
       </div>
