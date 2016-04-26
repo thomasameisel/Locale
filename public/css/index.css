@@ -1,4 +1,9 @@
-@media (max-width: 991px) {
+body {
+    padding-top:70px;
+}
+
+
+@media (max-width: 1200px) {
     .navbar-header {
         float: none;
     }
