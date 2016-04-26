@@ -38,33 +38,23 @@
 </head>
 
 <body>
-    <nav ng-controller="navController" class="navbar navbar-fixed-top navbar-default" id="navbar">
-        <div class="container-fluid">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" ng-if="inMapState || inQuestionnaireState" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-buttons" aria-expanded="false">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="/" ng-click="goToLandingPage()">Locale</a>
-                <p class="navbar-text">{{city}}</p>
-            </div>
-
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="navbar-buttons">
-                <ul class="nav navbar-nav navbar-right">
-                    <li ng-if="inMapState">
-                        <a href="/" ng-click="retakeSurvey()">Retake Survey</a>
-                    </li>
-                    <li ng-if="inMapState || inQuestionnaireState">
-                        <a href="/" ng-click="goToLandingPage()">Change City</a>
-                    </li>
-                </ul>
-            </div><!-- /.navbar-collapse -->
-        </div><!-- /.container-fluid -->
-    </nav>
+<div class="navbar navbar-default navbar-fixed-top">
+    <div class="navbar-header"><a class="navbar-brand" href="#">Brand</a>
+        <a class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+    </div>
+    <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#">Link</a></li>
+            <li><a href="#">More</a></li>
+            <li><a href="#">Options</a></li>
+        </ul>
+    </div>
+</div>
 
     <div ui-view id="view"></div>
 
