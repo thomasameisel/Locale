@@ -1,5 +1,5 @@
 app.controller('mapController', function($scope, $stateParams, communityDataService, directionsDataService, $state) {
-
+    $scope.width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     $scope.useCommute = directionsDataService.getUseCommute();
 
     //Obtain lat and lng for searched city
