@@ -1,5 +1,7 @@
 ### Most Important
 - [ ] Clicking the answer to a question should automatically scroll to the next question
+- [ ] Fix normalizedPreferences so it doesn't add to each community
+- [ ] Add different cities to validatePreferencesParams
 
 ### Stretch Goals
 - [ ] Add more cities (NYC, San Francisco, Nashville)
