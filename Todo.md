@@ -1,21 +1,8 @@
 ### Most Important
-- [x] Make questionnaire submit button float and greyed out when the questionnaire is incomplete
-  - if the directions request is not done, a loading icon should appear after the user presses submit
-- [ ] Change preferences bars hue to support green/red colorblindness
-- [ ] Put tick mark on preferences bars to display user selections
-- [ ] Denote that middle line on preferences bars is city average
-- [ ] Change landing page search to only accept cities that we have (only Chicago for now)
-  - leaving the input box blank prints 'NO_RESULTS' next to the box
-- [ ] Change stars on map page to make it clear that they are based on preferences
 - [ ] Clicking the answer to a question should automatically scroll to the next question
 
 ### Stretch Goals
-- [ ] Preferences don't show up in the same order for every community in the detail view
-- [ ] Only allow users to select a work place in their selected city
 - [ ] Add more cities (NYC, San Francisco, Nashville)
-- [ ] Automatically do a directions request (user does not have to press button)
-  - do not take the user back to landing page, just change city in the questionnaire
-  - void out work place when the user changes the city
 - [ ] Change how getAllData fails (send an email if failed)
 - [ ] Set up CD to test and deploy to Elastic Beanstalk upon push
 - [ ] Write more tests
@@ -44,3 +31,16 @@
 - [x] Add more communities to database
 - [x] Separate violent and non-violent crime
 - [x] Move to Docker
+- [x] Make questionnaire submit button float and greyed out when the questionnaire is incomplete
+  - if the directions request is not done, a loading icon should appear after the user presses submit
+- [x] Change preferences bars hue to support green/red colorblindness
+- [x] Put tick mark on preferences bars to display user selections
+- [x] Denote that middle line on preferences bars is city average
+- [x] Change landing page search to only accept cities that we have (only Chicago for now)
+  - leaving the input box blank prints 'NO_RESULTS' next to the box
+- [x] Change stars on map page to make it clear that they are based on preferences
+- [x] Preferences don't show up in the same order for every community in the detail view
+- [x] Only allow users to select a work place in their selected city
+- [x] Automatically do a directions request (user does not have to press button)
+  - do not take the user back to landing page, just change city in the questionnaire
+  - void out work place when the user changes the city
