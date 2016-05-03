@@ -184,7 +184,9 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
 
             $scope.neighborhoods[preference.communityID] = neighborhood;
 
-            google.maps.event.addListener(neighborhood, 'click', function (event) {
+            google.maps.event.addListener(neighborhood, 'click', function () {
+                document.getElementById('content').scrollTop = 0;
+
                 for (var community in $scope.neighborhoods) {
                     if ($scope.neighborhoods.hasOwnProperty(community)) {
                         $scope.neighborhoods[community].setOptions({fillOpacity: lightOpacity});
@@ -213,7 +215,7 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
             });
 
         }
-    };
+    }
 
 
     $scope.choose = function (index) {
@@ -241,15 +243,13 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
 
 
     $scope.safeApply = function(fn) {
-        if (this.$root && this.$root.$$phase) {
-            var phase = this.$root.$$phase;
-            if (phase == '$apply' || phase == '$digest') {
-                if (fn && (typeof(fn) === 'function')) {
-                    fn();
-                }
-            } else {
-                this.$apply(fn);
+        var phase = this.$root.$$phase;
+        if(phase == '$apply' || phase == '$digest') {
+            if(fn && (typeof(fn) === 'function')) {
+                fn();
             }
+        } else {
+            this.$apply(fn);
         }
     };
 
