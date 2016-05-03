@@ -37,10 +37,6 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
             google.maps.event.trigger(map, 'resize');
         });
         setPreferences();
-
-        $scope.directionsService = new google.maps.DirectionsService();
-        $scope.directionsDisplay = new google.maps.DirectionsRenderer();
-        $scope.directionsDisplay.setMap($scope.map);
     });
 
     $scope.categories = {
@@ -245,13 +241,15 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
 
 
     $scope.safeApply = function(fn) {
-        var phase = this.$root.$$phase;
-        if(phase == '$apply' || phase == '$digest') {
-            if(fn && (typeof(fn) === 'function')) {
-                fn();
+        if (this.$root && this.$root.$$phase) {
+            var phase = this.$root.$$phase;
+            if (phase == '$apply' || phase == '$digest') {
+                if (fn && (typeof(fn) === 'function')) {
+                    fn();
+                }
+            } else {
+                this.$apply(fn);
             }
-        } else {
-            this.$apply(fn);
         }
     };
 
@@ -271,6 +269,14 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
     };
 
     addEvent(window, 'resize', function() {
+        $scope.map.fitBounds(defaultBounds);
+        google.maps.event.addListenerOnce(map, 'idle', function() {
+            google.maps.event.trigger(map, 'resize');
+        });
+        $scope.safeApply();
+    });
+
+    google.maps.event.addDomListener(window, 'load', function() {
         $scope.map.fitBounds(defaultBounds);
         google.maps.event.addListenerOnce(map, 'idle', function() {
             google.maps.event.trigger(map, 'resize');

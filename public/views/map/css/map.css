@@ -98,8 +98,8 @@ body {
 }
 
 .gMap {
-    margin-left: 400px !important;
-    height: 100vh !important;
+    margin-left: 400px;
+    height: 100vh;
 }
 
 @media (max-width: 1000px) {
@@ -109,10 +109,10 @@ body {
     }
 
     .gMap {
-        margin-left: 0 !important;
-        position: fixed;
+        margin-left: 0;
+        position: fixed !important;
         bottom: 0;
-        height: 40vh !important;
+        height: 40vh;
         width: 100%;
     }
 }
