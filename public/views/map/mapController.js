@@ -4,6 +4,9 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
     $scope.margin_left = (width > 1000) ? '400px' : '0';
     $scope.useCommute = directionsDataService.getUseCommute();
 
+    var regOpacity = 0.9;
+    var lightOpacity = 0.3;
+
     //Obtain lat and lng for searched city
     var lat = parseFloat($stateParams.lat),
         lng = parseFloat($stateParams.lng);
@@ -185,6 +188,16 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
             $scope.neighborhoods[preference.communityID] = neighborhood;
 
             google.maps.event.addListener(neighborhood, 'click', function (event) {
+                for (var community in $scope.neighborhoods) {
+                    if ($scope.neighborhoods.hasOwnProperty(community)) {
+                        if ($scope.neighborhoods[community].prefIndex !== this.prefIndex) {
+                            $scope.neighborhoods[community].setOptions({fillOpacity: lightOpacity});
+                        } else {
+                            $scope.neighborhoods[community].setOptions({fillOpacity: regOpacity});
+                        }
+                    }
+                }
+
                 $scope.selectedPreference = communities[this.prefIndex];
                 $scope.showDetail = true;
 
@@ -219,6 +232,11 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
     });
 
     function returnToMainPanel() {
+        for (var community in $scope.neighborhoods) {
+            if ($scope.neighborhoods.hasOwnProperty(community)) {
+                $scope.neighborhoods[community].setOptions({fillOpacity: regOpacity});
+            }
+        }
         $scope.showDetail = false;
         $scope.map.fitBounds(defaultBounds);
         google.maps.event.addListenerOnce(map, 'idle', function() {
@@ -241,20 +259,6 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
     $scope.getStars = function(n) {
         return new Array(n);
     };
-
-
-    function calcRoute(end) {
-        var request = {
-            origin:defaultCenter,
-            destination:end,
-            travelMode: google.maps.TravelMode.DRIVING
-        };
-        $scope.directionsService.route(request, function(result, status) {
-            if (status == google.maps.DirectionsStatus.OK) {
-                $scope.directionsDisplay.setDirections(result);
-            }
-        });
-    }
 
     var addEvent = function(object, type, callback) {
         if (object == null || typeof(object) == 'undefined') return;
