@@ -5,7 +5,8 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
     $scope.useCommute = directionsDataService.getUseCommute();
 
     var regOpacity = 0.9;
-    var lightOpacity = 0.3;
+    var medOpacity = 0.7;
+    var lightOpacity = 0.2;
 
     //Obtain lat and lng for searched city
     var lat = parseFloat($stateParams.lat),
@@ -180,7 +181,7 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
                 paths           : preference.outline,
                 fillColor       : preference.color,
                 strokeOpacity   : 1,
-                fillOpacity     : 0.9,
+                fillOpacity     : regOpacity,
                 name            : preference.name,
                 prefIndex       : i
             });
@@ -190,13 +191,11 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
             google.maps.event.addListener(neighborhood, 'click', function (event) {
                 for (var community in $scope.neighborhoods) {
                     if ($scope.neighborhoods.hasOwnProperty(community)) {
-                        if ($scope.neighborhoods[community].prefIndex !== this.prefIndex) {
-                            $scope.neighborhoods[community].setOptions({fillOpacity: lightOpacity});
-                        } else {
-                            $scope.neighborhoods[community].setOptions({fillOpacity: regOpacity});
-                        }
+                        $scope.neighborhoods[community].setOptions({fillOpacity: lightOpacity});
                     }
                 }
+
+                this.fillOpacity = medOpacity;
 
                 $scope.selectedPreference = communities[this.prefIndex];
                 $scope.showDetail = true;
@@ -205,7 +204,7 @@ app.controller('mapController', function($scope, $stateParams, communityDataServ
 
                 var bounds = new google.maps.LatLngBounds();
 
-                for (var j =0; j < $scope.selectedPreference.outline.length; j++) {
+                for (var j = 0; j < $scope.selectedPreference.outline.length; j++) {
                     var point = new google.maps.LatLng($scope.selectedPreference.outline[j]);
                     bounds.extend(point);
                 }
